@@ -13,7 +13,8 @@ Um suporte forense digital confiável e abrangente, assim como uma triagem efica
 
 Esse suporte está disponível para a sociedade civil por meio do Security Lab da Anistia Internacional ou através de nossa parceria forense com a linha de apoio em segurança digital da Access Now.
 
-Mais informações sobre o uso de indicadores de comprometimento com o MVT estão disponíveis na  <a href="https://docs.mvt.re/en/latest/iocs/)" target="_blank">documentação</a>.
+Mais informações sobre o uso de indicadores de comprometimento com o MVT estão disponíveis na [documentação sobre IOCs](https://docs.mvt.re/en/latest/iocs/).
+
 
 # Instalação
 

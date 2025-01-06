@@ -20,4 +20,7 @@ Mais informações sobre o uso de indicadores de comprometimento com o MVT estã
 
 O MVT pode ser instalado a partir do código-fonte ou do [PyPI](https://pypi.org/project/mvt/) (você precisará de algumas dependências, consulte a [documentação](https://docs.mvt.re/en/latest/install/)):
 
+# Uso da ferramenta
+
+A ferramenta pode ser usada tanto para dispositivos ios quanto para dispositivos android.
 

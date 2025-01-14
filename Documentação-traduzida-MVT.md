@@ -20,7 +20,7 @@ Mais informações sobre o uso de indicadores de comprometimento com o MVT estã
 
 O MVT pode ser instalado a partir do código-fonte ou do [PyPI](https://pypi.org/project/mvt/) (você precisará de algumas dependências, consulte a [documentação](https://docs.mvt.re/en/latest/install/)):
 
-Para instalar através do código fonte, abra o navegador do seu sistema operacional e digite
+Para instalar através do código fonte, abra o terminal do seu sistema operacional e digite
 
 pip3 install mvt
 

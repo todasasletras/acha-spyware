@@ -24,7 +24,10 @@ Para instalar através do código fonte, abra o terminal do seu sistema operacio
 
 pip3 install mvt
 
-# Uso da ferramenta
+# Uso para android
 
 A ferramenta pode ser usada tanto para dispositivos ios quanto para dispositivos android.
 
+# Uso para IOS
+
+Após instalar a ferramenta através do comando "pip3 install mvt" é utilizar o itunes para criar um backup do apk.

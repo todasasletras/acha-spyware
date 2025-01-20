@@ -1,9 +1,9 @@
 # ferramenta-deteccao-spywares-mobile
-Esse é o repositório do projeto  open source "Segurança acessível"  - Uma ferramenta de deteção de spywares mobile desenvolvida a partir do projeto open source [Mobile Verification Toolkit](https://github.com/mvt-project/mvt) .
+Esse é o repositório do projeto  open source "Mobile verification toolkit"  - Uma ferramenta de deteção de spywares mobile desenvolvida a partir do projeto open source [Mobile Verification Toolkit](https://github.com/mvt-project/mvt) .
 
 # O que é o projeto?
 
-O " Segurança acessível" visa criar uma interface gráfica e um guia mais acessível adaptado para o português e para a realidade brasileira, com o objetivo de para auxiliar líderes de movimentos sociais a  conseguirem realizar análises forenses em seus dispositivos móveis através da ferramenta open soure [Mobile Verification Toolkit](https://github.com/mvt-project/mvt).
+O projeto "Ferramenta de Verificação Móvel" visa criar uma interface gráfica e um guia mais acessível adaptado para o português e para a realidade brasileira, com o objetivo de para auxiliar líderes de movimentos sociais a  conseguirem realizar análises forenses em seus dispositivos móveis através da ferramenta open soure [Mobile Verification Toolkit](https://github.com/mvt-project/mvt).
 
 # Por que o projeto existe?
 

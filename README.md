@@ -1,5 +1,5 @@
-# ferramenta-deteccao-spywares-mobile
-Esse é o repositório do projeto  open source "Mobile verification toolkit"  - Uma ferramenta de deteção de spywares mobile desenvolvida a partir do projeto open source [Mobile Verification Toolkit](https://github.com/mvt-project/mvt) .
+# Ferramenta de Verificação Móvel
+Esse é o repositório do projeto  open source "Ferramenta de Verificação Móvel"  - Uma ferramenta de deteção de spywares mobile desenvolvida a partir do projeto open source [Mobile Verification Toolkit](https://github.com/mvt-project/mvt) .
 
 # O que é o projeto?
 

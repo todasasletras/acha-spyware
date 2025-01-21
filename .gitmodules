@@ -1,0 +1,3 @@
+[submodule "mvt"]
+	path = mvt
+	url = https://github.com/mvt-project/mvt.git

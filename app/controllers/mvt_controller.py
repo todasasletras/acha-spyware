@@ -77,3 +77,46 @@ class MVTController:
         """
         command = ['mvt-android', 'check-apk', '-i', file_path, '-o', output_dir]
         return MVTController._run_command(command)
+
+    @staticmethod
+    def download_iocs()-> Dict[str, Union[bool, str]]:
+        """
+        Downloads the latest Indicators of Compromise (IOCs) using mvt-amdroid.
+
+        Returns
+        -------
+        Dict[str, Union[bool, str]]
+            A dictionary containing:
+            - 'succes' (bool): IIndicates if the command executed successfuly.
+            - 'stdout' (str, optional): Standard outputif the command successds.
+            - 'stderr' (str, optional): Standard error if the command fails.
+        """
+        command = ['mvt-android', 'download-iocs']
+        return MVTController._run_command(command)
+    
+    @staticmethod
+    def download_apks(output_dir: str, analyze: bool=False)-> Dict[str, Union[bool, str]]:
+        """
+        Downloads the latest Indicators of Compromise (IOCs) using mvt-amdroid.
+
+        Parameters
+        ----------
+        output_dir: str
+            The directory where the APKs will be saved.
+        analyze : bool, optional
+            If True, analyze APks using VirusTotal and other methods.
+            Defauts to False.
+
+        Returns
+        -------
+        Dict[str, Union[bool, str]]
+            A dictionary containing:
+            - 'succes' (bool): IIndicates if the command executed successfuly.
+            - 'stdout' (str, optional): Standard outputif the command successds.
+            - 'stderr' (str, optional): Standard error if the command fails.
+        """
+        command = ['mvt-android', 'download-apks', '-o', output_dir]
+        if analyze:
+            command.append('-a')
+            command.append('-v')
+        return MVTController._run_command(command)

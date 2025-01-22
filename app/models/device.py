@@ -12,9 +12,15 @@ class Device:
         Unique identifier of the device.
     name : str
         Name or alias of the device (default is 'Unknown').
+    product : str
+        Product name of the deivice (default is 'Unknown').
+    model : str
+        Model name of the device (default is 'Unknown').
+    device : str
+        Device name (default is 'Unknown').
     """
 
-    def __init__(self, id: str, name: str):
+    def __init__(self, id: str, name: str='Unknown', product:str='Unknown', model:str='Unknown', device:str='Unknown'):
         """
         Initializes a Device instance.
 
@@ -23,10 +29,19 @@ class Device:
         id : str
             Unique identifier of the device.
         name : str
-            Name or alias of the device.
+            Name or alias of the device (default is 'Unknown').
+        product : str
+            Product name of the deivice (default is 'Unknown').
+        model : str
+            Model name of the device (default is 'Unknown').
+        device : str
+            Device name (default is 'Unknown').
         """
         self.id = id
         self.name = name
+        self.product = product
+        self.model = model
+        self.device = device
 
     @staticmethod
     def list_connected_devices() -> List[Device]:
@@ -38,12 +53,23 @@ class Device:
         List[Device]
             A list of Device objects representing connected devices.
         """
-        result = subprocess.run(['adb', 'devices'], capture_output=True, text=True)
+        result = subprocess.run(['adb', 'devices', '-l'], capture_output=True, text=True)
         devices = []
         for line in result.stdout.splitlines()[1:]:
             if line.strip():
                 parts = line.split()
-                devices.append(Device(id=parts[0], name="Unknown"))
+                id = parts[0]
+                product = model = device = "Unknown"
+
+                # Extract additional details using regex
+                for part in parts[2:]:
+                    if part.startswith("product:"):
+                        product = part.split(":", 1)[1]
+                    elif part. startswith("model:"):
+                        model = part.split(":", 1)[1]
+                    elif part.startswith("device:"):
+                        device = part.split(":", 1)[1]
+                devices.append(Device(id=id, name=model, product=product, model=model, device=device))
         return devices
 
     def to_dict(self) -> Dict[str, str]:
@@ -53,6 +79,12 @@ class Device:
         Returns
         -------
         Dict[str, str]
-            A dictionary with the device's id and name.
+            A dictionary with the device's datails.
         """
-        return {'id': self.id, 'name': self.name}
+        return {
+            'id': self.id, 
+            'name': self.name,
+            'product': self.product,
+            'model': self.model,
+            'device': self.device
+        }

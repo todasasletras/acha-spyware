@@ -57,7 +57,7 @@ class MVTController:
         serial : str, optional
             Specify a device serial number or HOST:PORT connection string.
         iocs_files : list, optional
-            A list of paths to indicators files. Can includde multiple files.
+            A list of paths to indicators files. Can include multiple files.
         output_folder : str
             Specify a path to folder where JSON results will be stored.
         fast : bool, optional
@@ -96,6 +96,75 @@ class MVTController:
             command.append('--list-modules')
         if module:
             command.extend(['--module', module])
+        if non_interactive:
+            command.append('--non-interactive')
+        if backup_password:
+            command.extend(['--backup-password', backup_password])
+        if verbose:
+            command.append('--verbose')
+
+        return MVTController._run_command(command)
+    
+    @staticmethod
+    def check_androidqf(androidqf_path: str, 
+                        iocs_files: list = None, 
+                        output_folder: str = None, 
+                        list_modules: bool = False, 
+                        module: str = None,
+                        hashes: bool = False,
+                        non_interactive: bool = False,
+                        backup_password: str = None,
+                        verbose: bool  = False
+                ) -> Dict[str, Union[bool, str]]:
+        """
+        Checks data collected with AndroidQF using mvt-android.
+
+        This command analyzes AndroidQF data for indicators of compromise (IOCs).
+
+        Parameters
+        ----------
+        androidqf : str
+            Path to the AndroidQF data to be analyzed.
+        iocs_files : list, optional
+            A list of paths to indicators files. Can include multiple files.
+        output_folder : str
+            Specify a path to folder where JSON results will be stored.
+        fast : bool, optional
+            Skip time/resource-consuming features.
+        list_modules : bool, optional
+            If true, list availabe modules and exit.
+        modules : str, optional
+            Name of a single module to run instead of all.
+        hashes : str, optional
+            If True, generate hashes of all files analyzed.
+        non_interactive : bool, optional
+            Avoid interactive questions during processing.
+        backup_password : str, optional
+            Backup password to use for an Android backup
+        verbose : bool, optional
+            if True, enables verbose mode.
+
+        Returns
+        -------
+        Dict[str, Union[bool, str]]
+            A dictionary containing:
+            - 'success' (bool): Indicates if the command executed successfully.
+            - 'stdout' (str, optional): Standard output if the command succeeds.
+            - 'stderr' (str, optional): Standard error if the command fails.
+        """
+        command = ['mvt-android', 'check-androidqf', androidqf_path]
+
+        if iocs_files:
+            for iocs_file in iocs_files:
+                command.extend(['-i', iocs_file])
+        if output_folder:
+            command.extend(['--output', output_folder])
+        if list_modules:
+            command.append('--list-modules')
+        if module:
+            command.extend(['--module', module])
+        if hashes:
+            command.append('--hashes')
         if non_interactive:
             command.append('--non-interactive')
         if backup_password:

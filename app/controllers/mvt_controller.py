@@ -307,7 +307,10 @@ class MVTController:
         return MVTController._run_command(command)
 
     @staticmethod
-    def check_iocs(folder:str=None, iocs_files:list=None, list_modules:bool=False, module:str=None) -> Dict[str, Union[bool, str]]:
+    def check_iocs(folder:str=None, 
+                   iocs_files:list=None, list_modules:bool=False, 
+                   module:str=None
+                ) -> Dict[str, Union[bool, str]]:
         """
         Compares stored JSON results to provided indicators using mvt-android.
 
@@ -351,6 +354,59 @@ class MVTController:
         return MVTController._run_command(command)
 
     @staticmethod
+    def download_apks(serial: str = None,
+                      all_apks: bool = False,
+                      virustotal: bool = False,
+                      output_folder: str = None,
+                      from_file: str = None,
+                      verbose: bool=False
+                    )-> Dict[str, Union[bool, str]]:
+        """
+        Downloads APKs from an Android deice using mvt-amdroid.
+
+        This command allows the extraction of APKs from an Android device. with options to include system packages or check packages on VirusTotal.
+
+        Parameters
+        ----------
+        serial : str, optional
+            Specify a device serial number or HOST:PORT connection string
+        all_apks : bool, optional
+            Extract all packeges installed on the phone, including system packages
+        virustotal : bool, optional
+            Check packages on VirusTotal
+        output_dir: str
+            Specify a path to a folder where APKs will be stored.
+        from_file : str, optional
+            Instead of acquiring from phone, load an existing packages.jos file for lookups (mainly for debugging purposes)
+        verbose : bool, optional
+            Enable Verbose mode for more detailed output.
+
+        Returns
+        -------
+        Dict[str, Union[bool, str]]
+            A dictionary containing:
+            - 'succes' (bool): IIndicates if the command executed successfuly.
+            - 'stdout' (str, optional): Standard outputif the command successds.
+            - 'stderr' (str, optional): Standard error if the command fails.
+        """
+        command = ['mvt-android', 'download-apks']
+
+        if serial:
+            command.extend(['--serial', serial])
+        if all_apks:
+            command.append('--all-apks')
+        if virustotal:
+            command.append('--virustotal')
+        if output_folder:
+            command.extend(['--output', output_folder])
+        if from_file:
+            command.extend(['--from-file', from_file])
+        if verbose:
+            command.append('--verbose')
+        
+        return MVTController._run_command(command)
+    
+    @staticmethod
     def download_iocs()-> Dict[str, Union[bool, str]]:
         """
         Downloads the latest Indicators of Compromise (IOCs) using mvt-amdroid.
@@ -366,29 +422,3 @@ class MVTController:
         command = ['mvt-android', 'download-iocs']
         return MVTController._run_command(command)
     
-    @staticmethod
-    def download_apks(output_dir: str, analyze: bool=False)-> Dict[str, Union[bool, str]]:
-        """
-        Downloads the latest Indicators of Compromise (IOCs) using mvt-amdroid.
-
-        Parameters
-        ----------
-        output_dir: str
-            The directory where the APKs will be saved.
-        analyze : bool, optional
-            If True, analyze APks using VirusTotal and other methods.
-            Defauts to False.
-
-        Returns
-        -------
-        Dict[str, Union[bool, str]]
-            A dictionary containing:
-            - 'succes' (bool): IIndicates if the command executed successfuly.
-            - 'stdout' (str, optional): Standard outputif the command successds.
-            - 'stderr' (str, optional): Standard error if the command fails.
-        """
-        command = ['mvt-android', 'download-apks', '-o', output_dir]
-        if analyze:
-            command.append('-a')
-            command.append('-v')
-        return MVTController._run_command(command)

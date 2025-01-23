@@ -1,3 +1,4 @@
+import os
 import subprocess
 from typing import Dict, Union
 
@@ -55,7 +56,7 @@ class MVTController:
         command = ['mvt-android', 'check-adb', '-o', output_dir]
         return MVTController._run_command(command)
 
-    @staticmethod
+    @staticmethod # This command not exist
     def check_apk(file_path: str, output_dir: str) -> Dict[str, Union[bool, str]]:
         """
         Analyzes an APK file using mvt-android.
@@ -76,6 +77,50 @@ class MVTController:
             - 'stderr' (str, optional): Standard error if the command fails.
         """
         command = ['mvt-android', 'check-apk', '-i', file_path, '-o', output_dir]
+        return MVTController._run_command(command)
+
+    @staticmethod
+    def check_iocs(folder:str=None, iocs_files:list=None, list_modules:bool=False, module:str=None) -> Dict[str, Union[bool, str]]:
+        """
+        Compares stored JSON results to provided indicators using mvt-android.
+
+        This command analyzes a folder containing JSON resuts against specifed
+        indicators of compromise (IOCs).
+
+        Parameters
+        ----------
+        folder : str, optional
+            the folder containig the JSON results to analyze. Defaults to
+            "/home/<user>/.local/share/mvt/indicators/".
+        iocs_files : list, optional
+            A list of paths to indicators files. Can include multiple files.
+        list)modules : bool, optional
+            If True, list all available modules and exits.
+        module : str, optional
+            Specifies the name of a single module to run instead of all.
+        
+        Returns
+        -------
+        Dict[str, Union[bool, str]]
+            A dictionary containing:
+            - 'success' (bool): Indicates if  the commmand executed seccessfully.
+            - 'stdout' (str, optional): Standard output if the command succeeds.
+            - 'stderr' (str, optional): Standard error if the command fails.
+        """
+        if not folder:
+            user_home = os.path.expanduser("~")
+            folder = os.path.join(user_home, '.local', 'share', 'mvt', 'indicators')
+        
+        command = ['mvt-android', 'check-iocs', folder]
+
+        if iocs_files:
+            for iocs_file in iocs_files:
+                command.extend(['-i', iocs_file])
+        if list_modules:
+            command.append('--list-modules')
+        if module:
+            command.extend(['--module', module])
+        
         return MVTController._run_command(command)
 
     @staticmethod

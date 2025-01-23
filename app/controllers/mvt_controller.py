@@ -231,6 +231,59 @@ class MVTController:
 
         return MVTController._run_command(command)
 
+@staticmethod
+def check_bugreport(
+    bugreport_path: str,
+    iocs_files: list = None,
+    output_folder: str = None,
+    list_modules: bool = False,
+    module: str = None,
+    verbose: bool = False
+) -> Dict[str, Union[bool, str]]:
+    """
+    Checks an Android Bug Report using mvt-android.
+
+    This command analyzes an Android bug report for indicators of compromise (IOCs).
+
+    Parameters
+    ----------
+    bugreport_path : str
+        Path to the Android bug report file to be analyzed.
+    iocs_files : list, optional
+        A list of paths to indicators files. Can include multiple files.
+    output_folder : str, optional
+        Specify a path to a folder where JSON results will be stored.
+    list_modules : bool, optional
+        If True, list available modules and exit.
+    module : str, optional
+        Name of a single module to run instead of all.
+    verbose : bool, optional
+        If True, enables verbose mode.
+
+    Returns
+    -------
+    Dict[str, Union[bool, str]]
+        A dictionary containing:
+        - 'success' (bool): Indicates if the command executed successfully.
+        - 'stdout' (str, optional): Standard output if the command succeeds.
+        - 'stderr' (str, optional): Standard error if the command fails.
+    """
+    command = ['mvt-android', 'check-bugreport', bugreport_path]
+
+    if iocs_files:
+        for iocs_file in iocs_files:
+            command.extend(['-i', iocs_file])
+    if output_folder:
+        command.extend(['--output', output_folder])
+    if list_modules:
+        command.append('--list-modules')
+    if module:
+        command.extend(['--module', module])
+    if verbose:
+        command.append('--verbose')
+
+    return MVTController._run_command(command)
+
     @staticmethod # This command not exist
     def check_apk(file_path: str, output_dir: str) -> Dict[str, Union[bool, str]]:
         """

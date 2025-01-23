@@ -409,7 +409,9 @@ class MVTController:
     @staticmethod
     def download_iocs()-> Dict[str, Union[bool, str]]:
         """
-        Downloads the latest Indicators of Compromise (IOCs) using mvt-amdroid.
+        Downloads public STIX2 indicators using mvt-amdroid.
+
+        This command downloads the latest puplic STIX2 indicatores for analysis.
 
         Returns
         -------

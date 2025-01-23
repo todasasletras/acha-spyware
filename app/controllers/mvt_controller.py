@@ -36,14 +36,42 @@ class MVTController:
             return {'success': False, 'stderr': result.stderr}
 
     @staticmethod
-    def check_adb(output_dir: str) -> Dict[str, Union[bool, str]]:
+    def check_adb(serial: str = None, 
+                  iocs_files: list = None, 
+                  output_folder: str = None, 
+                  fast: bool = False, 
+                  list_modules: bool = False, 
+                  module: str = None,
+                  non_interactive: bool = False,
+                  backup_password: str = None,
+                  verbose: bool  = False
+                ) -> Dict[str, Union[bool, str]]:
         """
-        Checks devices connected via ADB using mvt-android.
+        Checks an Android device over ADB using mvt-android.
+
+        This command analyzes a connected Android device for indicators
+        of compromise (IOCs) or other issues.
 
         Parameters
         ----------
-        output_dir : str
-            The directory where the output of the command will be saved.
+        serial : str, optional
+            Specify a device serial number or HOST:PORT connection string.
+        iocs_files : list, optional
+            A list of paths to indicators files. Can includde multiple files.
+        output_folder : str
+            Specify a path to folder where JSON results will be stored.
+        fast : bool, optional
+            Skip time/resource-consuming features.
+        list_modules : bool, optional
+            If true, list availabe modules and exit.
+        modules : str, optional
+            Name of a single module to run instead of all.
+        non_interactive : bool, optional
+            Avoid interactive questions during processing.
+        backup_password : str, optional
+            Backup password to use for an Android backup
+        verbose : bool, optional
+            if True, enables verbose mode.
 
         Returns
         -------
@@ -53,7 +81,28 @@ class MVTController:
             - 'stdout' (str, optional): Standard output if the command succeeds.
             - 'stderr' (str, optional): Standard error if the command fails.
         """
-        command = ['mvt-android', 'check-adb', '-o', output_dir]
+        command = ['mvt-android', 'check-adb']
+
+        if serial:
+            command.extend(['--serial', serial])
+        if iocs_files:
+            for iocs_file in iocs_files:
+                command.extend(['-i', iocs_file])
+        if output_folder:
+            command.extend(['--output', output_folder])
+        if fast:
+            command.append('--fast')
+        if list_modules:
+            command.append('--list-modules')
+        if module:
+            command.extend(['--module', module])
+        if non_interactive:
+            command.append('--non-interactive')
+        if backup_password:
+            command.extend(['--backup-password', backup_password])
+        if verbose:
+            command.append('--verbose')
+
         return MVTController._run_command(command)
 
     @staticmethod # This command not exist

@@ -174,6 +174,63 @@ class MVTController:
 
         return MVTController._run_command(command)
 
+    @staticmethod
+    def check_backup(backup_path: str,
+                    iocs_files: list = None,
+                    output_folder: str = None,
+                    list_modules: bool = False,
+                    non_interactive: bool = False,
+                    backup_password: str = None,
+                    verbose: bool = False
+                ) -> Dict[str, Union[bool, str]]:
+        """
+        Checks an Android Backup using mvt-android.
+
+        This command analyzes an Android backup for indicators of compromise (IOCs).
+
+        Parameters
+        ----------
+        backup_path : str
+            Path to the Android backup to be analyzed.
+        iocs_files : list, optional
+            A list of paths to indicators files. Can include multiple files.
+        output_folder : str, optional
+            Specify a path to a folder where JSON results will be stored.
+        list_modules : bool, optional
+            If True, list available modules and exit.
+        non_interactive : bool, optional
+            Avoid interactive questions during processing.
+        backup_password : str, optional
+            Backup password to use for decrypting the Android backup.
+        verbose : bool, optional
+            If True, enables verbose mode.
+
+        Returns
+        -------
+        Dict[str, Union[bool, str]]
+            A dictionary containing:
+            - 'success' (bool): Indicates if the command executed successfully.
+            - 'stdout' (str, optional): Standard output if the command succeeds.
+            - 'stderr' (str, optional): Standard error if the command fails.
+        """
+        command = ['mvt-android', 'check-backup', backup_path]
+
+        if iocs_files:
+            for iocs_file in iocs_files:
+                command.extend(['-i', iocs_file])
+        if output_folder:
+            command.extend(['--output', output_folder])
+        if list_modules:
+            command.append('--list-modules')
+        if non_interactive:
+            command.append('--non-interactive')
+        if backup_password:
+            command.extend(['--backup-password', backup_password])
+        if verbose:
+            command.append('--verbose')
+
+        return MVTController._run_command(command)
+
     @staticmethod # This command not exist
     def check_apk(file_path: str, output_dir: str) -> Dict[str, Union[bool, str]]:
         """

@@ -145,6 +145,64 @@ def check_androidqf():
     
     return jsonify(result), 200
 
+@bp.route('/check-backup', methods=['POST'])
+def check_backup():
+    """
+    Endpoint to analyze Android backup data for indicators of compromise (IOCs).
+
+    Parameters
+    ----------
+    'backup_path': str, required
+        Path to the Android backup to be analyzed.
+    'iocs_files': str, optional
+        A list of paths to indicators of compromise.
+    'output_folder': str, optional
+        Directory for saving the output.
+    'list_modules': bool, optional
+        Boolean flag to list available modules (default is False).
+    'non_interactive': bool, optional
+        Boolean flag to avoid interactive questions (default is False).
+    'backup_password': str, optional
+        Password for decrypting the Android backup.
+    'verbose': str, optional
+        Boolean flag to enable verbose mode (default is False).
+
+    Returns
+    -------
+    Response
+        JSON object containing:
+        - 'success' (bool): Indicates if the operation was successful.
+        - 'stdout' (str, optional): Standard output if the operation succeeds.
+        - 'stderr' (str, optional): Standard error if the operation fails.
+    """
+    data = extract_request_data()
+    if data['type'] == 'unsupported':
+        return jsonify({'success': False, 'error': 'unsupported content type'}), 200
+    
+    payload = data['data']
+    if not payload.get('backup_path'):
+        return jsonify({'success': False, 'error': 'Missing required parameter: backup_path'}), 200
+    
+    backup_path = payload.get('backup_path')
+    iocs_files = payload.get('iocs_files')
+    output_folder = payload.get('output_folder')
+    list_modules =  payload.get('list_modules', False)
+    non_interactive = payload.get('non_interactive', False)
+    backup_password = payload.get('backup_password')
+    verbose =  payload.get('verbose', False)
+
+    result = MVTController.check_backup(
+            backup_path=backup_path,
+            iocs_files=iocs_files,
+            output_folder=output_folder,
+            list_modules=list_modules,
+            non_interactive=non_interactive,
+            backup_password=backup_password,
+            verbose=verbose
+        )
+
+    return jsonify(result), 200
+
 @bp.route('/check-apk', methods=['POST'])
 def check_apk():
     """

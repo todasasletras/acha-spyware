@@ -115,7 +115,7 @@ def check_androidqf():
     """
     data = extract_request_data()
     if data['type'] == 'unsupported':
-        return jsonify({'success': False, 'error': 'Unsopported content type'}), 200
+        return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
     
     payload = data['data']
     if not payload.get('androidqf_path'):
@@ -177,7 +177,7 @@ def check_backup():
     """
     data = extract_request_data()
     if data['type'] == 'unsupported':
-        return jsonify({'success': False, 'error': 'unsupported content type'}), 200
+        return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
     
     payload = data['data']
     if not payload.get('backup_path'):
@@ -202,6 +202,61 @@ def check_backup():
         )
 
     return jsonify(result), 200
+
+@bp.route('/check-bugreport', methods=['POST'])
+def check_bugreport():
+    """
+    Endpoint to analyze Android bugreport data for indicators of compromise (IOCs).
+
+    Expects a JSON payload with the following parameters:
+
+    Parameters
+    ----------
+    'bugreport_path': str, required
+        Path to the bugreport file to be analyzed.
+    'iocs_files': list, optional 
+        A list of paths to indicators of compromise.
+    'output_folder': str, opotional Directory for saving the output (default is '/mnt/c/output').
+    'list_modules': bool, option 
+        Boolean flag to list available modules (default is False).
+    'module': str, optional
+        Name of a specific module to run.
+    'verbose': bool, optional
+        Boolean flag to enable verbose mode (default is False).
+
+    Returns
+    -------
+    Response
+        JSON object containing:
+        - 'success' (bool): Indicates if the operation was successful.
+        - 'stdout' (str, optional): Standard output if the operation succeeds.
+        - 'stderr' (str, optional): Standard error if the operation fails.
+    """
+    data = extract_request_data()
+    if data['type'] == 'unsupported':
+        return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
+    
+    payload = data['data']
+    if not payload.get('bugreport_path'):
+        return jsonify({'success': False, 'error': 'Missing required parameter: bugreport_path'}), 200
+    
+    bugreport_path = payload.get('bugreport_path')
+    iocs_files = payload.get('iocs_files')
+    output_folder = payload.get('output_folder', '/mnt/c/output')
+    list_modules = payload.get('list_modules', False)
+    module = payload.get('module')
+    verbose = payload.get('verbose', False)
+
+    result = MVTController.check_bugreport(
+        bugreport_path=bugreport_path,
+        iocs_files=iocs_files,
+        output_folder=output_folder,
+        list_modules=list_modules,
+        module=module,
+        verbose=verbose
+    )
+
+    return jsonify(result)
 
 @bp.route('/check-apk', methods=['POST'])
 def check_apk():

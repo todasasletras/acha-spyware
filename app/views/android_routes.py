@@ -16,8 +16,28 @@ def check_adb():
     """
     Endpoint to check devices connected via ADB.
 
-    Expects a JSON payload with an optional 'output_dir' key to specify the 
-    directory for saving the output. Defaults to '/mnt/c/output'.
+    Expects a payload that can be in JSON or form-data format. The payload may include:
+    
+    Parameters
+    ----------
+    serial : str, optional
+        Specify a device serial number or HOST:PORT connection string.
+    iocs_files : list, optional
+        A list of paths to indicators files. Can include multiple files.
+    output_folder : str, optional
+        Specify a path to the folder where JSON results will be stored (default: '/mnt/c/output').
+    fast : bool, optional
+        Skip time/resource-consuming features (default: False).
+    list_modules : bool, optional
+        If True, lists available modules and exits (default: False).
+    module : str, optional
+        Name of a single module to run instead of all.
+    non_interactive : bool, optional
+        Avoid interactive questions during processing (default: False).
+    backup_password : str, optional
+        Backup password to use for an Android backup.
+    verbose : bool, optional
+        If True, enables verbose mode (default: False).
 
     Returns
     -------
@@ -32,9 +52,30 @@ def check_adb():
     if data['type'] == 'unsupported':
         return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
     
-    output_dir = data['data'].get('output_dir', '/mnt/c/output')
-    result = MVTController.check_adb(output_dir)
-    return jsonify(result)
+    payload = data['data']
+    serial = payload.get('serial', None)
+    iocs_files = payload.get('iocs_files', None)
+    output_folder = payload.get('output_folder', '/mnt/c/output')
+    fast = payload.get('fast', False)
+    list_modules = payload.get('list_modules', False)
+    module = payload.get('module', None)
+    non_interactive = payload.get('non_interactive', False)
+    backup_password = payload.get('backup_password', None)
+    verbose = payload.get('verbose', False)
+
+    result = MVTController.check_adb(
+        serial=serial,
+        iocs_files=iocs_files,
+        output_folder=output_folder,
+        fast=fast,
+        list_modules=list_modules,
+        module=module,
+        non_interactive=non_interactive,
+        backup_password=backup_password,
+        verbose=verbose
+    )
+
+    return jsonify(result), 200
 
 @bp.route('/check-apk', methods=['POST'])
 def check_apk():

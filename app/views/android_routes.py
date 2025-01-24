@@ -77,6 +77,74 @@ def check_adb():
 
     return jsonify(result), 200
 
+@bp.route('/check-androidqf', methods=['POST'])
+def check_androidqf():
+    """
+    Endpoint to analyze AndroidQF data for indicators of compromise (IOCs).
+
+    Expects a JSON payload with the following parameters:
+    
+    Parameters
+    ----------
+    androidqf_path : str
+        The path to the AndroidQF data to be analyzed (required).
+    output_dir : str, optional
+        Directory for saving the output (default: '/mnt/c/output').
+    iocs_files : list, optional
+        A list of paths to indicators of compromise (optional).
+    list_modules : bool, optional
+        Flag to list available modules (default: False).
+    module : str, optional
+        Name of a specific module to run.
+    hashes : bool, optional
+        Flag to generate hashes of analyzed files (default: False).
+    non_interactive : bool, optional
+        Avoid interactive questions during processing (default: False).
+    backup_password : str, optional
+        Password for an Android backup (default: None).
+    verbose : bool, optional
+        Enables verbose mode (default: False).
+
+    Returns
+    -------
+    Response
+        JSON object containing:
+        - 'success' (bool): Indicates if the operation was successful.
+        - 'stdout' (str, optional): Standard output if the operation succeeds.
+        - 'stderr' (str, optional): Standard error if the operation fails.
+    """
+    data = extract_request_data()
+    if data['type'] == 'unsupported':
+        return jsonify({'success': False, 'error': 'Unsopported content type'}), 200
+    
+    payload = data['data']
+    if not payload.get('androidqf_path'):
+        return jsonify({'success': False, 'error': 'Missing required parameter: androidqf_path'}), 200
+    
+    androidqf_path = payload.get('androidqf_path')
+    output_dir = payload.get('output_dir', '/mnt/c/output')
+    iocs_files = payload.get('iocs_files', [])
+    list_modules = payload.get('list_modules', False)
+    module = payload.get('module')
+    hashes = payload.get('hashes', False)
+    non_interactive = payload.get('non_interactive', False)
+    backup_password = payload.get('backup_password')
+    verbose = payload.get('verbose', False)
+
+    result = MVTController.check_androidqf(
+        androidqf_path=androidqf_path,
+        iocs_files=iocs_files,
+        output_folder=output_dir,
+        list_modules=list_modules,
+        module=module,
+        hashes=hashes,
+        non_interactive=non_interactive,
+        backup_password=backup_password,
+        verbose=verbose
+    )
+    
+    return jsonify(result), 200
+
 @bp.route('/check-apk', methods=['POST'])
 def check_apk():
     """

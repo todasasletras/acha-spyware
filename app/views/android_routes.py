@@ -1,3 +1,4 @@
+from typing import Dict, Union
 from flask import Blueprint, jsonify, request
 from app.controllers.mvt_controller import MVTController
 from app.models.device import Device
@@ -26,8 +27,12 @@ def check_adb():
         - 'stdout' (str, optional): Standard output if the operation succeeds.
         - 'stderr' (str, optional): Standard error if the operation fails.
     """
-    data = request.json
-    output_dir = data.get('output_dir', '/mnt/c/output')
+    
+    data = extract_request_data()
+    if data['type'] == 'unsupported':
+        return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
+    
+    output_dir = data['data'].get('output_dir', '/mnt/c/output')
     result = MVTController.check_adb(output_dir)
     return jsonify(result)
 
@@ -90,10 +95,13 @@ def download_apks():
         - 'stdout' (str, optional): Standard output if the operation succeeds.
         - 'stderr' (str, optional): Standard error if the operation fails.
     """
-    data = request.json
-    output_dir = data.get('output_dir', '/mnt/c/output')
-    analyze = data.get('analyze', False)
-    result = MVTController.download_apks(output_dir, analyze)
+    data = extract_request_data()
+    if data['type'] == 'unsupported':
+        return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
+    
+    output_dir = data['data'].get('output_dir', '/mnt/c/output')
+    verbose = data['data'].get('verbose', False)
+    result = MVTController.download_apks(output_dir, verbose)
     return jsonify(result)
 
 @bp.route('/devices', methods=['GET'])
@@ -110,3 +118,21 @@ def list_devices():
     """
     devices = Device.list_connected_devices()
     return jsonify([device.to_dict() for device in devices])
+
+def extract_request_data()->Dict[str, Union[str, Dict[str, str]]]:
+    """
+    Extract data from the incoming request, identifying if it's a form or JSON payload.
+    
+    Returns
+    -------
+    Dict[str, Union[str, Dict[str, str]]]
+        A dictionary containig:
+        - 'type' (str): Indicates the content type of the request ('form', 'json', 'unsupported')
+        - 'data' (dict): The parsed form or json data (empty if unsupported).
+    """
+    if 'form' in request.content_type:
+        return {'type': 'form', 'data': request.form.to_dict()}
+    elif 'json' in request.content_type:
+        return{'type': 'json', 'data': request.json or {}}
+    else:
+        return {'type': 'unsupported', 'data': {}}

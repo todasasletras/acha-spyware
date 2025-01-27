@@ -1,3 +1,4 @@
+import os
 from typing import Dict, Union
 from flask import Blueprint, jsonify, request
 from app.controllers.mvt_controller import MVTController
@@ -284,7 +285,7 @@ def check_apk():
     result = MVTController.check_apk(file_path, output_dir)
     return jsonify(result)
 
-@bp.route('check-iocs', metthods=['POST'])
+@bp.route('/check-iocs', methods=['POST'])
 def check_iocs():
     """
     Endpoit to analyze files in a folder against provided Indicators of Compromise (IOCs).
@@ -347,26 +348,51 @@ def download_apks():
     """
     Endpoit to download indicators of compromise (IOCs).
 
-    Expects a JSON payload with:
-    - 'output_dir': Directory for saving the downloaded APKs (optional, defaults to '/mnt/c/output').
-    - 'analyze': Boolean flag to determine if the APKs should be analyzed (optional, defaults to False).
+    Parameters
+    ----------
+    - 'serial' (str, optional): Serial number of the device for downloading APKs.
+    - 'all_apks' (bool, optional): Flag to download all APKs from the device (default is False).
+    - 'virustotal (bool, optional): Flag to analyze APKs using VirusTotal (defalt is False).
+    - 'output_folder' (str, optional): Directory for saving the downloaded APKs (defaults is '/mnt/c/output').
+    - 'from_file' (str, optional): Path to a file containing a list of APKs to download.
+    - 'verbose' (bool, optional): Flag to enable verbose output (default is False)
 
     Returns
     -------
     Response
         JSON object containing:
         - `success` (bool): Indicates if the operation was successful.
-        - 'stdout' (str, optional): Standard output if the operation succeeds.
-        - 'stderr' (str, optional): Standard error if the operation fails.
+        - 'output' (str, optional): Standard output if the operation succeeds.
+        - 'error' (str, optional): Standard error if the operation fails.
     """
     data = extract_request_data()
     if data['type'] == 'unsupported':
         return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
     
-    output_dir = data['data'].get('output_dir', '/mnt/c/output')
-    verbose = data['data'].get('verbose', False)
-    result = MVTController.download_apks(output_dir, verbose)
-    return jsonify(result)
+    payload = data['data']
+
+    virustotal = payload.get('virustotal', False)
+    if virustotal:
+        var_env = 'MVT_VT_API_KEY'
+        if var_env not in os.environ:
+            return jsonify({'success': False, 'error': f'Missing environment variable: {var_env}'}), 200
+    
+    serial = payload.get('serial')
+    all_apks = payload.get('all_apks', False)
+    output_folder = payload.get('output_folder', '/mnt/c/output')
+    from_file = payload.get('from_file')
+    verbose = payload.get('verbose', False)
+
+    result = MVTController.download_apks(
+            serial=serial,
+            all_apks=all_apks,
+            virustotal=virustotal,
+            output_folder=output_folder,
+            from_file=from_file,
+            verbose=verbose
+        )
+    
+    return jsonify(result), 200
 
 @bp.route('/devices', methods=['GET'])
 def list_devices():

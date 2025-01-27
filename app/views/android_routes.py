@@ -412,17 +412,23 @@ def list_devices():
 def extract_request_data()->Dict[str, Union[str, Dict[str, str]]]:
     """
     Extract data from the incoming request, identifying if it's a form or JSON payload.
+
+    This function check the content type of the incoming request and parses it accordingly.
+    If the content type is not supported, it returns an error message.
     
     Returns
     -------
     Dict[str, Union[str, Dict[str, str]]]
         A dictionary containig:
         - 'type' (str): Indicates the content type of the request ('form', 'json', 'unsupported')
-        - 'data' (dict): The parsed form or json data (empty if unsupported).
+        - 'data' (dict): The parsed form or json data (error message if unsupported).
     """
-    if 'form' in request.content_type:
-        return {'type': 'form', 'data': request.form.to_dict()}
-    elif 'json' in request.content_type:
+    if request.content_type is None:
+        return {'type': 'unsupported', 'data': {'error': 'Unsupported Content Type None.'}}
+    elif request.form:
+        return {'type': 'form', 'data': request.form.to_dict() or {}}
+    elif request.is_json:
         return{'type': 'json', 'data': request.json or {}}
     else:
-        return {'type': 'unsupported', 'data': {}}
+        return {'type': 'unsupported', 'data': {'error': 'Unsupported Content Type'}}
+    

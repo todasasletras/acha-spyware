@@ -327,7 +327,7 @@ def check_iocs():
 
     return jsonify(result), 200
 
-@bp.route('/download-iocs', methods=['POST '])
+@bp.route('/download-iocs', methods=['POST', 'GET'])
 def download_iocs():
     """
     Endpoit to download indicators of compromise (IOCs).
@@ -337,8 +337,8 @@ def download_iocs():
     Response
         JSON object containing:
         - `success` (bool): Indicates if the operation was successful.
-        - 'stdout' (str, optional): Standard output if the operation succeeds.
-        - 'stderr' (str, optional): Standard error if the operation fails.
+        - 'message' (str, optional): Standard output if the operation succeeds.
+        - 'error' (str, optional): Standard error if the operation fails.
     """
     result = MVTController.download_iocs()
     return jsonify(result)

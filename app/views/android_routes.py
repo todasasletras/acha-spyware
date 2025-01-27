@@ -1,8 +1,12 @@
 import os
+from dotenv import load_dotenv
 from typing import Dict, Union
 from flask import Blueprint, jsonify, request
 from app.controllers.mvt_controller import MVTController
 from app.models.device import Device
+
+ENV_FILE = '.env'
+load_dotenv()
 
 bp = Blueprint('android_routes', __name__)
 """
@@ -408,6 +412,62 @@ def list_devices():
     """
     devices = Device.list_connected_devices()
     return jsonify([device.to_dict() for device in devices])
+
+@bp.route('/set-virustotal-api-key', methods=['POST'])
+def set_virustotal_api_key():
+    """
+    Endpoint to set the VirusTotal API Key as an environment variable.
+
+    This endpoit allows users to provide the VirusTotal API Key, wich is saved 
+    as an environment variable in a specified environment file. The key can be
+    used for turther operations requiring VirusTotal integration.
+    
+    Parameters
+    ----------
+    - 'api_key' (str): The VirusTotal API Key to be set.
+    
+    Returns
+    -------
+    Response
+        JSON object containig:
+        - 'success' (bool): Indicates if the operation was successful.
+        - 'message' (str, optional): Message about the operation's result.
+        - 'error' (str, optional): Message about the error in operation result
+    """
+    data = extract_request_data()
+    if data['type'] == 'unsupported':
+        return jsonify({'success': False, 'error': data['data']['error']}), 200
+    
+    payload = data['data']
+    if not payload.get('api_key'):
+        return jsonify({'success':False, 'error': 'Missing required paramenter: api_key'})
+    
+    var_env = 'MVT_VT_API_KEY'
+    api_key = payload.get('api_key')
+    new_env = f"{var_env}={api_key}\n"
+
+    try:
+        if not os.path.exists(ENV_FILE):
+            with open(ENV_FILE, 'w') as file:
+                file.write(new_env)
+        else:
+            updated = False
+            with open(ENV_FILE, '+w') as file:
+                lines = file.readlines()
+                for line in lines:
+                    if line.startswith(var_env):
+                        file.write(new_env)
+                        updated = True
+                    else:
+                        file.write(line)
+                if not updated:
+                    file.write(new_env)
+
+        return jsonify({'success':True, 'message': 'VirusTotal API Key set successfully'}), 200
+    
+    except Exception as e:
+        print('Failed to set API Key:', e)
+        return jsonify({'success':False, 'error': 'Failed to set API Key.'}), 200
 
 def extract_request_data()->Dict[str, Union[str, Dict[str, str]]]:
     """

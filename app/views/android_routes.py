@@ -284,6 +284,48 @@ def check_apk():
     result = MVTController.check_apk(file_path, output_dir)
     return jsonify(result)
 
+@bp.route('check-iocs', metthods=['POST'])
+def check_iocs():
+    """
+    Endpoit to analyze files in a folder against provided Indicators of Compromise (IOCs).
+    
+    Parameters
+    ----------
+    - 'folder' (str, required): Path to the folder containing files to analyze.
+    - 'iocs_files' (List[str], optional): A list of IOC files to use for analysis.
+    - 'list_modules' (bool, optional): Boolean flag to list avaliable modules (default is False).
+    - 'module' (str, optional): Name of a specific module to run.
+    
+    Returns
+    -------
+    Response
+        JSON object containing:
+        - 'success (bool): Indicates if the operation was successful.
+        - 'output' (str, optional): Standard output if the operation succeeds.
+        - 'error' (str, optional): Standard error if the operation fails.
+    """
+    data = extract_request_data()
+    if data['type'] == 'unsupported':
+        return jsonify({'success':False, 'error': 'Unsupported content type'}), 200
+    
+    payload = data['data']
+    if not payload.get('folder'):
+        return jsonify({'success': False, 'error': 'Missing required parameter: folder.'}), 200
+    
+    folder = payload.get('folder')
+    iocs_files = payload.get('iocs_files')
+    list_modules = payload.get('list_modules', False)
+    module = payload.get('module')
+
+    result = MVTController.check_iocs(
+            folder=folder,
+            iocs_files=iocs_files,
+            list_modules=list_modules,
+            module=module
+    )
+
+    return jsonify(result), 200
+
 @bp.route('/download-iocs', methods=['POST '])
 def download_iocs():
     """

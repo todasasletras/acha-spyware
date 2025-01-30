@@ -1,5 +1,5 @@
 from flask import Flask
-from app.views import android_routes
+from api.views import android_routes
 
 def create_app():
     app = Flask(__name__)

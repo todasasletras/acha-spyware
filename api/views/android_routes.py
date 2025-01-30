@@ -2,8 +2,8 @@ import os
 from dotenv import load_dotenv
 from typing import Dict, Union
 from flask import Blueprint, jsonify, request
-from app.controllers.mvt_controller import MVTController
-from app.models.device import Device
+from api.controllers.mvt_controller import MVTController
+from api.models.device import Device
 
 ENV_FILE = '.env'
 load_dotenv()

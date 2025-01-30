@@ -1,3 +1,4 @@
+import re
 import os
 import subprocess
 from typing import Dict, Union
@@ -10,6 +11,72 @@ class MVTController:
     devices connected via ADB and analyzing APK files. Common logic is centralized 
     for better code reuse and maintainability.
     """
+    @staticmethod
+    def _parse_mvt_output(mvt_log):
+        """
+        Parser the MVT (Mobile Verification Toolkit) log output to extract meaningful information.
+
+        Parameters
+        ----------
+        mvt_log : str
+            The raw log output from MVT.
+        
+        Returns
+        -------
+        dect 
+            A dictionary containing:
+            - 'success' (bool): Indicates if the log contains errors or critical message.
+            - 'output' (list, optional): A list of dictionaries, each containing:
+                - 'id' (int): A unique identifier for each log entry.
+                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
+                - 'message' (str): The log message.
+            - 'error' (str, optional): The error message
+        """
+        mvt_log = MVTController._clean_mvt_output(mvt_log)
+        pattern = re.compile(r"(?P<status>INFO|WARNING|ERROR|CRITICAL)\[.*?\](?P<message>.+)", re.MULTILINE)
+
+        parsed_data = []
+
+        for index, match in enumerate(pattern.finditer(mvt_log)):
+            id = index
+            status = match.group("status").strip()
+            message = match.group("message").strip()
+            parsed_data.append({"id":id, "status": status, "message": message})
+        
+        if not parsed_data:
+            # log "Failed to parse MVT log: No matching entries found."
+            return {
+                "success": False,
+                "error": mvt_log
+            }
+
+        return {
+            "success": not any(item["status"] in ["ERROR", "CRITICAL"] for item in parsed_data),
+            "output": parsed_data
+        }
+
+    @staticmethod
+    def _clean_mvt_output(mvt_log):
+        """
+        Cleans and formats the raw MVT log output for easier processing.
+        
+        Parameters
+        ----------
+        mvt_log : str
+            The raw log output from MVT.
+            
+        Returns
+        -------
+        str
+            A cleaned and structured version of the log output.
+        """
+        mvt_log = re.sub(r"(\s+)(?=\S)", ' ', mvt_log)
+        mvt_log = re.sub(r"\n+", ' ', mvt_log)
+        mvt_log = re.sub(r"(\s+)(INFO|ERROR|CRITICAL|DEBUG|WARNING)(\s+)", r' \2', mvt_log)
+        mvt_log = re.sub(r"\s{2,}", ' ', mvt_log)
+        mvt_log = re.sub(r"(\s)(INFO|ERROR|CRITICAL|DEBUG|WARNING)", r"\1\n\2", mvt_log)
+
+        return mvt_log
 
     @staticmethod
     def _run_command(command: list) -> Dict[str, Union[bool, str]]:
@@ -30,10 +97,8 @@ class MVTController:
             - 'stderr' (str, optional): Standard error if the command fails.
         """
         result = subprocess.run(command, capture_output=True, text=True)
-        if result.stdout:
-            return {'success': True, 'stdout': result.stdout}
-        else:
-            return {'success': False, 'stderr': result.stderr}
+
+        return MVTController._parse_mvt_output(result.stdout)
 
     @staticmethod
     def check_adb(serial: str = None, 

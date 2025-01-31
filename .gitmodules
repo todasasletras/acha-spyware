@@ -1,6 +1,6 @@
 [submodule "mvt"]
-	path = mvt
+	path = submodules/mvt
 	url = https://github.com/mvt-project/mvt.git
 [submodule "androidqf"]
-	path = androidqf
+	path = submodules/androidqf
 	url = https://github.com/botherder/androidqf.git

@@ -33,6 +33,12 @@ class MVTController:
             - 'error' (str, optional): The error message.
         """
         mvt_log = MVTController._clean_mvt_output(mvt_log)
+        
+        if "no devices/emulators found" in mvt_log:
+            return {'success': False, 'error': 'O ADB não encontrou nenhum dispositivo'}
+        if "device unautorized" in mvt_log:
+            return {"success": False, "error": "Dispositivo ADB não autorizado. Verifique a tela do dispositivo para um prompt de confirmação."}
+
         pattern = re.compile(r"(?P<status>INFO|WARNING|ERROR|CRITICAL)\[.*?\](?P<message>.+)", re.MULTILINE)
 
         parsed_data = []
@@ -101,7 +107,9 @@ class MVTController:
         """
         result = subprocess.run(command, capture_output=True, text=True)
 
-        return MVTController._parse_mvt_output(result.stdout)
+        output = result.stderr if result.stderr else result.stdout
+
+        return MVTController._parse_mvt_output(output)
 
     @staticmethod
     def check_adb(serial: str = None, 
@@ -290,7 +298,12 @@ class MVTController:
                 - 'message' (str): The log message.
             - 'error' (str, optional): The error message.
         """
+        command_adb = ['adb', 'backup', '-nocompress', 'com.android.providers.telephony', '-f', '/tmp/backup.ab']
         command = ['mvt-android', 'check-backup', backup_path]
+
+        result = MVTController._run_command(command_adb)
+        if not result['success'] and 'ADB' in result['error']:
+            return result
 
         if iocs_files:
             for iocs_file in iocs_files:

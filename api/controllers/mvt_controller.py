@@ -1,7 +1,7 @@
 import re
 import os
 import subprocess
-from typing import Dict, Union
+from typing import List, Dict, Union
 
 class MVTController:
     """
@@ -12,7 +12,7 @@ class MVTController:
     for better code reuse and maintainability.
     """
     @staticmethod
-    def _parse_mvt_output(mvt_log):
+    def _parse_mvt_output(mvt_log) -> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
         """
         Parser the MVT (Mobile Verification Toolkit) log output to extract meaningful information.
 
@@ -23,14 +23,14 @@ class MVTController:
         
         Returns
         -------
-        dect 
+        Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
             A dictionary containing:
             - 'success' (bool): Indicates if the log contains errors or critical message.
             - 'output' (list, optional): A list of dictionaries, each containing:
                 - 'id' (int): A unique identifier for each log entry.
                 - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
                 - 'message' (str): The log message.
-            - 'error' (str, optional): The error message
+            - 'error' (str, optional): The error message.
         """
         mvt_log = MVTController._clean_mvt_output(mvt_log)
         pattern = re.compile(r"(?P<status>INFO|WARNING|ERROR|CRITICAL)\[.*?\](?P<message>.+)", re.MULTILINE)
@@ -56,7 +56,7 @@ class MVTController:
         }
 
     @staticmethod
-    def _clean_mvt_output(mvt_log):
+    def _clean_mvt_output(mvt_log)->str:
         """
         Cleans and formats the raw MVT log output for easier processing.
         
@@ -90,11 +90,14 @@ class MVTController:
 
         Returns
         -------
-        Dict[str, Union[bool, str]]
+        Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
             A dictionary containing:
-            - 'success' (bool): Indicates if the command executed successfully.
-            - 'stdout' (str, optional): Standard output if the command succeeds.
-            - 'stderr' (str, optional): Standard error if the command fails.
+            - 'success' (bool): Indicates if the log contains errors or critical message.
+            - 'output' (list, optional): A list of dictionaries, each containing:
+                - 'id' (int): A unique identifier for each log entry.
+                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
+                - 'message' (str): The log message.
+            - 'error' (str, optional): The error message.
         """
         result = subprocess.run(command, capture_output=True, text=True)
 
@@ -110,7 +113,7 @@ class MVTController:
                   non_interactive: bool = False,
                   backup_password: str = None,
                   verbose: bool  = False
-                ) -> Dict[str, Union[bool, str]]:
+                ) -> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
         """
         Checks an Android device over ADB using mvt-android.
 
@@ -140,11 +143,14 @@ class MVTController:
 
         Returns
         -------
-        Dict[str, Union[bool, str]]
+        Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
             A dictionary containing:
-            - 'success' (bool): Indicates if the command executed successfully.
-            - 'stdout' (str, optional): Standard output if the command succeeds.
-            - 'stderr' (str, optional): Standard error if the command fails.
+            - 'success' (bool): Indicates if the log contains errors or critical message.
+            - 'output' (list, optional): A list of dictionaries, each containing:
+                - 'id' (int): A unique identifier for each log entry.
+                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
+                - 'message' (str): The log message.
+            - 'error' (str, optional): The error message.
         """
         command = ['mvt-android', 'check-adb']
 
@@ -180,7 +186,7 @@ class MVTController:
                         non_interactive: bool = False,
                         backup_password: str = None,
                         verbose: bool  = False
-                ) -> Dict[str, Union[bool, str]]:
+                ) -> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
         """
         Checks data collected with AndroidQF using mvt-android.
 
@@ -211,11 +217,14 @@ class MVTController:
 
         Returns
         -------
-        Dict[str, Union[bool, str]]
+        Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
             A dictionary containing:
-            - 'success' (bool): Indicates if the command executed successfully.
-            - 'stdout' (str, optional): Standard output if the command succeeds.
-            - 'stderr' (str, optional): Standard error if the command fails.
+            - 'success' (bool): Indicates if the log contains errors or critical message.
+            - 'output' (list, optional): A list of dictionaries, each containing:
+                - 'id' (int): A unique identifier for each log entry.
+                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
+                - 'message' (str): The log message.
+            - 'error' (str, optional): The error message.
         """
         command = ['mvt-android', 'check-androidqf', androidqf_path]
 
@@ -247,7 +256,7 @@ class MVTController:
                     non_interactive: bool = False,
                     backup_password: str = None,
                     verbose: bool = False
-                ) -> Dict[str, Union[bool, str]]:
+                ) -> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
         """
         Checks an Android Backup using mvt-android.
 
@@ -272,11 +281,14 @@ class MVTController:
 
         Returns
         -------
-        Dict[str, Union[bool, str]]
+        Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
             A dictionary containing:
-            - 'success' (bool): Indicates if the command executed successfully.
-            - 'stdout' (str, optional): Standard output if the command succeeds.
-            - 'stderr' (str, optional): Standard error if the command fails.
+            - 'success' (bool): Indicates if the log contains errors or critical message.
+            - 'output' (list, optional): A list of dictionaries, each containing:
+                - 'id' (int): A unique identifier for each log entry.
+                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
+                - 'message' (str): The log message.
+            - 'error' (str, optional): The error message.
         """
         command = ['mvt-android', 'check-backup', backup_path]
 
@@ -303,7 +315,7 @@ class MVTController:
                         list_modules: bool = False,
                         module: str = None,
                         verbose: bool = False
-                    ) -> Dict[str, Union[bool, str]]:
+                    ) -> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
         """
         Checks an Android Bug Report using mvt-android.
 
@@ -326,11 +338,14 @@ class MVTController:
 
         Returns
         -------
-        Dict[str, Union[bool, str]]
+        Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
             A dictionary containing:
-            - 'success' (bool): Indicates if the command executed successfully.
-            - 'stdout' (str, optional): Standard output if the command succeeds.
-            - 'stderr' (str, optional): Standard error if the command fails.
+            - 'success' (bool): Indicates if the log contains errors or critical message.
+            - 'output' (list, optional): A list of dictionaries, each containing:
+                - 'id' (int): A unique identifier for each log entry.
+                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
+                - 'message' (str): The log message.
+            - 'error' (str, optional): The error message.
         """
         command = ['mvt-android', 'check-bugreport', bugreport_path]
 
@@ -349,7 +364,7 @@ class MVTController:
         return MVTController._run_command(command)
 
     @staticmethod # This command not exist
-    def check_apk(file_path: str, output_dir: str) -> Dict[str, Union[bool, str]]:
+    def check_apk(file_path: str, output_dir: str) -> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
         """
         Analyzes an APK file using mvt-android.
 
@@ -362,11 +377,14 @@ class MVTController:
 
         Returns
         -------
-        Dict[str, Union[bool, str]]
+        Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
             A dictionary containing:
-            - 'success' (bool): Indicates if the command executed successfully.
-            - 'stdout' (str, optional): Standard output if the command succeeds.
-            - 'stderr' (str, optional): Standard error if the command fails.
+            - 'success' (bool): Indicates if the log contains errors or critical message.
+            - 'output' (list, optional): A list of dictionaries, each containing:
+                - 'id' (int): A unique identifier for each log entry.
+                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
+                - 'message' (str): The log message.
+            - 'error' (str, optional): The error message
         """
         command = ['mvt-android', 'check-apk', '-i', file_path, '-o', output_dir]
         return MVTController._run_command(command)
@@ -375,7 +393,7 @@ class MVTController:
     def check_iocs(folder:str=None, 
                    iocs_files:list=None, list_modules:bool=False, 
                    module:str=None
-                ) -> Dict[str, Union[bool, str]]:
+                ) -> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
         """
         Compares stored JSON results to provided indicators using mvt-android.
 
@@ -396,11 +414,14 @@ class MVTController:
         
         Returns
         -------
-        Dict[str, Union[bool, str]]
+        Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
             A dictionary containing:
-            - 'success' (bool): Indicates if  the commmand executed seccessfully.
-            - 'stdout' (str, optional): Standard output if the command succeeds.
-            - 'stderr' (str, optional): Standard error if the command fails.
+            - 'success' (bool): Indicates if the log contains errors or critical message.
+            - 'output' (list, optional): A list of dictionaries, each containing:
+                - 'id' (int): A unique identifier for each log entry.
+                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
+                - 'message' (str): The log message.
+            - 'error' (str, optional): The error message.
         """
         if not folder:
             user_home = os.path.expanduser("~")
@@ -425,7 +446,7 @@ class MVTController:
                       output_folder: str = None,
                       from_file: str = None,
                       verbose: bool=False
-                    )-> Dict[str, Union[bool, str]]:
+                    )-> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
         """
         Downloads APKs from an Android deice using mvt-amdroid.
 
@@ -448,11 +469,14 @@ class MVTController:
 
         Returns
         -------
-        Dict[str, Union[bool, str]]
+        Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
             A dictionary containing:
-            - 'succes' (bool): IIndicates if the command executed successfuly.
-            - 'stdout' (str, optional): Standard outputif the command successds.
-            - 'stderr' (str, optional): Standard error if the command fails.
+            - 'success' (bool): Indicates if the log contains errors or critical message.
+            - 'output' (list, optional): A list of dictionaries, each containing:
+                - 'id' (int): A unique identifier for each log entry.
+                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
+                - 'message' (str): The log message.
+            - 'error' (str, optional): The error message.
         """
         command = ['mvt-android', 'download-apks']
 
@@ -472,7 +496,7 @@ class MVTController:
         return MVTController._run_command(command)
     
     @staticmethod
-    def download_iocs()-> Dict[str, Union[bool, str]]:
+    def download_iocs()-> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
         """
         Downloads public STIX2 indicators using mvt-amdroid.
 
@@ -480,11 +504,14 @@ class MVTController:
 
         Returns
         -------
-        Dict[str, Union[bool, str]]
+        Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
             A dictionary containing:
-            - 'succes' (bool): IIndicates if the command executed successfuly.
-            - 'stdout' (str, optional): Standard outputif the command successds.
-            - 'stderr' (str, optional): Standard error if the command fails.
+            - 'success' (bool): Indicates if the log contains errors or critical message.
+            - 'output' (list, optional): A list of dictionaries, each containing:
+                - 'id' (int): A unique identifier for each log entry.
+                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
+                - 'message' (str): The log message.
+            - 'error' (str, optional): The error message.
         """
         command = ['mvt-android', 'download-iocs']
         return MVTController._run_command(command)

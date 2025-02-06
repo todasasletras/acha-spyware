@@ -298,7 +298,7 @@ class MVTController:
                 - 'message' (str): The log message.
             - 'error' (str, optional): The error message.
         """
-        command_adb = ['adb', 'backup', '-nocompress', 'com.android.providers.telephony', '-f', '/tmp/backup.ab']
+        command_adb = ['adb', 'backup', '-nocompress', 'com.android.providers.telephony', '-f', backup_path]
         command = ['mvt-android', 'check-backup', backup_path]
 
         result = MVTController._run_command(command_adb)

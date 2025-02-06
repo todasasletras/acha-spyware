@@ -363,32 +363,6 @@ class MVTController:
 
         return MVTController._run_command(command)
 
-    @staticmethod # This command not exist
-    def check_apk(file_path: str, output_dir: str) -> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
-        """
-        Analyzes an APK file using mvt-android.
-
-        Parameters
-        ----------
-        file_path : str
-            The path to the APK file to be analyzed.
-        output_dir : str
-            The directory where the output of the command will be saved.
-
-        Returns
-        -------
-        Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
-            A dictionary containing:
-            - 'success' (bool): Indicates if the log contains errors or critical message.
-            - 'output' (list, optional): A list of dictionaries, each containing:
-                - 'id' (int): A unique identifier for each log entry.
-                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
-                - 'message' (str): The log message.
-            - 'error' (str, optional): The error message
-        """
-        command = ['mvt-android', 'check-apk', '-i', file_path, '-o', output_dir]
-        return MVTController._run_command(command)
-
     @staticmethod
     def check_iocs(folder:str=None, 
                    iocs_files:list=None, list_modules:bool=False, 

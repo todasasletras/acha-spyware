@@ -10,10 +10,10 @@ O **MVT** é uma ferramenta poderosa usada para analisar dispositivos móveis em
 
 A API permite que os usuários realizem operaçõs essenciais do MVT, incluindo:
 
-- **Análise de dispositivos Andorid** para detecção de spyware.
+- **Análise de dispositivos Android** para detecção de spyware.
 - **Coleta e processamento de logs** para inspeção detalhada de atividades suspeitas. <!-- Precisa melhorar -->
 - **Geração de relatórios** organizados e estruturados com os resultados da análise. <!-- Precisa criar -->
-- **Automação de processos,** reduzindo erros e simplificando a interação com a ferramenta.
+- **Automação de processos** reduzindo erros e simplificando a interação com a ferramenta.
 
 ## Publico-Alvo
 
@@ -214,7 +214,7 @@ Após configurar a chave da API do VirusTotal, os usuários podem utilizar os de
 }
 ```
 
-##### **Possíveis errors:**
+##### **Possíveis erros:**
 
 - `"Unsupported content type"` → O formato da requisição não é suportado.
 
@@ -225,7 +225,7 @@ Após configurar a chave da API do VirusTotal, os usuários podem utilizar os de
 
 ##### **Resposta esperada:**
 
-##### **Possíveis errors:**
+##### **Possíveis erros:**
 
 ## **Conclusão**
 

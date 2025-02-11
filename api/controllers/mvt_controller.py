@@ -14,7 +14,11 @@ class MVTController:
     @staticmethod
     def _parse_mvt_output(mvt_log) -> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
         """
-        Parser the MVT (Mobile Verification Toolkit) log output to extract meaningful information.
+        Parses the MVT (Mobile Verification Toolkit) log output to extract meaningful information.
+
+        This method processes the raw MVT log, extracts relevant details about the status and messages 
+        in the log, and returns structured information indicating the success of the operation and any 
+        vulnerabilities detected.
 
         Parameters
         ----------
@@ -25,41 +29,106 @@ class MVTController:
         -------
         Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]
             A dictionary containing:
-            - 'success' (bool): Indicates if the log contains errors or critical message.
-            - 'output' (list, optional): A list of dictionaries, each containing:
+            - 'success' (bool): Indicates if the log contains errors or critical messages.
+            - 'log' (list, optional): A list of dictionaries, each containing:
                 - 'id' (int): A unique identifier for each log entry.
-                - 'status' (str): The serity level (INFO, WARNING, ERROR, CRITICAL).
+                - 'status' (str): The severity level (INFO, WARNING, ERROR, CRITICAL).
                 - 'message' (str): The log message.
-            - 'error' (str, optional): The error message.
+            - 'messages' (list, optional):
+                - 'category' (str): The categorization of the vulnerability.
+                - 'message' (str): The message about the vulnerability.
+            - 'error' (str, optional): The error message, if any.
         """
+        # Clean the log output (removes unnecessary information)
         mvt_log = MVTController._clean_mvt_output(mvt_log)
         
+        # Handle specific error cases
         if "no devices/emulators found" in mvt_log:
             return {'success': False, 'error': 'O ADB não encontrou nenhum dispositivo'}
         if "device unautorized" in mvt_log:
             return {"success": False, "error": "Dispositivo ADB não autorizado. Verifique a tela do dispositivo para um prompt de confirmação."}
 
+        # Regex pattern to match the log entries
         pattern = re.compile(r"(?P<status>INFO|WARNING|ERROR|CRITICAL)\[.*?\](?P<message>.+)", re.MULTILINE)
 
         parsed_data = []
+        detections = []
 
         for index, match in enumerate(pattern.finditer(mvt_log)):
             id = index
             status = match.group("status").strip()
-            message = match.group("message").strip()
-            parsed_data.append({"id":id, "status": status, "message": message})
+            log_message = match.group("message").strip()
+
+            # Store the log entry with id, status, and message
+            parsed_data.append({"id":id, "status": status, "message": log_message})
+
+            # If the status is WARNING, detect it for further analysis
+            if status == 'WARNING':
+                print(log_message)
+                detections.append(log_message)
+
+        # Generate a security report for detected vulnerabilities
+        if detections:
+            messages = MVTController._generate_security_report(detections)
         
+        # If no log entries were parsed, return the raw log as an error
         if not parsed_data:
-            # log "Failed to parse MVT log: No matching entries found."
             return {
                 "success": False,
                 "error": mvt_log
             }
 
+        # Return the structured data including success status, log entries, and security messages
         return {
-            "success": not any(item["status"] in ["ERROR", "CRITICAL"] for item in parsed_data),
-            "output": parsed_data
+            "success": not any(item["status"] in ["CRITICAL"] for item in parsed_data),
+            "log": parsed_data,
+            "messages": messages
         }
+    
+    @staticmethod
+    def _generate_security_report(warnings: List[str]) -> List[Dict[str, str]]:
+        """
+        Generates a security report based on detected warnings.
+
+        This method checks each warning message against predefined patterns to 
+        classify security risks and provide relevant recommendations.
+
+        Parameters
+        ----------
+        warnings : List[str]
+            A list of warning messages detected during the security scan.
+
+        Returns
+        -------
+        List[Dict[str, str]]
+            A list of dictionaries containing the category and security message for each detected issue.
+        """
+        reports = []
+
+        # Patterns to identify security issues
+        patterns = (
+            (r"has not received security updates", "Atualização", "Seu dispositivo pode estar desatualizado! Verifique se há atualizações disponíveis para maior segurança."),
+            (r"SELinux status is \"permissive\"", "Configuração de Segurança", "O SELinux está em modo permissivo, reduzindo a proteção do sistema. Considere ativá-lo no modo 'enforcing'."),
+            (r"installed package related to rooting/jailbreaking", "Aplicativos Suspeitos", "Aplicativo suspeito detectado. Se não reconhece esse app, remova-o imediatamente."),
+            (r"Found root binary", "Acesso Root", "O dispositivo pode estar com root ativo, aumentando os riscos de segurança. Se não fez root de propósito, procure um técnico especializado para corrigir o problema."),
+            (r"Detected indicators of compromise", "Indícios de Comprometimento", "Possíveis sinais de ataque detectados! Verifique aplicativos suspeitos e considere uma restauração de fábrica."),
+            (r"ADB is enabled", "Depuração ADB", "O modo de depuração ADB está ativado. Isso pode expor seu dispositivo a riscos se estiver conectado a redes não confiáveis. Desative se não for necessário."),
+            (r"Untrusted certificates found", "Certificados", "Certificados não confiáveis detectados. Isso pode indicar um ataque MITM (Man-in-the-Middle). Revise os certificados instalados."),
+            (r"Suspicious network activity", "Rede", "Atividade de rede suspeita detectada. Verifique suas conexões e considere usar uma VPN para maior segurança."),
+            (r"Malware signatures detected", "Malware", "Possível malware encontrado! Execute uma verificação completa com um antivírus confiável."),
+            (r"accessibility_enabled = 1", "Acessibilidade Ativada", "O serviço de acessibilidade está ativado. Aplicativos mal-intencionados podem explorar essa função para capturar dados sensíveis. Verifique as permissões concedidas."),
+            (r"install_non_market_apps = 1", "Instalação de Apps de Fontes Desconhecidas", "A instalação de aplicativos fora da Google Play Store está ativada. Isso pode permitir a instalação de software malicioso. Desative essa opção se não for necessária."),
+        )
+
+        # Checking each warning against predefined patterns
+        for warning in warnings:
+            for pattern, category, message in patterns:
+                if re.search(pattern, warning, re.IGNORECASE):
+                    reports.append({"category": category, "message": message})
+                    break  # Avoid multiple matches for a single warning
+
+        # If no issues are found, return a clean report
+        return reports if reports else [{"category": "Nenhum problema", "message": "Nenhum problema crítico foi encontrado no dispositivo."}]
 
     @staticmethod
     def _clean_mvt_output(mvt_log)->str:

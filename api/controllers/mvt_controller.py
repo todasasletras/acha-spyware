@@ -67,6 +67,8 @@ class MVTController:
                 print(log_message)
                 detections.append(log_message)
 
+        messages = []
+
         # Generate a security report for detected vulnerabilities
         if detections:
             messages = MVTController._generate_security_report(detections)

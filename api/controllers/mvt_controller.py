@@ -575,6 +575,14 @@ class MVTController:
             - 'error' (str, optional): The error message.
         """
         command = ['mvt-android', 'download-iocs']
+        result = MVTController._run_command(command)
+        if not result['success']:
+            return {"success": result['success'], "error": "Não foi possível atualizar IOCs."}
         
-        return MVTController._run_command(command)
+        messages = {
+            "category": 'Atualização IOCs',
+            "message": 'Atualização concluída com sucesso!'
+        }
+        result['messages'] = messages
+        return result
     

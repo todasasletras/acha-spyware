@@ -43,10 +43,15 @@ class MVTController:
         mvt_log = MVTController._clean_mvt_output(mvt_log)
         
         # Handle specific error cases
+        no_devices_found_message = "Nenhum dispositivo encontrado. Conecte seu tipositivo via USB e ative o modo desenvolvedor."
         if "no devices/emulators found" in mvt_log:
-            return {'success': False, 'error': 'O ADB não encontrou nenhum dispositivo'}
+            return {'success': False, 'error': no_devices_found_message}
         if "device unautorized" in mvt_log:
             return {"success": False, "error": "Dispositivo ADB não autorizado. Verifique a tela do dispositivo para um prompt de confirmação."}
+        if "No device found." in mvt_log:
+            return {"success": False, 'error': no_devices_found_message}
+        if "Unable to find dumpstate file." in mvt_log:
+            return {"success": False, "error": "Não encontramos o arquivo necessário para analisar o problema."}
 
         # Regex pattern to match the log entries
         pattern = re.compile(r"(?P<status>INFO|WARNING|ERROR|CRITICAL)\[.*?\](?P<message>.+)", re.MULTILINE)
@@ -63,13 +68,12 @@ class MVTController:
             parsed_data.append({"id":id, "status": status, "message": log_message})
 
             # If the status is WARNING, detect it for further analysis
-            if status == 'WARNING':
+            if status in ['WARNING', 'ERROR', 'CRITICAL']:
                 print(log_message)
                 detections.append(log_message)
 
         # Generate a security report for detected vulnerabilities
-        if detections:
-            messages = MVTController._generate_security_report(detections)
+        messages = MVTController._generate_security_report(detections)
         
         # If no log entries were parsed, return the raw log as an error
         if not parsed_data:
@@ -118,6 +122,7 @@ class MVTController:
             (r"Malware signatures detected", "Malware", "Possível malware encontrado! Execute uma verificação completa com um antivírus confiável."),
             (r"accessibility_enabled = 1", "Acessibilidade Ativada", "O serviço de acessibilidade está ativado. Aplicativos mal-intencionados podem explorar essa função para capturar dados sensíveis. Verifique as permissões concedidas."),
             (r"install_non_market_apps = 1", "Instalação de Apps de Fontes Desconhecidas", "A instalação de aplicativos fora da Google Play Store está ativada. Isso pode permitir a instalação de software malicioso. Desative essa opção se não for necessária."),
+            (r"Unable to find dumpstate file.", "Erros", "Ops! Não encontramos o arquivo necessário para analisar o problema.")
         )
 
         # Checking each warning against predefined patterns
@@ -570,5 +575,6 @@ class MVTController:
             - 'error' (str, optional): The error message.
         """
         command = ['mvt-android', 'download-iocs']
+        
         return MVTController._run_command(command)
     

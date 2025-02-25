@@ -30,7 +30,7 @@ def check_adb():
     iocs_files : list, optional
         A list of paths to indicators files. Can include multiple files.
     output_folder : str, optional
-        Specify a path to the folder where JSON results will be stored (default: '/mnt/c/output').
+        Specify a path to the folder where JSON results will be stored (default: '/tmp/fvm').
     fast : bool, optional
         Skip time/resource-consuming features (default: False).
     list_modules : bool, optional
@@ -60,7 +60,7 @@ def check_adb():
     payload = data['data']
     serial = payload.get('serial', None)
     iocs_files = payload.get('iocs_files', None)
-    output_folder = payload.get('output_folder', '/mnt/c/output')
+    output_folder = payload.get('output_folder', '/tmp/fvm')
     fast = payload.get('fast', False)
     list_modules = payload.get('list_modules', False)
     module = payload.get('module', None)
@@ -94,7 +94,7 @@ def check_androidqf():
     androidqf_path : str
         The path to the AndroidQF data to be analyzed (required).
     output_dir : str, optional
-        Directory for saving the output (default: '/mnt/c/output').
+        Directory for saving the output (default: '/tmp/fvm').
     iocs_files : list, optional
         A list of paths to indicators of compromise (optional).
     list_modules : bool, optional
@@ -127,7 +127,7 @@ def check_androidqf():
         return jsonify({'success': False, 'error': 'Missing required parameter: androidqf_path'}), 200
     
     androidqf_path = payload.get('androidqf_path')
-    output_dir = payload.get('output_dir', '/mnt/c/output')
+    output_dir = payload.get('output_dir', '/tmp/fvm')
     iocs_files = payload.get('iocs_files', [])
     list_modules = payload.get('list_modules', False)
     module = payload.get('module')
@@ -221,7 +221,7 @@ def check_bugreport():
         Path to the bugreport file to be analyzed.
     'iocs_files': list, optional 
         A list of paths to indicators of compromise.
-    'output_folder': str, opotional Directory for saving the output (default is '/mnt/c/output').
+    'output_folder': str, opotional Directory for saving the output (default is '/tmp/fvm').
     'list_modules': bool, option 
         Boolean flag to list available modules (default is False).
     'module': str, optional
@@ -247,7 +247,7 @@ def check_bugreport():
     
     bugreport_path = payload.get('bugreport_path')
     iocs_files = payload.get('iocs_files')
-    output_folder = payload.get('output_folder', '/mnt/c/output')
+    output_folder = payload.get('output_folder', '/tmp/fvm')
     list_modules = payload.get('list_modules', False)
     module = payload.get('module')
     verbose = payload.get('verbose', False)
@@ -270,7 +270,7 @@ def check_apk():
 
     Expects a JSON payload with:
     - 'file_path': Path to the APK file to be analyzed (required).
-    - 'output_dir': Directory for saving the output (optional, defaults to '/mnt/c/output').
+    - 'output_dir': Directory for saving the output (optional, defaults to '/tmp/fvm').
 
     Returns
     -------
@@ -285,7 +285,7 @@ def check_apk():
     if not file_path:
         return jsonify({'success': False, 'error': 'Missing required parameter: file_path'}), 400
 
-    output_dir = data.get('output_dir', '/mnt/c/output')
+    output_dir = data.get('output_dir', '/tmp/fvm')
     result = MVTController.check_apk(file_path, output_dir)
     return jsonify(result)
 
@@ -357,7 +357,7 @@ def download_apks():
     - 'serial' (str, optional): Serial number of the device for downloading APKs.
     - 'all_apks' (bool, optional): Flag to download all APKs from the device (default is False).
     - 'virustotal (bool, optional): Flag to analyze APKs using VirusTotal (defalt is False).
-    - 'output_folder' (str, optional): Directory for saving the downloaded APKs (defaults is '/mnt/c/output').
+    - 'output_folder' (str, optional): Directory for saving the downloaded APKs (defaults is '/tmp/fvm').
     - 'from_file' (str, optional): Path to a file containing a list of APKs to download.
     - 'verbose' (bool, optional): Flag to enable verbose output (default is False)
 
@@ -383,7 +383,7 @@ def download_apks():
     
     serial = payload.get('serial')
     all_apks = payload.get('all_apks', False)
-    output_folder = payload.get('output_folder', '/mnt/c/output')
+    output_folder = payload.get('output_folder', '/tmp/fvm')
     from_file = payload.get('from_file')
     verbose = payload.get('verbose', False)
 

@@ -122,7 +122,8 @@ class MVTController:
             (r"Malware signatures detected", "Malware", "Possível malware encontrado! Execute uma verificação completa com um antivírus confiável."),
             (r"accessibility_enabled = 1", "Acessibilidade Ativada", "O serviço de acessibilidade está ativado. Aplicativos mal-intencionados podem explorar essa função para capturar dados sensíveis. Verifique as permissões concedidas."),
             (r"install_non_market_apps = 1", "Instalação de Apps de Fontes Desconhecidas", "A instalação de aplicativos fora da Google Play Store está ativada. Isso pode permitir a instalação de software malicioso. Desative essa opção se não for necessária."),
-            (r"Unable to find dumpstate file.", "Erros", "Ops! Não encontramos o arquivo necessário para analisar o problema.")
+            (r"Unable to find dumpstate file.", "Erros", "Ops! Não encontramos o arquivo necessário para analisar o problema."),
+            (r"Invalid backup format, file should be in .ab format", "Falha", "Não foi possível realizar o backup. Tente novamente e autorize o backup no dispositivo.")
         )
 
         # Checking each warning against predefined patterns
@@ -373,11 +374,14 @@ class MVTController:
             - 'error' (str, optional): The error message.
         """
         command_adb = ['adb', 'backup', '-nocompress', 'com.android.providers.telephony', '-f', backup_path]
+        command_kill_adb = ['adb', 'kill-server']
         command = ['mvt-android', 'check-backup', backup_path]
 
         result = MVTController._run_command(command_adb)
         if not result['success'] and 'ADB' in result['error']:
             return result
+        # Finaliza o adb para evitar problemas com os comandos do mvt
+        MVTController._run_command(command_kill_adb)
 
         if iocs_files:
             for iocs_file in iocs_files:

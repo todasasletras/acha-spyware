@@ -68,8 +68,7 @@ class MVTController:
             parsed_data.append({"id":id, "status": status, "message": log_message})
 
             # If the status is WARNING, detect it for further analysis
-            if status in ['WARNING', 'ERROR', 'CRITICAL']:
-                print(log_message)
+            if status in ['INFO', 'WARNING', 'ERROR', 'CRITICAL']:
                 detections.append(log_message)
 
         # Generate a security report for detected vulnerabilities
@@ -106,32 +105,50 @@ class MVTController:
         -------
         List[Dict[str, str]]
             A list of dictionaries containing the category and security message for each detected issue.
+                A dictionary containing:
+                - category (str): A category to classificate the found vulnerabilites.
+                - message (str): A message with explanation.
+                - original_message (str, optional): The original message about vulnerabilite.
         """
         reports = []
 
         # Patterns to identify security issues
         patterns = (
-            (r"has not received security updates", "Atualização", "Seu dispositivo pode estar desatualizado! Verifique se há atualizações disponíveis para maior segurança."),
-            (r"SELinux status is \"permissive\"", "Configuração de Segurança", "O SELinux está em modo permissivo, reduzindo a proteção do sistema. Considere ativá-lo no modo 'enforcing'."),
-            (r"installed package related to rooting/jailbreaking", "Aplicativos Suspeitos", "Aplicativo suspeito detectado. Se não reconhece esse app, remova-o imediatamente."),
-            (r"Found root binary", "Acesso Root", "O dispositivo pode estar com root ativo, aumentando os riscos de segurança. Se não fez root de propósito, procure um técnico especializado para corrigir o problema."),
-            (r"Detected indicators of compromise", "Indícios de Comprometimento", "Possíveis sinais de ataque detectados! Verifique aplicativos suspeitos e considere uma restauração de fábrica."),
-            (r"ADB is enabled", "Depuração ADB", "O modo de depuração ADB está ativado. Isso pode expor seu dispositivo a riscos se estiver conectado a redes não confiáveis. Desative se não for necessário."),
-            (r"Untrusted certificates found", "Certificados", "Certificados não confiáveis detectados. Isso pode indicar um ataque MITM (Man-in-the-Middle). Revise os certificados instalados."),
-            (r"Suspicious network activity", "Rede", "Atividade de rede suspeita detectada. Verifique suas conexões e considere usar uma VPN para maior segurança."),
-            (r"Malware signatures detected", "Malware", "Possível malware encontrado! Execute uma verificação completa com um antivírus confiável."),
-            (r"accessibility_enabled = 1", "Acessibilidade Ativada", "O serviço de acessibilidade está ativado. Aplicativos mal-intencionados podem explorar essa função para capturar dados sensíveis. Verifique as permissões concedidas."),
-            (r"install_non_market_apps = 1", "Instalação de Apps de Fontes Desconhecidas", "A instalação de aplicativos fora da Google Play Store está ativada. Isso pode permitir a instalação de software malicioso. Desative essa opção se não for necessária."),
-            (r"Unable to find dumpstate file.", "Erros", "Ops! Não encontramos o arquivo necessário para analisar o problema."),
-            (r"Invalid backup format, file should be in .ab format", "Falha", "Não foi possível realizar o backup. Tente novamente e autorize o backup no dispositivo.")
+            # Atualizações e Segurança do Sistema
+            (r"has not received security updates", "Segurança do Sistema", "Seu dispositivo não recebe atualizações há muito tempo. Atualize para maior proteção."),
+            (r"SELinux status is \"permissive\"", "Segurança do Sistema", "A proteção do sistema está reduzida. Ative o SELinux no modo 'enforcing' para mais segurança."),
+
+            # Aplicativos e Permissões Suspeitas
+            (r"installed package related to rooting/jailbreaking", "Aplicativos Suspeitos", "Foi encontrado um aplicativo associado a root ou jailbreak. Remova se não reconhecer."),
+            (r"Found root binary", "Aplicativos Suspeitos", "O dispositivo pode estar com root ativo, aumentando os riscos. Se não fez root intencionalmente, procure um técnico."),
+            (r"accessibility_enabled = 1", "Aplicativos Suspeitos", "Aplicativos podem ter acesso excessivo ao sistema via permissões de acessibilidade. Revise as permissões."),
+            (r"install_non_market_apps = 1", "Aplicativos Suspeitos", "Seu dispositivo permite instalar apps de fora da loja oficial. Isso pode ser arriscado. Desative se não for necessário."),
+
+            # Possíveis Ameaças e Comprometimentos
+            (r"Detected indicators of compromise", "Possível Invasão", "Sinais de ataque detectados! Revise aplicativos suspeitos e considere restaurar o sistema."),
+            (r"Malware signatures detected", "Possível Invasão", "Indícios de malware encontrados! Execute um antivírus para verificar o dispositivo."),
+            (r"Untrusted certificates found", "Possível Invasão", "Foram encontrados certificados não confiáveis, o que pode indicar um ataque. Revise suas configurações."),
+            (r"Suspicious network activity", "Possível Invasão", "Atividade de rede suspeita detectada. Revise conexões e considere usar uma VPN."),
+
+            # Riscos de Configuração
+            (r"ADB is enabled", "Configuração Insegura", "O modo de desenvolvedor (ADB) está ativado. Isso pode expor seu dispositivo a invasões. Desative se não precisar."),
+
+            # Erros e Problemas Gerais
+            (r"Unable to find dumpstate file.", "Erro na Análise", "Não foi possível encontrar um arquivo necessário para a análise. Tente novamente."),
+            (r"Invalid backup format, file should be in .ab format", "Erro na Análise", "O formato do backup está incorreto. Certifique-se de usar um arquivo .ab válido."),
+            (r"Device is busy", "Erro na Análise", "Parece que o dispositivo está ocupado. Tente desconectar e reconectar o dispositivo.") # Precisa criar medidas para esse problema
         )
 
         # Checking each warning against predefined patterns
         for warning in warnings:
             for pattern, category, message in patterns:
                 if re.search(pattern, warning, re.IGNORECASE):
-                    reports.append({"category": category, "message": message})
-                    break  # Avoid multiple matches for a single warning
+                    reports.append({
+                        "category": category, 
+                        "message": message,
+                        "original_message": warning
+                    })
+                    break
 
         # If no issues are found, return a clean report
         return reports if reports else [{"category": "Nenhum problema", "message": "Nenhum problema crítico foi encontrado no dispositivo."}]

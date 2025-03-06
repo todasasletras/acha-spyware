@@ -71,6 +71,8 @@ class MVTController:
             if status in ['INFO', 'WARNING', 'ERROR', 'CRITICAL']:
                 detections.append(log_message)
 
+        messages = []
+
         # Generate a security report for detected vulnerabilities
         messages = MVTController._generate_security_report(detections)
         

@@ -1,0 +1,78 @@
+body {
+    background-color: #2E2E2E;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+    text-align: center;
+}
+
+.header {
+    width: 100%;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 400;
+    margin-bottom: 50px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    gap: 50px; /* Espaço entre os botões */
+    margin-bottom: 20px;
+}
+
+.button-container {
+    position: relative;
+    text-align: center;
+    flex: 1;
+    max-width: 350px; /* Largura máxima de cada botão */
+}
+
+.button {
+    position: relative;
+    width: 100%;
+    height: 133px;
+    margin: 0 auto;
+    background: #316BBF; /* Mantido o plano de fundo azul */
+    border: none;
+    cursor: pointer; /* Importante para indicar interatividade */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    outline: none; /* Remove o contorno padrão em foco */
+    transition: background-color 0.3s, transform 0.3s; /* Suaviza a transição de cores e transformações */
+}
+
+.button:hover {
+    background-color: #1e90ff; /* Muda a cor ao passar o mouse */
+    transform: scale(1.05); /* Ligeiro aumento */
+}
+
+.button-text {
+    color: #fff;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.note {
+    color: #FF4C4C;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 6px;
+    width: 100%;
+    display: block;
+    padding: 0 10px;
+    box-sizing: border-box;
+}

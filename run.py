@@ -1,6 +1,9 @@
-from api import create_app
+from api import create_app, logger
 
-# Create the Flask application instance
+
+logger.debug("Inicio do FVM!")
+
+logger.debug("Criar uma instancia de aplicação Flask.")
 app = create_app()
 
 if __name__ == "__main__":
@@ -10,4 +13,5 @@ if __name__ == "__main__":
     This block checks if the script is being executed directly, and if so, 
     it starts the Flask development server with debug mode enabled.
     """
+    logger.debug("Inicio do servidor Flask.")
     app.run(debug=True)

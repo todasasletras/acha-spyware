@@ -544,4 +544,22 @@ def extract_request_data()->Dict[str, Union[str, Dict[str, str]]]:
     else:
         logger.debug(f"O Content type não é suportado: {request.content_type}")
         return {'type': 'unsupported', 'data': {'error': 'Unsupported Content Type'}}
-    
+
+
+# Erros de requisições 
+@bp.app_errorhandler(400)
+def bad_request(error):
+    return jsonify({"success": False, "error": "Requisição inválida. Verifique os dados enviados."}), 200
+
+@bp.app_errorhandler(404)
+def not_found(error):
+    logger.error(f"Endpoint não encontrado: {error}")
+    return jsonify({"success": False, "error": "Esta página não existe."}), 200
+
+@bp.app_errorhandler(405)
+def method_not_allowed(error):
+    return jsonify({"success": False, "error": "Método não permitido. Verifique a documentação da API."}), 200
+
+@bp.app_errorhandler(500)
+def internal_server_error(error):
+    return jsonify({"success": False, "error": "Erro interno do servidor. Tente novamente mais tarde"}), 200

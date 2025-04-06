@@ -39,6 +39,12 @@ body {
     max-width: 350px; /* Largura máxima de cada botão */
 }
 
+.button-submit {
+    background: #316BBF !important;
+    color: #fff !important;
+    margin-left: 10px;
+}
+
 .button {
     position: relative;
     width: 100%;
@@ -75,4 +81,9 @@ body {
     display: block;
     padding: 0 10px;
     box-sizing: border-box;
+}
+
+.labelApiKey {
+    text-align: left;
+    width: 215px;
 }

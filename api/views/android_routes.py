@@ -407,12 +407,13 @@ def download_apks():
     payload = data['data']
 
     virustotal = payload.get('virustotal', False)
+
     if virustotal:
         var_env = 'MVT_VT_API_KEY'
         if var_env not in os.environ:
-            logger.warning("Nao foi definido a variavel MVT_VT_API_KEY para a utilizacao do VirusTotal.")
+            logger.warning("Variável de ambiente MVT_VT_API_KEY não definida.")
             return jsonify({'success': False, 'error': f'Missing environment variable: {var_env}'}), 200
-    
+
     serial = payload.get('serial')
     all_apks = payload.get('all_apks', False)
     output_folder = payload.get('output_folder', '/tmp/fvm')
@@ -453,69 +454,48 @@ def list_devices():
 
 @bp.route('/set-virustotal-api-key', methods=['POST'])
 def set_virustotal_api_key():
-    """
-    Endpoint to set the VirusTotal API Key as an environment variable.
-
-    This endpoit allows users to provide the VirusTotal API Key, wich is saved 
-    as an environment variable in a specified environment file. The key can be
-    used for turther operations requiring VirusTotal integration.
-    
-    Parameters
-    ----------
-    - 'api_key' (str): The VirusTotal API Key to be set.
-    
-    Returns
-    -------
-    Response
-        JSON object containig:
-        - 'success' (bool): Indicates if the operation was successful.
-        - 'message' (str, optional): Message about the operation's result.
-        - 'error' (str, optional): Message about the error in operation result
-    """
-    logger.debug("Inicio do set-virustotal-api-key")
+    logger.debug("Início do set-virustotal-api-key")
     data = extract_request_data()
     if data['type'] == 'unsupported':
-        logger.warning("Tipo de content type nao suportado.")
+        logger.warning("Tipo de content type não suportado.")
         return jsonify({'success': False, 'error': data['data']['error']}), 200
     
     payload = data['data']
     if not payload.get('api_key'):
-        logger.warning("Falto de parametro: api_key.")
-        return jsonify({'success':False, 'error': 'Missing required paramenter: api_key'})
-    
+        logger.warning("Falta do parâmetro: api_key.")
+        return jsonify({'success': False, 'error': 'Missing required parameter: api_key'})
+
     var_env = 'MVT_VT_API_KEY'
-    api_key = payload.get('api_key')
+    api_key = payload['api_key']
     new_env = f"{var_env}={api_key}\n"
 
     try:
         if not os.path.exists(ENV_FILE):
-            logger.debug("Verifica se o arquivo '.env' existe")
             with open(ENV_FILE, 'w') as file:
-                logger.info("Cria a variavel de ambiente e define o valor.")
                 file.write(new_env)
         else:
-            logger.debug("Atualiza o valor da variavel de ambiente")
             updated = False
-            with open(ENV_FILE, '+w') as file:
+            with open(ENV_FILE, 'r') as file:
                 lines = file.readlines()
-                logger.debug(f"Procura a linha que comeca com '{var_env}'")
+
+            with open(ENV_FILE, 'w') as file:
                 for line in lines:
                     if line.startswith(var_env):
-                        logger.debug("Atualiza o valor da variavel de ambiente")
                         file.write(new_env)
                         updated = True
                     else:
-                        logger.debug("Cria uma nova linha com a variavel de ambiente e define o valor")
                         file.write(line)
                 if not updated:
-                    logger.debug("Ultima tentativa de definir a variavel de ambiente caso o metodo acima fale.")
                     file.write(new_env)
 
-        return jsonify({'success':True, 'message': 'VirusTotal API Key set successfully'}), 200
-    
+        # Recarrega o .env no ambiente
+        load_dotenv(ENV_FILE)
+
+        return jsonify({'success': True, 'message': 'VirusTotal API Key set successfully'}), 200
+
     except Exception as e:
         logger.error(f"Failed to set API Key: {e}")
-        return jsonify({'success':False, 'error': 'Failed to set API Key.'}), 200
+        return jsonify({'success': False, 'error': 'Failed to set API Key.'}), 200
 
 def extract_request_data()->Dict[str, Union[str, Dict[str, str]]]:
     """

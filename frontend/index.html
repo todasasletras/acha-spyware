@@ -5,10 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ferramenta de Verificação Móvel</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-5/css/bootstrap.css') }}">
 </head>
-<body>
+<body class="bg-dark text-light">
     <div class="container">
-        <div class="header">#Ferramenta de Verificação Móvel - Sistema Android</div>
+        <h1 class="text-light my-4">#Ferramenta de Verificação Móvel - Sistema Android</h1>
+        <div class="row">
+            <div class="d-flex align-items-center my-2">
+                <div class="input-group">
+                    <label class="labelApiKey">Insira a API pública do Vírus Total</label>
+                    <input class="form-control" type="text" placeholder="API Key" aria-label="API Key" />
+                    <button class="btn button-submit">
+                        Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
         
         <div class="row">
             <div class="button-container">

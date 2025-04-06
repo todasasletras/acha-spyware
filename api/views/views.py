@@ -8,3 +8,8 @@ bp = Blueprint('views', __name__, template_folder='../../frontend')
 def index():
     logger.debug("Carrega a pagina inicial")
     return render_template('index.html')
+
+@bp.route('/info')
+def info():
+    logger.debug("Carrega a página de Informações")
+    return render_template('info.html')

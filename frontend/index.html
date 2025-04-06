@@ -10,16 +10,17 @@
 <body class="bg-dark text-light">
     <div class="container">
         <h1 class="text-light my-4">#Ferramenta de Verificação Móvel - Sistema Android</h1>
-        <div class="row">
-            <div class="d-flex align-items-center my-2">
+        <div class="row my-2 gap-2">
+            <div class="d-flex align-items-center">
                 <div class="input-group">
                     <label class="labelApiKey">Insira a chave de API <br/>do Vírus Total</label>
-                    <input class="form-control" type="text" placeholder="API Key" aria-label="API Key" />
-                    <button class="btn button-submit">
+                    <input id="apiKeyInput" class="form-control" type="text" placeholder="API Key" aria-label="API Key" />
+                    <button id="btnEnviarApiKey" class="btn button-submit">
                         Enviar
                     </button>
                 </div>
             </div>
+            <p id="resultadoApiKey"></p>
         </div>
         
         <div class="row">

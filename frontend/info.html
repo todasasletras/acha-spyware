@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Ferramenta de Verificação Móvel</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-5/css/bootstrap.css') }}">
+  </head>
+  <body class="bg-dark text-light">
+    <div class="container">
+      <div class="d-flex pt-3">
+        <button id="btnVoltar" class="btn btn-secondary d-flex align-items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H3.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.498.498 0 0 1-.146-.35v-.008a.498.498 0 0 1 .146-.35l4-4a.5.5 0 1 1 .708.708L3.707 7.5H14.5a.5.5 0 0 1 .5.5z"/>
+          </svg>
+          Voltar
+        </button>
+      </div>
+        <h1 class="text-light text-start my-4">#Onde encontro a API pública do vírus total?</h1>
+        <div class="row text-start py-4">
+          <div class="col">
+            <h2 class="py-4">1 - Entre no site <a href="https://www.virustotal.com/gui/sign-in">https://www.virustotal.com/gui/sign-in</a> e faça o cadastro/login</h2>
+            <h2 class="py-4">2 - Acesse o menu no canto direito superior e selecione a opção API Key</h2 class="py-4">
+            <img src="{{ url_for('static', filename='images/menu_borrado.jpg') }}" />
+          </div>
+          <div class="col">
+            <h2 class="py-4">3 - A chave pública vai estar borrada, clique no ícone de olho para ver a chave e no ícone ao lado para copiar e colar.</h2>
+            <img class="w-100" src="{{ url_for('static', filename='images/chave_borrada.jpg') }}" />
+          </div>
+        </div>
+        
+    </div>
+    <script src="{{ url_for('static', filename='bootstrap-5/js/bootstrap.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/btn-back.js') }}" defer></script>
+  </body>
+  </html>

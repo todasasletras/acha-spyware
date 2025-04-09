@@ -31,7 +31,7 @@ async function enviarApiKey() {
 // Função para enviar a verificação ADB
 async function enviarCheckAdb() {
   const dados = {
-    serial: "auto",
+    serial: null,
     fast: false,
     verbose: true,
     virustotal: true  // assume que usará virustotal se já salvou a chave antes

@@ -1,0 +1,295 @@
+[
+{
+    "patterns": "has not received security uodates",
+    "categority": "Segurança do Sistema",
+    "message": "Seu dispositivo não revebe atualizações há muito tempo. Atualize para maior proteção."
+},
+{
+    "patterns": "SELinux status is \"permissive\"",
+    "categority": "Segurança do Sistema",
+    "message": "A proteção do sistema está reduzida. Ative o SELinux no modo 'enforcing' para mais segurança."
+},
+
+{
+    "patterns": "installed packege related to rooting/jailbreaking",
+    "categority": "Aplicativos Suspeitos",
+    "message": "Foi encontrado um aplicativo associado a root ou jailbreak. Remova se não reconhecer."
+},
+{
+    "patterns": "Found root binary",
+    "categority": "Aplicativos Suspeitos",
+    "message": "O dispositivo pode estar com root ativo, aumentando os riscos. Se não fez root intencionalmente, procure um técnico."
+},
+{
+    "patterns": "Found installed accessibility service",
+    "categority": "Aplicativos Suspeitos",
+    "message": ""
+},
+{
+    "patterns": "accessibility_enabled = 1",
+    "categority": "Aplicativos Suspeitos",
+    "message": "Aplicativos podem ter acesso excessivo ao sistema via permissões de acessibilidade. Revise as permissões."
+},
+{
+    "patterns": "install_non_market_apps = 1",
+    "categority": "Aplicativos Suspeitos",
+    "message": "Seu dispositivo permite instalar apps de fora da loja oficial. Isso pode ser arriscado. Desative se não for necessário."
+},
+
+{
+    "patterns": "Detected indicators of compromise",
+    "categority": "Possível Invasão",
+    "message": "Sinais de ataque detectados! Revise aplicativo suspeitos e considere restaurar o sistema."
+},
+{
+    "patterns": "Malware signatures detected",
+    "categority": "Possível Invasão",
+    "message": "Indícios de malware encontrados! Execute um antivírus para verificar o dispositivo."
+},
+{
+    "patterns": "Untrusted certificates found",
+    "categority": "Possível Invasão",
+    "message": "Foram encontrados certificados não confiáveis, o que pode indicar um ataque. Revise suas configurações."
+},
+{
+    "patterns": "Suspicious network activity",
+    "categority": "Possível Invasão",
+    "message": "Atividade de rede suspeita detectada. Revise conexões e considere usar uma VPN."
+},
+
+{
+    "patterns": "ADB is enabled",
+    "categority": "Configuração Insegura",
+    "message": "O modo desenvolvedor (ADB) está ativado. Isso pode expor seu dispositivo a invasçoes. Desative se não precisar."
+},
+
+{
+    "patterns": "Unable to find dumpstate file",
+    "categority": "Erro na Análise",
+    "message": "Não foi possível encontrar o arquivo necessário para a análise. Tente novamente."
+},
+{
+    "patterns": "Invalid backup format, file shoud be in .ab format",
+    "categority": "Erro na Análise",
+    "message": "O formato do backuo está incorreto. Certifique-se de usar um arquivo '.ab' válido."
+},
+{
+    "patterns": "Device is busy",
+    "categority": "Erro na Análise",
+    "message": "Parece que o dosposotivo está ocupado. Tente desconectar e reconectar o dospositivo."
+},
+{
+    "patterns": "no devices/emulators found",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "device unautorized",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "No device found. Make sure it is connected and unlocked.",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "You need to authorize this computer on the Android device.",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "Unable to connect to the device over USB.",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "did you specify the correct IP address?",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "Please check phone and accept Andoid backup prompt",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "Backup passworde already set from commad line or environment variable",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "No valid backup data found",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "No backup password provided",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "You provided the wrong password",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "All attempts to decrypt backup with password failed",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "Impossible to read SMS from the Android Backup",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "No SMS database found",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+
+{
+    "patterns": "Invalid backup password",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+
+{
+    "patterns": "Please use Android Backup Extractor (ABE) instead",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+
+{
+    "patterns": "Invalid backup path, path shoud be a folder or an Android Backup (.ab) file",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+
+{
+    "patterns": "you need to specify an output folder with --output",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+
+{
+    "patterns": "Unable to parse STIX2 indicator file. The file is corrupted or in the wrong format",
+    "categority": "Erro na Análise",
+    "message": ""
+},
+
+{
+    "patterns": "Please disable Developer Options and ADB (Android Debug Bridge) on the device once finished with the acquisition. ADB is a powerful tool which can allow unauthorized access to the device.",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "You have exceeded the quota for your VirusTotal API key",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Failed to retrieve date of latest update to indicators index file",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Checking stored results against provided indicators",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Checking Android device over debug bridge",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Download of selected packages completed",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Downloading packages from device. This might take some time",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "No packages were selected for download",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Retrieving list of installed packages",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "No backup data found",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Impossible to read SMS from the Android Backup, please extract the SMS and try extracting it with Android Backup Extractor",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Impossible to parse this backup file, please use Android Backup Extractor instead",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "No backup password provided.",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Invalid backup format, backup.ab was not analysed",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "getprop.txt file not found",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Dumpsys fyke not",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Cannot decrypt backup because interactivity was disabled and the password was not supplied",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Using backup password passed from command line or environment variable.",
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "The `fast_mode` option was enabled: skipping full file listing ",
+    "categority": "",
+    "message": ""
+}
+]

@@ -8,11 +8,13 @@ class CategoryType(str, Enum):
     POSSIBLE_ATTACK = "Possível Invasão"
     SUSPICIOUS_APP = "Aplicativos Suspeitos"
     SYSTEM_SECURITY = "Segurança do Sistema"
-    INFORMATION = "Informação"
+    INFORMATION = "Informativo"
+    VIRUSTOTAL = "VirusTotal"
 
 
 class MessageLogType(TypedDict):
     pattern: str
+    is_regex: bool
     category: CategoryType
     message: str
 

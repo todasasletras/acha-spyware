@@ -1,295 +1,490 @@
 [
 {
     "patterns": "has not received security uodates",
+    "is_regex": false,
     "categority": "Segurança do Sistema",
     "message": "Seu dispositivo não revebe atualizações há muito tempo. Atualize para maior proteção."
 },
 {
     "patterns": "SELinux status is \"permissive\"",
+    "is_regex": false,
     "categority": "Segurança do Sistema",
     "message": "A proteção do sistema está reduzida. Ative o SELinux no modo 'enforcing' para mais segurança."
 },
 
 {
     "patterns": "installed packege related to rooting/jailbreaking",
+    "is_regex": false,
     "categority": "Aplicativos Suspeitos",
     "message": "Foi encontrado um aplicativo associado a root ou jailbreak. Remova se não reconhecer."
 },
 {
     "patterns": "Found root binary",
+    "is_regex": false,
     "categority": "Aplicativos Suspeitos",
     "message": "O dispositivo pode estar com root ativo, aumentando os riscos. Se não fez root intencionalmente, procure um técnico."
 },
 {
-    "patterns": "Found installed accessibility service",
+    "patterns": "Found installed accessibility service \"+\"",
+    "is_regex": true,
     "categority": "Aplicativos Suspeitos",
     "message": ""
 },
 {
     "patterns": "accessibility_enabled = 1",
+    "is_regex": false,
     "categority": "Aplicativos Suspeitos",
     "message": "Aplicativos podem ter acesso excessivo ao sistema via permissões de acessibilidade. Revise as permissões."
 },
 {
     "patterns": "install_non_market_apps = 1",
+    "is_regex": false,
     "categority": "Aplicativos Suspeitos",
     "message": "Seu dispositivo permite instalar apps de fora da loja oficial. Isso pode ser arriscado. Desative se não for necessário."
 },
 
 {
     "patterns": "Detected indicators of compromise",
+    "is_regex": false,
     "categority": "Possível Invasão",
     "message": "Sinais de ataque detectados! Revise aplicativo suspeitos e considere restaurar o sistema."
 },
 {
     "patterns": "Malware signatures detected",
+    "is_regex": false,
     "categority": "Possível Invasão",
     "message": "Indícios de malware encontrados! Execute um antivírus para verificar o dispositivo."
 },
 {
     "patterns": "Untrusted certificates found",
+    "is_regex": false,
     "categority": "Possível Invasão",
     "message": "Foram encontrados certificados não confiáveis, o que pode indicar um ataque. Revise suas configurações."
 },
 {
     "patterns": "Suspicious network activity",
+    "is_regex": false,
     "categority": "Possível Invasão",
     "message": "Atividade de rede suspeita detectada. Revise conexões e considere usar uma VPN."
 },
 
 {
     "patterns": "ADB is enabled",
+    "is_regex": false,
     "categority": "Configuração Insegura",
     "message": "O modo desenvolvedor (ADB) está ativado. Isso pode expor seu dispositivo a invasçoes. Desative se não precisar."
 },
 
 {
     "patterns": "Unable to find dumpstate file",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": "Não foi possível encontrar o arquivo necessário para a análise. Tente novamente."
 },
 {
     "patterns": "Invalid backup format, file shoud be in .ab format",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": "O formato do backuo está incorreto. Certifique-se de usar um arquivo '.ab' válido."
 },
 {
     "patterns": "Device is busy",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": "Parece que o dosposotivo está ocupado. Tente desconectar e reconectar o dospositivo."
 },
 {
     "patterns": "no devices/emulators found",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "device unautorized",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "No device found. Make sure it is connected and unlocked.",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "You need to authorize this computer on the Android device.",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "Unable to connect to the device over USB.",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "did you specify the correct IP address?",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "Please check phone and accept Andoid backup prompt",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "Backup passworde already set from commad line or environment variable",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "No valid backup data found",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "No backup password provided",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "You provided the wrong password",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "All attempts to decrypt backup with password failed",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "Impossible to read SMS from the Android Backup",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 {
     "patterns": "No SMS database found",
     "categority": "Erro na Análise",
+    "is_regex": false,
     "message": ""
 },
 
 {
     "patterns": "Invalid backup password",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "Please use Android Backup Extractor (ABE) instead",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "Invalid backup path, path shoud be a folder or an Android Backup (.ab) file",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "you need to specify an output folder with --output",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "Unable to parse STIX2 indicator file. The file is corrupted or in the wrong format",
+    "is_regex": false,
     "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "Please disable Developer Options and ADB (Android Debug Bridge) on the device once finished with the acquisition. ADB is a powerful tool which can allow unauthorized access to the device.",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Informativo",
     "message": ""
 },
 
 {
     "patterns": "You have exceeded the quota for your VirusTotal API key",
-    "categority": "",
+    "is_regex": false,
+    "categority": "VirusTotal",
     "message": ""
 },
 
 {
     "patterns": "Failed to retrieve date of latest update to indicators index file",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "Checking stored results against provided indicators",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Informativo",
     "message": ""
 },
 
 {
     "patterns": "Checking Android device over debug bridge",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Informativo",
     "message": ""
 },
 
 {
     "patterns": "Download of selected packages completed",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Informativo",
     "message": ""
 },
 
 {
     "patterns": "Downloading packages from device. This might take some time",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Informativo",
     "message": ""
 },
 
 {
     "patterns": "No packages were selected for download",
+    "is_regex": false,
     "categority": "",
     "message": ""
 },
 
 {
     "patterns": "Retrieving list of installed packages",
+    "is_regex": false,
     "categority": "",
     "message": ""
 },
 
 {
     "patterns": "No backup data found",
+    "is_regex": false,
     "categority": "",
     "message": ""
 },
 
 {
     "patterns": "Impossible to read SMS from the Android Backup, please extract the SMS and try extracting it with Android Backup Extractor",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "Impossible to parse this backup file, please use Android Backup Extractor instead",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "No backup password provided.",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "Invalid backup format, backup.ab was not analysed",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "getprop.txt file not found",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "Dumpsys fyke not",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "Cannot decrypt backup because interactivity was disabled and the password was not supplied",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Erro na Análise",
     "message": ""
 },
 
 {
     "patterns": "Using backup password passed from command line or environment variable.",
-    "categority": "",
+    "is_regex": false,
+    "categority": "Informativo",
     "message": ""
 },
 
 {
     "patterns": "The `fast_mode` option was enabled: skipping full file listing ",
+    "is_regex": false,
+    "categority": "Informativo",
+    "message": ""
+},
+
+{
+    "patterns": "Extracted a total of \\d+ records from database information",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+
+{
+    "patterns": "Extracted a total of \\d+ SMS & MMS messages",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+
+{
+    "patterns": "Extracted details on \\d+ packages",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+
+{
+    "patterns": "Extracted a total of \\d+ properties",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+
+{
+    "patterns": "Extracted receivers for \\d+ intents",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+
+{
+    "patterns": "Extracted \\d+ package activities",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": "Foram identificadas {interger} atividades de pacotes."
+},
+
+{
+    "patterns": "Extracted a total of \\d+ battery daily stats",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": "Foram extraídas {integer} estatísticas diárias da bateria."
+},
+{
+    "patterns": "Extracted \\d+ records from battery daily stats",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Extracted at total of \\d+ installed package names",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Extracted a total of \\d+ records from app-ops manager",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Extracted a total of \\d+ SMS messages",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Extracted \\d+ records from battery history",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Extracted \\d+ Android system properties",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Extracted a total of \\d+ WhatsApp messages containing links",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Extracted records on a total of \\d+ processes",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Extracted a total of \\d+ history items",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Extracted a total of \\d+ battery history records",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Extracted a total of \\d+ database connection pool records",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "",
+    "is_regex": true,
     "categority": "",
     "message": ""
 }
+
+
+
 ]

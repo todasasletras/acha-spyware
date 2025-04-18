@@ -10,6 +10,7 @@ class CategoryType(str, Enum):
     SYSTEM_SECURITY = "Segurança do Sistema"
     INFORMATION = "Informativo"
     VIRUSTOTAL = "VirusTotal"
+    STALKING = "Stalking"
 
 
 class MessageLogType(TypedDict):

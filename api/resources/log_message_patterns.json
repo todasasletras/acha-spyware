@@ -13,14 +13,14 @@
 },
 
 {
-    "patterns": "installed packege related to rooting/jailbreaking",
-    "is_regex": false,
+    "patterns": "Found an installed package related to 'rooting/jailbreaking: \"%s\"'",
+    "is_regex": true,
     "categority": "Aplicativos Suspeitos",
     "message": "Foi encontrado um aplicativo associado a root ou jailbreak. Remova se não reconhecer."
 },
 {
-    "patterns": "Found root binary",
-    "is_regex": false,
+    "patterns": "Found root binary \"+\"",
+    "is_regex": true,
     "categority": "Aplicativos Suspeitos",
     "message": "O dispositivo pode estar com root ativo, aumentando os riscos. Se não fez root intencionalmente, procure um técnico."
 },
@@ -458,6 +458,344 @@
     "patterns": "Extracted a total of \\d+ database connection pool records",
     "is_regex": true,
     "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Identified a total of %d accessibility services",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Identified a total of %d packages in App-Ops Manager",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Found package \"%s\" requested %d potentially dangerous permissions",
+    "is_regex": true,
+    "categority": "Aplicativos Suspeitos",
+    "message": ""
+},
+{
+    "patterns": "Found an SUID file in a non-standard directory \"+\".",
+    "is_regex": true,
+    "categority": "Aplicativos Suspeitos",
+    "message": ""
+},
+{
+    "patterns": "Found a known suspicous file at path: \"%s\"",
+    "is_regex": true,
+    "categority": "Aplicativos Suspeitos",
+    "message": ""
+},
+{
+    "patterns": "Downloaded file %s to local copy at %s",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "Skipping invalid file info - %s",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "Found file in tmp folder at path %s",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Found %s files in primary Android tmp and media folders",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Found %s total files",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Found an installed package related to 'rooting/jailbreaking: \"%s\"",
+    "is_regex": true,
+    "categority": "Aplicativos Suspeitos",
+    "message": ""
+},
+{
+    "patterns": "Found a security package disabled: \"%s\"",
+    "is_regex": true,
+    "categority": "Configuração Insegura",
+    "message": ""
+},
+{
+    "patterns": "System OTA update package \"%s\" disabled on the phone",
+    "is_regex": true,
+    "categority": "Segurança do Sistema",
+    "message": ""
+},
+{
+    "patterns": "Third-party package \"%s\" requested %d potentially dangerous permissions",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+
+{
+    "patterns": "Found non-system package with name \"%s\" installed by \"%s\" on %s",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Full dumpsys output stored at %s",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "SELinux is being regularly enforced",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "SELinux status is \"%s\"!",
+    "is_regex": true,
+    "categority": "Segurança do Sistema",
+    "message": ""
+},
+{
+    "patterns": "Current logcat logs stored at %s",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Logcat logs prior to last reboot stored at %s",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Processing SMS backup file at %s",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Processing MMS backup file at %s",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "Ignoring %s environment variable, using --backup-password argument instead",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Using backup password from %s environment variable",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Identified %d running processes",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Identified %d SMS in backup data",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Identified %d settings",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Identified %d applications in AppOps Manager",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Identified %d DB Info entries",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Found an installed package related to rooting/jailbreaking: \"%s\"",
+    "is_regex": true,
+    "categority": "Possível Invasão",
+    "message": ""
+},
+{
+    "patterns": "+: +",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": "Checar informações apresentada aqui!"
+},
+{
+    "patterns": "Found a receiver to intercept outgoing SMS messages: \"%s\"",
+    "is_regex": true,
+    "categority": "Stalking",
+    "message": ""
+},
+{
+    "patterns": "Found a receiver to intercept incoming SMS messages: \"%s\"",
+    "is_regex": true,
+    "categority": "Stalking",
+    "message": ""
+},
+{
+    "patterns": "Found a receiver to intercept incoming data SMS message: \"%s\"",
+    "is_regex": true,
+    "categority": "Stalking",
+    "message": ""
+},
+{
+    "patterns": "Found a receiver monitoring telephony state/incoming calls: \"%s\"",
+    "is_regex": true,
+    "categority": "Stalking",
+    "message": ""
+},
+{
+    "patterns": "Found a receiver Found a receiver monitoring outgoing calls: \"%s\"",
+    "is_regex": true,
+    "categority": "Stalking",
+    "message": ""
+},
+{
+    "patterns": "Found a receiver ",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "Found suspicious \"%s\" setting \"%s = %s\" (%s)",
+    "is_regex": true,
+    "categority": "Segurança do Sistema",
+    "message": ""
+},
+{
+    "patterns": "Package %s with REQUEST_INSTALL_PACKAGES permission",
+    "is_regex": true,
+    "categority": "Aplicativos Suspeitos",
+    "message": ""
+},
+{
+    "patterns": "This phone has not received security updates for more than six months (last update: %s)",
+    "is_regex": true,
+    "categority": "Segurança do Sistema",
+    "message": ""
+},
+{
+    "patterns": "Downloading %s ...",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Unable to pull package file from %s: insufficient privileges, it might be a system app",
+    "is_regex": true,
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "Failed to pull package file from %s: %s",
+    "is_regex": true,
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "Starting extraction of installed APKs at folder %s",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Selected all %d available packages",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "Selected only %d packages which are not marked as \"system\"",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "[%d/%d] Package: %s",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+
+{
+    "patterns": "Impossible to parse this backup file: %s",
+    "is_regex": true,
+    "categority": "Erro na Análise",
+    "message": ""
+},
+{
+    "patterns": "The analysis of the Android device produced %d detections!",
+    "is_regex": true,
+    "categority": "Informativo",
+    "message": ""
+},
+{
+    "patterns": "",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "",
+    "is_regex": true,
+    "categority": "",
+    "message": ""
+},
+{
+    "patterns": "",
+    "is_regex": true,
+    "categority": "",
     "message": ""
 },
 {

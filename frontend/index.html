@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferramenta de Verificação Móvel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-5/css/bootstrap.css') }}">
+</head>
+<body class="bg-dark text-light">
+    <div class="container">
+        <h1 class="text-light my-4">#Ferramenta de Verificação Móvel - Sistema Android</h1>
+        <div class="row my-2 gap-2">
+            <div class="d-flex align-items-center">
+                <div class="input-group">
+                    <label class="labelApiKey">Insira a chave de API <br/>do Vírus Total</label>
+                    <input id="apiKeyInput" class="form-control" type="text" placeholder="API Key" aria-label="API Key" />
+                    <button id="btnEnviarApiKey" class="btn button-submit">
+                        Enviar
+                    </button>
+                </div>
+                <a class="ps-3" href="/info">
+                    <img src="{{ url_for('static', filename='images/info-icon.svg') }}" alt="Obter mais informações"/>
+                </a>
+            </div>
+            <p id="resultadoApiKey"></p>
+        </div>
+        
+        <div class="row">
+            <div class="button-container">
+                <!-- Transformando a div em um botão -->
+                <button class="button" id="btnVerificarAdb">
+                    <div class="button-bg"></div>
+                    <span class="button-text">Verificar Dispositivo conectado</span>
+                </button>
+                <div class="note"># Necessário baixar e instalar o Android Debug Bridge</div>
+                <p id="resultado"></p>
+            </div>
+            <div class="button-container">
+                <button class="button">
+                    <div class="button-bg"></div>
+                    <span class="button-text">Verificar Backup</span>
+                </button>
+                <div class="note"># Precisa já ter feito a verificação do aparelho conectado</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="button-container">
+                <button class="button">
+                    <div class="button-bg"></div>
+                    <span class="button-text">Atualizar indicadores de comprometimento</span>
+                </button>
+            </div>
+            <div class="button-container">
+                <button class="button">
+                    <div class="button-bg"></div>
+                    <span class="button-text">Download APK</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='bootstrap-5/js/bootstrap.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}" defer></script>
+</body>
+</html>

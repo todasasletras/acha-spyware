@@ -2,10 +2,12 @@ import os
 from dotenv import load_dotenv
 from typing import Dict, Union
 from flask import Blueprint, jsonify, request
+from api import logger
 from api.controllers.mvt_controller import MVTController
 from api.models.device import Device
 
 ENV_FILE = '.env'
+logger.debug("Carregar variaveis de ambiente")
 load_dotenv()
 
 bp = Blueprint('android_routes', __name__)
@@ -30,7 +32,7 @@ def check_adb():
     iocs_files : list, optional
         A list of paths to indicators files. Can include multiple files.
     output_folder : str, optional
-        Specify a path to the folder where JSON results will be stored (default: '/mnt/c/output').
+        Specify a path to the folder where JSON results will be stored (default: '/tmp/fvm').
     fast : bool, optional
         Skip time/resource-consuming features (default: False).
     list_modules : bool, optional
@@ -52,15 +54,16 @@ def check_adb():
         - 'stdout' (str, optional): Standard output if the operation succeeds.
         - 'stderr' (str, optional): Standard error if the operation fails.
     """
-    
+    logger.debug("Inicio do check-adb")
     data = extract_request_data()
     if data['type'] == 'unsupported':
+        logger.warning("Tipo de content type nao suportado.")
         return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
     
     payload = data['data']
     serial = payload.get('serial', None)
     iocs_files = payload.get('iocs_files', None)
-    output_folder = payload.get('output_folder', '/mnt/c/output')
+    output_folder = payload.get('output_folder', '/tmp/fvm')
     fast = payload.get('fast', False)
     list_modules = payload.get('list_modules', False)
     module = payload.get('module', None)
@@ -68,6 +71,7 @@ def check_adb():
     backup_password = payload.get('backup_password', None)
     verbose = payload.get('verbose', False)
 
+    logger.debug("Executar o comando check-adb.")
     result = MVTController.check_adb(
         serial=serial,
         iocs_files=iocs_files,
@@ -80,6 +84,7 @@ def check_adb():
         verbose=verbose
     )
 
+    logger.debug("Retorna o resultado do comando")
     return jsonify(result), 200
 
 @bp.route('/check-androidqf', methods=['POST'])
@@ -94,7 +99,7 @@ def check_androidqf():
     androidqf_path : str
         The path to the AndroidQF data to be analyzed (required).
     output_dir : str, optional
-        Directory for saving the output (default: '/mnt/c/output').
+        Directory for saving the output (default: '/tmp/fvm').
     iocs_files : list, optional
         A list of paths to indicators of compromise (optional).
     list_modules : bool, optional
@@ -118,16 +123,19 @@ def check_androidqf():
         - 'stdout' (str, optional): Standard output if the operation succeeds.
         - 'stderr' (str, optional): Standard error if the operation fails.
     """
+    logger.debug("Inicio do androidqf")
     data = extract_request_data()
     if data['type'] == 'unsupported':
+        logger.warning("Tipo de content type nao suportado.")
         return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
     
     payload = data['data']
     if not payload.get('androidqf_path'):
+        logger.warning("Falto de parametro: androidqf_path .")
         return jsonify({'success': False, 'error': 'Missing required parameter: androidqf_path'}), 200
     
     androidqf_path = payload.get('androidqf_path')
-    output_dir = payload.get('output_dir', '/mnt/c/output')
+    output_dir = payload.get('output_dir', '/tmp/fvm')
     iocs_files = payload.get('iocs_files', [])
     list_modules = payload.get('list_modules', False)
     module = payload.get('module')
@@ -136,6 +144,7 @@ def check_androidqf():
     backup_password = payload.get('backup_password')
     verbose = payload.get('verbose', False)
 
+    logger.debug("Executar o comando androidqf.")
     result = MVTController.check_androidqf(
         androidqf_path=androidqf_path,
         iocs_files=iocs_files,
@@ -148,6 +157,7 @@ def check_androidqf():
         verbose=verbose
     )
     
+    logger.debug("Retorna o resultado do comando")
     return jsonify(result), 200
 
 @bp.route('/check-backup', methods=['POST'])
@@ -180,12 +190,15 @@ def check_backup():
         - 'stdout' (str, optional): Standard output if the operation succeeds.
         - 'stderr' (str, optional): Standard error if the operation fails.
     """
+    logger.debug("Inicio do check-backup")
     data = extract_request_data()
     if data['type'] == 'unsupported':
+        logger.warning("Tipo de content type nao suportado.")
         return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
     
     payload = data['data']
     if not payload.get('backup_path'):
+        logger.warning("Falto de parametro: backup_path.")
         return jsonify({'success': False, 'error': 'Missing required parameter: backup_path'}), 200
     
     backup_path = payload.get('backup_path')
@@ -196,6 +209,7 @@ def check_backup():
     backup_password = payload.get('backup_password')
     verbose =  payload.get('verbose', False)
 
+    logger.debug("Executar o comando chek-backup.")
     result = MVTController.check_backup(
             backup_path=backup_path,
             iocs_files=iocs_files,
@@ -206,6 +220,7 @@ def check_backup():
             verbose=verbose
         )
 
+    logger.debug("Retorna o resultado do comando")
     return jsonify(result), 200
 
 @bp.route('/check-bugreport', methods=['POST'])
@@ -221,7 +236,7 @@ def check_bugreport():
         Path to the bugreport file to be analyzed.
     'iocs_files': list, optional 
         A list of paths to indicators of compromise.
-    'output_folder': str, opotional Directory for saving the output (default is '/mnt/c/output').
+    'output_folder': str, opotional Directory for saving the output (default is '/tmp/fvm').
     'list_modules': bool, option 
         Boolean flag to list available modules (default is False).
     'module': str, optional
@@ -237,21 +252,25 @@ def check_bugreport():
         - 'stdout' (str, optional): Standard output if the operation succeeds.
         - 'stderr' (str, optional): Standard error if the operation fails.
     """
+    logger.debug("Inicio do check-bugreport")
     data = extract_request_data()
     if data['type'] == 'unsupported':
+        logger.warning("Tipo de content type nao suportado.")
         return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
     
     payload = data['data']
     if not payload.get('bugreport_path'):
+        logger.warning("Falto de parametro: bugreport_path.")
         return jsonify({'success': False, 'error': 'Missing required parameter: bugreport_path'}), 200
     
     bugreport_path = payload.get('bugreport_path')
     iocs_files = payload.get('iocs_files')
-    output_folder = payload.get('output_folder', '/mnt/c/output')
+    output_folder = payload.get('output_folder', '/tmp/fvm')
     list_modules = payload.get('list_modules', False)
     module = payload.get('module')
     verbose = payload.get('verbose', False)
 
+    logger.debug("Executar o comando chek-backup.")
     result = MVTController.check_bugreport(
         bugreport_path=bugreport_path,
         iocs_files=iocs_files,
@@ -261,7 +280,8 @@ def check_bugreport():
         verbose=verbose
     )
 
-    return jsonify(result)
+    logger.debug("Retorna o resultado do comando")
+    return jsonify(result), 200
 
 @bp.route('/check-apk', methods=['POST'])
 def check_apk():
@@ -270,7 +290,7 @@ def check_apk():
 
     Expects a JSON payload with:
     - 'file_path': Path to the APK file to be analyzed (required).
-    - 'output_dir': Directory for saving the output (optional, defaults to '/mnt/c/output').
+    - 'output_dir': Directory for saving the output (optional, defaults to '/tmp/fvm').
 
     Returns
     -------
@@ -285,7 +305,7 @@ def check_apk():
     if not file_path:
         return jsonify({'success': False, 'error': 'Missing required parameter: file_path'}), 400
 
-    output_dir = data.get('output_dir', '/mnt/c/output')
+    output_dir = data.get('output_dir', '/tmp/fvm')
     result = MVTController.check_apk(file_path, output_dir)
     return jsonify(result)
 
@@ -309,12 +329,15 @@ def check_iocs():
         - 'output' (str, optional): Standard output if the operation succeeds.
         - 'error' (str, optional): Standard error if the operation fails.
     """
+    logger.debug("Inicio do check-iocs")
     data = extract_request_data()
     if data['type'] == 'unsupported':
+        logger.warning("Tipo de content type nao suportado.")
         return jsonify({'success':False, 'error': 'Unsupported content type'}), 200
     
     payload = data['data']
     if not payload.get('folder'):
+        logger.warning("Falto de parametro: folder.")
         return jsonify({'success': False, 'error': 'Missing required parameter: folder.'}), 200
     
     folder = payload.get('folder')
@@ -322,6 +345,7 @@ def check_iocs():
     list_modules = payload.get('list_modules', False)
     module = payload.get('module')
 
+    logger.debug("Executar o comando chek-iocs.")
     result = MVTController.check_iocs(
             folder=folder,
             iocs_files=iocs_files,
@@ -329,6 +353,7 @@ def check_iocs():
             module=module
     )
 
+    logger.debug("Retorna o resultado do comando")
     return jsonify(result), 200
 
 @bp.route('/download-iocs', methods=['POST', 'GET'])
@@ -344,8 +369,12 @@ def download_iocs():
         - 'message' (str, optional): Standard output if the operation succeeds.
         - 'error' (str, optional): Standard error if the operation fails.
     """
+    logger.debug("Inicio do download-iocs")
+    logger.debug("Executar o comando download-iocs.")
     result = MVTController.download_iocs()
-    return jsonify(result)
+
+    logger.debug("Retorna o resultado do comando")
+    return jsonify(result), 200
 
 @bp.route('/download-apks', methods=['POST'])
 def download_apks():
@@ -357,7 +386,7 @@ def download_apks():
     - 'serial' (str, optional): Serial number of the device for downloading APKs.
     - 'all_apks' (bool, optional): Flag to download all APKs from the device (default is False).
     - 'virustotal (bool, optional): Flag to analyze APKs using VirusTotal (defalt is False).
-    - 'output_folder' (str, optional): Directory for saving the downloaded APKs (defaults is '/mnt/c/output').
+    - 'output_folder' (str, optional): Directory for saving the downloaded APKs (defaults is '/tmp/fvm').
     - 'from_file' (str, optional): Path to a file containing a list of APKs to download.
     - 'verbose' (bool, optional): Flag to enable verbose output (default is False)
 
@@ -369,24 +398,29 @@ def download_apks():
         - 'output' (str, optional): Standard output if the operation succeeds.
         - 'error' (str, optional): Standard error if the operation fails.
     """
+    logger.debug("Inicio do download-apks")
     data = extract_request_data()
     if data['type'] == 'unsupported':
+        logger.warning("Tipo de content type nao suportado.")
         return jsonify({'success': False, 'error': 'Unsupported content type'}), 200
     
     payload = data['data']
 
     virustotal = payload.get('virustotal', False)
+
     if virustotal:
         var_env = 'MVT_VT_API_KEY'
         if var_env not in os.environ:
+            logger.warning("Variável de ambiente MVT_VT_API_KEY não definida.")
             return jsonify({'success': False, 'error': f'Missing environment variable: {var_env}'}), 200
-    
+
     serial = payload.get('serial')
     all_apks = payload.get('all_apks', False)
-    output_folder = payload.get('output_folder', '/mnt/c/output')
+    output_folder = payload.get('output_folder', '/tmp/fvm')
     from_file = payload.get('from_file')
     verbose = payload.get('verbose', False)
 
+    logger.debug("Executar o comando download-apks.")
     result = MVTController.download_apks(
             serial=serial,
             all_apks=all_apks,
@@ -396,6 +430,7 @@ def download_apks():
             verbose=verbose
         )
     
+    logger.debug("Retorna o resultado do comando")
     return jsonify(result), 200
 
 @bp.route('/devices', methods=['GET'])
@@ -410,40 +445,28 @@ def list_devices():
         JSON array of device objects, where each object contains device details.
     
     """
+    logger.debug("Inicio do list-devices")
+    logger.debug("Exdecutar a listagem de dispositivos.")
     devices = Device.list_connected_devices()
+
+    logger.debug("Retorna o resultado do comando")
     return jsonify([device.to_dict() for device in devices])
 
 @bp.route('/set-virustotal-api-key', methods=['POST'])
 def set_virustotal_api_key():
-    """
-    Endpoint to set the VirusTotal API Key as an environment variable.
-
-    This endpoit allows users to provide the VirusTotal API Key, wich is saved 
-    as an environment variable in a specified environment file. The key can be
-    used for turther operations requiring VirusTotal integration.
-    
-    Parameters
-    ----------
-    - 'api_key' (str): The VirusTotal API Key to be set.
-    
-    Returns
-    -------
-    Response
-        JSON object containig:
-        - 'success' (bool): Indicates if the operation was successful.
-        - 'message' (str, optional): Message about the operation's result.
-        - 'error' (str, optional): Message about the error in operation result
-    """
+    logger.debug("Início do set-virustotal-api-key")
     data = extract_request_data()
     if data['type'] == 'unsupported':
+        logger.warning("Tipo de content type não suportado.")
         return jsonify({'success': False, 'error': data['data']['error']}), 200
     
     payload = data['data']
     if not payload.get('api_key'):
-        return jsonify({'success':False, 'error': 'Missing required paramenter: api_key'})
-    
+        logger.warning("Falta do parâmetro: api_key.")
+        return jsonify({'success': False, 'error': 'Missing required parameter: api_key'})
+
     var_env = 'MVT_VT_API_KEY'
-    api_key = payload.get('api_key')
+    api_key = payload['api_key']
     new_env = f"{var_env}={api_key}\n"
 
     try:
@@ -452,8 +475,10 @@ def set_virustotal_api_key():
                 file.write(new_env)
         else:
             updated = False
-            with open(ENV_FILE, '+w') as file:
+            with open(ENV_FILE, 'r') as file:
                 lines = file.readlines()
+
+            with open(ENV_FILE, 'w') as file:
                 for line in lines:
                     if line.startswith(var_env):
                         file.write(new_env)
@@ -463,11 +488,14 @@ def set_virustotal_api_key():
                 if not updated:
                     file.write(new_env)
 
-        return jsonify({'success':True, 'message': 'VirusTotal API Key set successfully'}), 200
-    
+        # Recarrega o .env no ambiente
+        load_dotenv(ENV_FILE)
+
+        return jsonify({'success': True, 'message': 'VirusTotal API Key set successfully'}), 200
+
     except Exception as e:
-        print('Failed to set API Key:', e)
-        return jsonify({'success':False, 'error': 'Failed to set API Key.'}), 200
+        logger.error(f"Failed to set API Key: {e}")
+        return jsonify({'success': False, 'error': 'Failed to set API Key.'}), 200
 
 def extract_request_data()->Dict[str, Union[str, Dict[str, str]]]:
     """
@@ -483,12 +511,35 @@ def extract_request_data()->Dict[str, Union[str, Dict[str, str]]]:
         - 'type' (str): Indicates the content type of the request ('form', 'json', 'unsupported')
         - 'data' (dict): The parsed form or json data (error message if unsupported).
     """
+    logger.debug("Inicio do extract-request-data")
     if request.content_type is None:
+        logger.debug(f"O Content type é {request.content_type}")
         return {'type': 'unsupported', 'data': {'error': 'Unsupported Content Type None.'}}
     elif request.form:
+        logger.debug("Obtendo os parametros do form.")
         return {'type': 'form', 'data': request.form.to_dict() or {}}
     elif request.is_json:
+        logger.debug("Obtendo os parametros do json.")
         return{'type': 'json', 'data': request.json or {}}
     else:
+        logger.debug(f"O Content type não é suportado: {request.content_type}")
         return {'type': 'unsupported', 'data': {'error': 'Unsupported Content Type'}}
-    
+
+
+# Erros de requisições 
+@bp.app_errorhandler(400)
+def bad_request(error):
+    return jsonify({"success": False, "error": "Requisição inválida. Verifique os dados enviados."}), 200
+
+@bp.app_errorhandler(404)
+def not_found(error):
+    logger.error(f"Endpoint não encontrado: {error}")
+    return jsonify({"success": False, "error": "Esta página não existe."}), 200
+
+@bp.app_errorhandler(405)
+def method_not_allowed(error):
+    return jsonify({"success": False, "error": "Método não permitido. Verifique a documentação da API."}), 200
+
+@bp.app_errorhandler(500)
+def internal_server_error(error):
+    return jsonify({"success": False, "error": "Erro interno do servidor. Tente novamente mais tarde"}), 200

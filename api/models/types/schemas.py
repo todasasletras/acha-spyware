@@ -1,5 +1,4 @@
 from enum import Enum
-from dataclasses import dataclass
 from typing import TypedDict, List
 
 
@@ -21,10 +20,11 @@ class MessageLogType(TypedDict):
 
 
 class LogStatus(str, Enum):
-    INFO = "info"
-    WARNING = "warning"
-    ERROR = "error"
-    CRITICAL = "critical"
+    NONE = "-"
+    INFO = "INFO"
+    WARNING = "WARNING"
+    ERROR = "ERROR"
+    CRITICAL = "CRITICAL"
 
 
 class LogEntry(TypedDict):
@@ -39,8 +39,11 @@ class MessageEntry(TypedDict):
     original_message: str
 
 
-class APIResponse(TypedDict, total=False):
+class LogMessageEntry(TypedDict):
+    logs: List[LogEntry]
+    messages: List[MessageEntry]
+
+
+class APIResponse(LogMessageEntry, total=False):
     success: bool
-    log: List[LogEntry]
-    messages: MessageEntry
     error: str

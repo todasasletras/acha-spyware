@@ -8,7 +8,12 @@ from api.exceptions import (
     InvalidPatternFormat,
     NoPatternMatchError,
 )
-from api.models.types.schemas import MessageLogType, MessageEntry
+from api.models.types.schemas import (
+    MessageLogType,
+    MessageEntry,
+    LogEntry,
+    LogMessageEntry,
+)
 
 
 class LogParser:
@@ -36,10 +41,33 @@ class LogParser:
         except json.JSONDecodeError as e:
             raise InvalidPatternFormat(f"Erro ao decodificar o JSON: {str(e)}")
 
-    def parse(self, log_text: str):
+    def parse(self, log_text: str) -> LogMessageEntry:
         cleaned = self._clean_output(log_text)
-        result: List[MessageEntry] = []
+        return {
+            "logs": self._extract_log(cleaned),
+            "messages": self._parser_messages_from_patterns(cleaned),
+        }
 
+    def _extract_log(self, cleaned: str) -> List[LogEntry]:
+        logs: List[LogEntry] = []
+        log_pattern = re.compile(
+            r"^((?P<status>\w+)?\[(?P<source>.*?)\]\s+)?(?P<message>.*)$",
+            re.IGNORECASE | re.MULTILINE,
+        )
+        for match in log_pattern.finditer(cleaned):
+            status = match.group("status").strip() if match.group("status") else "-"
+            message = match.group("message").strip()
+            logs.append(
+                {
+                    "id": len(logs),
+                    "status": status,
+                    "message": message,
+                }
+            )
+        return logs
+
+    def _parser_messages_from_patterns(self, cleaned: str) -> List[MessageEntry]:
+        messages: List[MessageEntry] = []
         for pattern in self.patterns:
             try:
                 regex = re.compile(pattern["pattern"], re.IGNORECASE | re.MULTILINE)
@@ -47,17 +75,17 @@ class LogParser:
                 print(f"Erro no regex padrão: {e} - {pattern['pattern']}")
                 continue
             for m in regex.finditer(cleaned):
-                result.append(
+                messages.append(
                     {
                         "category": pattern["category"],
                         "message": pattern["message"],
                         "original_message": m.group().strip(),
                     }
                 )
-        if not result:
+        if not messages:
             raise NoPatternMatchError("Nenhum padrão encontrado!")
 
-        return result
+        return messages
 
     def _clean_output(self, text: str):
         # Remover sequências ANSI
@@ -113,9 +141,9 @@ if __name__ == "__main__":
     print(len(parsed))
     print(
         "\n".join(
-            f"{key}: {value}"
-            for p in parsed
-            if p["original_message"]
-            for key, value in p.items()
+            [
+                f"{key}:\n\t{'\n\t'.join([f'{chave}:\n\t\t{valor}' for v in values for chave, valor in v.items()])}"
+                for key, values in parsed.items()
+            ]
         ),
     )

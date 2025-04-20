@@ -121,7 +121,7 @@
     "pattern": "Unable to connect to the device over USB.",
     "is_regex": false,
     "category": "Erro na Análise",
-    "message": ""
+    "message": "Não foi possível conectar ao dispositivo. Permita o acesso no dispositivo!"
 },
 {
     "pattern": "did you specify the correct IP address?",
@@ -757,247 +757,247 @@
     "message": ""
 },
 {
-    "pattern": "Checking Android bug report at path: %s",
+    "pattern": "Checking Android bug report at path: .+",
     "is_regex": true,
     "category": "Informativo",
     "message": ""
 },
 {
-    "pattern": "Checking Android backup at path: %s",
+    "pattern": "Checking Android backup at path: .+",
     "is_regex": true,
     "category": "Informativo",
     "message": ""
 },
 {
-    "pattern": "Checking AndroidQF acquisition at path: %s",
+    "pattern": "Checking AndroidQF acquisition at path: .+",
     "is_regex": true,
     "category": "Informativo",
     "message": ""
 },
 {
-    "pattern": "Loaded a total of %d unique indicators",
+    "pattern": "Loaded a total of \\d+ unique indicators",
     "is_regex": true,
     "category": "Informativo",
     "message": ""
 },
 {
-    "pattern": "Downloaded indicators \"%s\" to %s",
+    "pattern": "Downloaded indicators \".+\" to .+",
     "is_regex": true,
     "category": "IOCs",
     "message": ""
 },
 {
-    "pattern": "The analysis of the Android bug report produced %d detections!",
+    "pattern": "The analysis of the Android bug report produced \\d+ detections!",
     "is_regex": true,
     "category": "Possível Invasão",
     "message": ""
 },
 {
-    "pattern": "The analysis of the Android backup produced %d detections!",
+    "pattern": "The analysis of the Android backup produced \\d+ detections!",
     "is_regex": true,
     "category": "Possível Invasão",
     "message": ""
 },
 {
-    "pattern": "The analysis of the AndroidQF acquisition produced %d detections!",
+    "pattern": "The analysis of the AndroidQF acquisition produced \\d+ detections!",
     "is_regex": true,
     "category": "Possível Invasão",
     "message": ""
 },
 {
-    "pattern": "Failed to retrieve indicators index located at %s (error %d)",
+    "pattern": "Failed to retrieve indicators index located at .+ (error \\d+)",
     "is_regex": true,
     "category": "Erro na Análise",
     "message": ""
 },
 {
-    "pattern": "Failed to download indicators file from %s (error %d)",
+    "pattern": "Failed to download indicators file from .+ (error \\d+)",
     "is_regex": true,
     "category": "Erro na Análise",
     "message": ""
 },
 {
-    "pattern": "Could not find a way to download indicator file for %s",
+    "pattern": "Could not find a way to download indicator file for .+",
     "is_regex": true,
     "category": "Erro na Análise",
     "message": ""
 },
 {
-    "pattern": "Failed to get details about file %s (error %d)",
+    "pattern": "Failed to get details about file .+ (error \\d+)",
     "is_regex": true,
     "category": "Erro na Análise",
     "message": ""
 },
 {
-    "pattern": "No indicators file exists at path %s",
+    "pattern": "No indicators file exists at path .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Unable to unshorten URL %s",
+    "pattern": "Unable to unshorten URL .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Maybe found a known suspicious domain %s matching indicator \"%s\" from \"%s\"",
+    "pattern": "Maybe found a known suspicious domain .+ matching indicator \".+\" from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious domain %s shortened as %s matching indicator \"%s\" from \"%s\"",
+    "pattern": "Found a known suspicious domain .+ shortened as .+ matching indicator \".+\" from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious domain %s matching indicator \"%s\" from \"%s\"",
+    "pattern": "Found a known suspicious domain .+ matching indicator \".+\" from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious process name \"%s\" matching indicators from \"%s\"",
+    "pattern": "Found a known suspicious process name \".+\" matching indicators from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious process name \"%s\"",
+    "pattern": "Found a known suspicious process name \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious email address \"%s\" matching indicators from \"%s\"",
+    "pattern": "Found a known suspicious email address \".+\" matching indicators from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious file name \"%s\" matching indicators from \"%s\"",
+    "pattern": "Found a known suspicious file name \".+\" matching indicators from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious file path \"%s\" matching indicators form \"%s\"",
+    "pattern": "Found a known suspicious file path \".+\" matching indicators form \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious file with hash \"%s\" matching indicators from \"%s\"",
+    "pattern": "Found a known suspicious file with hash \".+\" matching indicators from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious profile ID \"%s\" matching indicators from \"%s\"",
+    "pattern": "Found a known suspicious profile ID \".+\" matching indicators from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious app with ID \"%s\" matching indicators from \"%s\"",
+    "pattern": "Found a known suspicious app with ID \".+\" matching indicators from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious domain %s ",
+    "pattern": "Found a known suspicious domain .+ ",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a known suspicious Android property \"%s\" matching indicators from \"%s\"",
+    "pattern": "Found a known suspicious Android property \".+\" matching indicators from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a sub-domain with suspicious top level %s shortened as %s matching indicator \"%s\" from \"%s\"",
+    "pattern": "Found a sub-domain with suspicious top level .+ shortened as .+ matching indicator \".+\" from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a sub-domain with a suspicious top level %s matching indicator \"%s\" from \"%s\"",
+    "pattern": "Found a sub-domain with a suspicious top level .+ matching indicator \".+\" from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found a truncated known suspicious process name \"%s\" matching indicators from \"%s\"",
+    "pattern": "Found a truncated known suspicious process name \".+\" matching indicators from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Found known suspicious process name mentioned in file at path \"%s\" matching indicators from \"%s\"",
+    "pattern": "Found known suspicious process name mentioned in file at path \".+\" matching indicators from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "indicators file exists at path %s",
+    "pattern": "indicators file exists at path .+",
     "is_regex": true,
     "category": "",
     "message": "verificar duplicidade"
 },
 {
-    "pattern": "matching indicator \"%s\" from \"%s\"",
+    "pattern": "matching indicator \".+\" from \".+\"",
     "is_regex": true,
     "category": "",
     "message": "verificar duplicidade"
 },
 {
-    "pattern": "level %s shortened as %s matching \"%s\" from \"%s\"",
+    "pattern": "level .+ shortened as .+ matching \".+\" from \".+\"",
     "is_regex": true,
     "category": "",
     "message": "verificar duplicidade"
 },
 {
-    "pattern": "level %s matching indicator \"%s\" from \"%s\"",
+    "pattern": "level .+ matching indicator \".+\" from \".+\"",
     "is_regex": true,
     "category": "",
     "message": "verificar duplicidade"
 },
 {
-    "pattern": "path \"%s\" matching indicators from \"%s\"",
+    "pattern": "path \".+\" matching indicators from \".+\"",
     "is_regex": true,
     "category": "",
     "message": "verificar duplicidade"
 },
 {
-    "pattern": "Path specified with env MVT_STIX2 is not a valid file: %s",
+    "pattern": "Path specified with env MVT_STIX2 is not a valid file: .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "The check of the results produced %d detections!",
+    "pattern": "The check of the results produced \\d+ detections!",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Failed to hash the file %s: might be a symlink",
+    "pattern": "Failed to hash the file .+: might be a symlink",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Failed to hash the file %s: permission denied",
+    "pattern": "Failed to hash the file .+: permission denied",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Unable to create output folder %s: %s",
+    "pattern": "Unable to create output folder .+: .+",
     "is_regex": true,
     "category": "",
     "message": ""
@@ -1015,61 +1015,61 @@
     "message": ""
 },
 {
-    "pattern": "Unable to store results of module %s to file %s: %s",
+    "pattern": "Unable to store results of module .+ to file .+: .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "The %s module database seems to be corrupted: %s",
+    "pattern": "The .+ module database seems to be corrupted: .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Error in running extraction from module %s: %s",
+    "pattern": "Error in running extraction from module .+: .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Error when checking indicators from module %s: %s",
+    "pattern": "Error when checking indicators from module .+: .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Error when serializing data from module %s: %s",
+    "pattern": "Error when serializing data from module .+: .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Parsing STIX2 indicators file at path %s",
+    "pattern": "Parsing STIX2 indicators file at path .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Loading results from \"%s\" with module %s",
+    "pattern": "Loading results from \".+\" with module .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Reference hash of the info.json file: \"%s\"",
+    "pattern": "Reference hash of the info.json file: \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Following is the list of available %s modules:",
+    "pattern": "Following is the list of available .+ modules:",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": " - %s",
+    "pattern": " - .+",
     "is_regex": true,
     "category": "",
     "message": ""
@@ -1081,43 +1081,43 @@
     "message": ""
 },
 {
-    "pattern": "Could not find results for file with hash %s",
+    "pattern": "Could not find results for file with hash .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Loaded %d results from \"%s\"",
+    "pattern": "Loaded \\d+ results from \".+\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Running module %s...",
+    "pattern": "Running module .+...",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "Insufficient privileges for module %s: %s",
+    "pattern": "Insufficient privileges for module .+: .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "There might be no data to extract by module %s: %s",
+    "pattern": "There might be no data to extract by module .+: .+",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "The %s module does not support checking for indicators",
+    "pattern": "The .+ module does not support checking for indicators",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "The %s module produced no detections!",
+    "pattern": "The .+ module produced no detections!",
     "is_regex": true,
     "category": "",
     "message": ""

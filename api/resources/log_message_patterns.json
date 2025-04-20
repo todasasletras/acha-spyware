@@ -757,72 +757,369 @@
     "message": ""
 },
 {
-    "pattern": "",
+    "pattern": "Checking Android bug report at path: %s",
+    "is_regex": true,
+    "category": "Informativo",
+    "message": ""
+},
+{
+    "pattern": "Checking Android backup at path: %s",
+    "is_regex": true,
+    "category": "Informativo",
+    "message": ""
+},
+{
+    "pattern": "Checking AndroidQF acquisition at path: %s",
+    "is_regex": true,
+    "category": "Informativo",
+    "message": ""
+},
+{
+    "pattern": "Loaded a total of %d unique indicators",
+    "is_regex": true,
+    "category": "Informativo",
+    "message": ""
+},
+{
+    "pattern": "Downloaded indicators \"%s\" to %s",
+    "is_regex": true,
+    "category": "IOCs",
+    "message": ""
+},
+{
+    "pattern": "The analysis of the Android bug report produced %d detections!",
+    "is_regex": true,
+    "category": "Possível Invasão",
+    "message": ""
+},
+{
+    "pattern": "The analysis of the Android backup produced %d detections!",
+    "is_regex": true,
+    "category": "Possível Invasão",
+    "message": ""
+},
+{
+    "pattern": "The analysis of the AndroidQF acquisition produced %d detections!",
+    "is_regex": true,
+    "category": "Possível Invasão",
+    "message": ""
+},
+{
+    "pattern": "Failed to retrieve indicators index located at %s (error %d)",
+    "is_regex": true,
+    "category": "Erro na Análise",
+    "message": ""
+},
+{
+    "pattern": "Failed to download indicators file from %s (error %d)",
+    "is_regex": true,
+    "category": "Erro na Análise",
+    "message": ""
+},
+{
+    "pattern": "Could not find a way to download indicator file for %s",
+    "is_regex": true,
+    "category": "Erro na Análise",
+    "message": ""
+},
+{
+    "pattern": "Failed to get details about file %s (error %d)",
+    "is_regex": true,
+    "category": "Erro na Análise",
+    "message": ""
+},
+{
+    "pattern": "No indicators file exists at path %s",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "",
+    "pattern": "Unable to unshorten URL %s",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "",
+    "pattern": "Maybe found a known suspicious domain %s matching indicator \"%s\" from \"%s\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "",
+    "pattern": "Found a known suspicious domain %s shortened as %s matching indicator \"%s\" from \"%s\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "",
+    "pattern": "Found a known suspicious domain %s matching indicator \"%s\" from \"%s\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "",
+    "pattern": "Found a known suspicious process name \"%s\" matching indicators from \"%s\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "",
+    "pattern": "Found a known suspicious process name \"%s\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "",
+    "pattern": "Found a known suspicious email address \"%s\" matching indicators from \"%s\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "",
+    "pattern": "Found a known suspicious file name \"%s\" matching indicators from \"%s\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "",
+    "pattern": "Found a known suspicious file path \"%s\" matching indicators form \"%s\"",
     "is_regex": true,
     "category": "",
     "message": ""
 },
 {
-    "pattern": "",
+    "pattern": "Found a known suspicious file with hash \"%s\" matching indicators from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Found a known suspicious profile ID \"%s\" matching indicators from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Found a known suspicious app with ID \"%s\" matching indicators from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Found a known suspicious domain %s ",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Found a known suspicious Android property \"%s\" matching indicators from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Found a sub-domain with suspicious top level %s shortened as %s matching indicator \"%s\" from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Found a sub-domain with a suspicious top level %s matching indicator \"%s\" from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Found a truncated known suspicious process name \"%s\" matching indicators from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Found known suspicious process name mentioned in file at path \"%s\" matching indicators from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "indicators file exists at path %s",
+    "is_regex": true,
+    "category": "",
+    "message": "verificar duplicidade"
+},
+{
+    "pattern": "matching indicator \"%s\" from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": "verificar duplicidade"
+},
+{
+    "pattern": "level %s shortened as %s matching \"%s\" from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": "verificar duplicidade"
+},
+{
+    "pattern": "level %s matching indicator \"%s\" from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": "verificar duplicidade"
+},
+{
+    "pattern": "path \"%s\" matching indicators from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": "verificar duplicidade"
+},
+{
+    "pattern": "Path specified with env MVT_STIX2 is not a valid file: %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "The check of the results produced %d detections!",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Failed to hash the file %s: might be a symlink",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Failed to hash the file %s: permission denied",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Unable to create output folder %s: %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "NOTE: Detected indicators of compromise. Only expert review can confirm if the detected indicators are signs of an attack.\n\n.+",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Unexpected response from VirusTotal: \\d+",
+    "is_regex": true,
+    "category": "VirusTotal",
+    "message": ""
+},
+{
+    "pattern": "Unable to store results of module %s to file %s: %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "The %s module database seems to be corrupted: %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Error in running extraction from module %s: %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Error when checking indicators from module %s: %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Error when serializing data from module %s: %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Parsing STIX2 indicators file at path %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Loading results from \"%s\" with module %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Reference hash of the info.json file: \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Following is the list of available %s modules:",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": " - %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "NOTE: Using MVT with public indicators of compromise (IOCs) WILL NOT automatically detect advanced attacks.\n\n.+",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Could not find results for file with hash %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Loaded %d results from \"%s\"",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Running module %s...",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "Insufficient privileges for module %s: %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "There might be no data to extract by module %s: %s",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "The %s module does not support checking for indicators",
+    "is_regex": true,
+    "category": "",
+    "message": ""
+},
+{
+    "pattern": "The %s module produced no detections!",
     "is_regex": true,
     "category": "",
     "message": ""
 }
-
-
-
 ]

@@ -4,7 +4,7 @@ from typing import List, Dict, Union
 from api import logger
 from api.interfaces.mvt_interface import MVTAndroidInterface
 from api.services.command_executor import CommandExecutor
-from api.models.types.schemas import MessageEntry
+from api.models.types.schemas import LogMessageEntry
 
 
 class MVTAndroid(MVTAndroidInterface):
@@ -16,8 +16,8 @@ class MVTAndroid(MVTAndroidInterface):
     for better code reuse and maintainability.
     """
 
-    def __init__(self):
-        self.executor = CommandExecutor()
+    def __init__(self, executor: CommandExecutor):
+        self.executor = executor
 
     def check_adb(
         self,
@@ -30,7 +30,7 @@ class MVTAndroid(MVTAndroidInterface):
         non_interactive: bool = False,
         backup_password: str = None,
         verbose: bool = False,
-    ) -> Dict[str, Union[bool, str, List[Dict[str, Union[int, str]]]]]:
+    ) -> LogMessageEntry:
         """
         Checks an Android device over ADB using mvt-android.
 

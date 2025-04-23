@@ -6,7 +6,8 @@ from typing import List, Dict, Union
 from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request
 
-from api import logger
+from api.config import logger
+from api.exceptions.base import APIException
 from api.models.types.schemas import APIResponse, LogMessageEntry
 from api.services.command_executor import CommandExecutor
 from api.services.mvt_service import MVTAndroid
@@ -15,21 +16,27 @@ ENV_FILE = ".env"
 logger.debug("Carregar variáveis de ambiente")
 load_dotenv()
 
-android_bp = Blueprint("android", __name__, url_prefix="/api/android")
+android_bp = Blueprint("android", __name__, url_prefix="/android")
 
 
-@android_bp.route("check-adb", methods=["POST"])
+@android_bp.route("/check-adb", methods=["POST"])
 def check_adb():
     try:
         data = request.json
         mvt_android = MVTAndroid(CommandExecutor())
         result: LogMessageEntry = mvt_android.check_adb(**data)
+        print(result)
         response = APIResponse(
             success=True, logs=result["logs"], messages=result["messages"]
         )
         return jsonify(response), 200
+    except APIException as e:
+        print(e)
+        response = APIResponse(success=False, error=e)
+        return jsonify(response)
     except Exception as e:
-        response = APIResponse(success=False, logs=result["logs"], error=e)
+        print(e)
+        return "error"
 
 
 class MVTController:

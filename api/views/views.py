@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template
 
-from api import logger
+from core.logger import setup_logger
+
+logger = setup_logger()
 
 bp = Blueprint("views", __name__, template_folder="../../frontend")
 

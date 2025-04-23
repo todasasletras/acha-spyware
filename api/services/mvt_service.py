@@ -1,10 +1,12 @@
 import os
 from typing import List, Dict, Union
 
-from api import logger
+from core.logger import setup_logger
 from api.interfaces.mvt_interface import MVTAndroidInterface
 from api.services.command_executor import CommandExecutor
 from api.models.types.schemas import LogMessageEntry
+
+logger = setup_logger()
 
 
 class MVTAndroid(MVTAndroidInterface):

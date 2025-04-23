@@ -1,7 +1,7 @@
-from .base import FVMBaseError
+from .base import APIException
 
 
-class CommandExecutionError(FVMBaseError):
+class CommandExecutionError(APIException):
     pass
 
 

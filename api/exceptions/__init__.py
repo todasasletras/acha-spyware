@@ -1,4 +1,4 @@
-from .base import FVMBaseError
+from .base import APIException
 from .log_parse import PatternFileNotFound, InvalidPatternFormat, NoPatternMatchError
 from .command_executor import (
     CommandExecutionError,
@@ -8,7 +8,7 @@ from .command_executor import (
 )
 
 __all__ = [
-    "FVMBaseError",
+    "APIException",
     "PatternFileNotFound",
     "InvalidPatternFormat",
     "NoPatternMatchError",

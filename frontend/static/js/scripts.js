@@ -9,7 +9,7 @@ async function enviarApiKey() {
   }
 
   try {
-    const response = await fetch("/set-virustotal-api-key", {
+    const response = await fetch("/api/config/set-vt-key", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ api_key: apiKey })
@@ -34,11 +34,11 @@ async function enviarCheckAdb() {
     serial: null,
     fast: false,
     verbose: true,
-    virustotal: true  // assume que usará virustotal se já salvou a chave antes
+    // virustotal: true  // assume que usará virustotal se já salvou a chave antes
   };
 
   try {
-    const response = await fetch("/check-adb", {
+    const response = await fetch("/api/android/check-adb", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -47,11 +47,14 @@ async function enviarCheckAdb() {
     });
 
     const data = await response.json();
+    console.log('data:', data)
 
     if (data.success) {
-      const resultados = data.output || [];
+      const resultados = data.messages || [];
+      console.log('success: ', resultados)
       const mensagens = resultados.map(item => {
-        return `<div><strong>${item.status.toUpperCase()}</strong> - ${item.message}</div>`;
+        console.log('items:', item)
+        return `<div><strong>${item.category.toUpperCase()}</strong> - ${item.message}</div>`;
       }).join("");
       document.querySelector("#resultado").innerHTML = mensagens || "✅ Dispositivo encontrado!";
     } else {

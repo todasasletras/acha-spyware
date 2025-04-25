@@ -1,10 +1,11 @@
 import os
 from typing import List, Dict, Union
 
+from api.exceptions.command_executor import CommandExecutionError
 from core.logger import setup_logger
 from api.interfaces.mvt_interface import MVTAndroidInterface
 from api.services.command_executor import CommandExecutor
-from api.models.types.schemas import LogMessageEntry
+from api.models.types.schemas import APIResponse, LogMessageEntry
 
 logger = setup_logger()
 
@@ -32,7 +33,7 @@ class MVTAndroid(MVTAndroidInterface):
         non_interactive: bool = False,
         backup_password: str = None,
         verbose: bool = False,
-    ) -> LogMessageEntry:
+    ) -> LogMessageEntry | APIResponse:
         """
         Checks an Android device over ADB using mvt-android.
 
@@ -72,37 +73,39 @@ class MVTAndroid(MVTAndroidInterface):
             - 'error' (str, optional): The error message.
         """
         command = ["mvt-android", "check-adb"]
+        try:
+            if serial:
+                logger.debug(f"Parametro serial definido: {serial}")
+                command.extend(["--serial", serial])
+            if iocs_files:
+                logger.debug(f"Parametro iocs_files definido: {iocs_files}")
+                for iocs_file in iocs_files:
+                    command.extend(["-i", iocs_file])
+            if output_folder:
+                logger.debug(f"Parametro output definido: {output_folder}")
+                command.extend(["--output", output_folder])
+            if fast:
+                logger.debug(f"Parametro fast definido: {fast}")
+                command.append("--fast")
+            if list_modules:
+                logger.debug(f"Parametro list_modules definido: {list_modules}")
+                command.append("--list-modules")
+            if module:
+                logger.debug(f"Parametro module definido: {module}")
+                command.extend(["--module", module])
+            if non_interactive:
+                logger.debug(f"Parametro non-interactive definido: {non_interactive}")
+                command.append("--non-interactive")
+            if backup_password:
+                logger.debug(f"Parametro backup-password definido: {backup_password}")
+                command.extend(["--backup-password", backup_password])
+            if verbose:
+                logger.debug(f"Parametro verbose definido: {verbose}")
+                command.append("--verbose")
 
-        if serial:
-            logger.debug(f"Parametro serial definido: {serial}")
-            command.extend(["--serial", serial])
-        if iocs_files:
-            logger.debug(f"Parametro iocs_files definido: {iocs_files}")
-            for iocs_file in iocs_files:
-                command.extend(["-i", iocs_file])
-        if output_folder:
-            logger.debug(f"Parametro output definido: {output_folder}")
-            command.extend(["--output", output_folder])
-        if fast:
-            logger.debug(f"Parametro fast definido: {fast}")
-            command.append("--fast")
-        if list_modules:
-            logger.debug(f"Parametro list_modules definido: {list_modules}")
-            command.append("--list-modules")
-        if module:
-            logger.debug(f"Parametro module definido: {module}")
-            command.extend(["--module", module])
-        if non_interactive:
-            logger.debug(f"Parametro non-interactive definido: {non_interactive}")
-            command.append("--non-interactive")
-        if backup_password:
-            logger.debug(f"Parametro backup-password definido: {backup_password}")
-            command.extend(["--backup-password", backup_password])
-        if verbose:
-            logger.debug(f"Parametro verbose definido: {verbose}")
-            command.append("--verbose")
-
-        return self.executor.run_command(command)
+            return self.executor.run_command(command)
+        except CommandExecutionError as e:
+            raise e
 
     def check_androidqf(
         self,

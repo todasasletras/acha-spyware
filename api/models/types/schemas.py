@@ -1,6 +1,8 @@
 from enum import Enum
 from typing import TypedDict, List
 
+from api.models.types.exception import APIErrorCode
+
 
 class CategoryType(str, Enum):
     ERROR_ANALYSIS = "Erro na Análise"
@@ -47,3 +49,4 @@ class LogMessageEntry(TypedDict):
 class APIResponse(LogMessageEntry, total=False):
     success: bool
     error: str
+    code: APIErrorCode

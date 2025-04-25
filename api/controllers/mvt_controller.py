@@ -25,18 +25,16 @@ def check_adb():
         data = request.json
         mvt_android = MVTAndroid(CommandExecutor())
         result: LogMessageEntry = mvt_android.check_adb(**data)
-        print(result)
-        response = APIResponse(
-            success=True, logs=result["logs"], messages=result["messages"]
-        )
+        response: APIResponse = {
+            "success": True,
+            "logs": result["logs"],
+            "messages": result["messages"],
+        }
         return jsonify(response), 200
     except APIException as e:
-        print(e)
-        response = APIResponse(success=False, error=e)
-        return jsonify(response)
+        return jsonify(e.to_dict())
     except Exception as e:
-        print(e)
-        return "error"
+        return jsonify({"success": False, "error": str(e)})
 
 
 class MVTController:

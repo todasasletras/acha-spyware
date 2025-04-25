@@ -5,6 +5,11 @@ from .command_executor import (
     CommandNotFoundError,
     CommandPermissionError,
     CommandTimeOutError,
+    CommandDependencyMissingError,
+    CommandExecutionFailedError,
+    CommandInputError,
+    CommandOutputError,
+    EnvironmentError,
 )
 
 __all__ = [
@@ -16,4 +21,9 @@ __all__ = [
     "CommandNotFoundError",
     "CommandPermissionError",
     "CommandTimeOutError",
+    "CommandDependencyMissingError",
+    "CommandExecutionFailedError",
+    "CommandInputError",
+    "CommandOutputError",
+    "EnvironmentError",
 ]

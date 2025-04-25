@@ -15,7 +15,7 @@ def setup_logger(name="FVM") -> logging.Logger:
             "[%(asctime)s]\t[%(levelname)s]\t- "
             "[%(module)s:(%(lineno)s) | %(funcName)s]\t- "
             "%(message)s",
-            datetime="%Y-%m-%d %H:%M:%S",
+            datefmt="%Y-%m-%d %H:%M:%S",
         )
 
         file_handler = RotatingFileHandler(

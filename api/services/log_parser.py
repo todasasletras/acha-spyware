@@ -8,12 +8,18 @@ from api.exceptions import (
     InvalidPatternFormat,
     NoPatternMatchError,
 )
+from api.exceptions.log_parse_except import InvalidRegexPattern
+from api.exceptions.mvt_android_except import MVTException
+from api.models.types.exception import APIErrorCode
 from api.models.types.schemas import (
     MessageLogType,
     MessageEntry,
     LogEntry,
     LogMessageEntry,
 )
+from core.logger import setup_logger
+
+logger = setup_logger()
 
 
 class LogParser:
@@ -26,22 +32,24 @@ class LogParser:
         # Define arquivo padrão em api/resources
         default_file = os.path.join(base_dir, "resources", "log_message_patterns.json")
         # Usa o arquivo fornecido ou o padrão
-        patterns_file = patterns_file or default_file
+        self.patterns_file = patterns_file or default_file
 
-        if not os.path.exists(patterns_file):
-            raise PatternFileNotFound(patterns_file)
+    def loading_json(self):
+        if not os.path.exists(self.patterns_file):
+            parser_error = PatternFileNotFound({"Path": self.patterns_file})
+            logger.critical(parser_error.to_log())
+            raise parser_error
 
         try:
-            with open(patterns_file, "r", encoding="utf-8") as file:
+            with open(self.patterns_file, "r", encoding="utf-8") as file:
                 self.patterns: List[MessageLogType] = json.load(file)
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Arquivo não econtrado {patterns_file}")
-        except FileExistsError:
-            raise FileExistsError(f"Erro ao abrir o arquivo {patterns_file}")
         except json.JSONDecodeError as e:
-            raise InvalidPatternFormat(f"Erro ao decodificar o JSON: {str(e)}")
+            parser_error = InvalidPatternFormat({"error": str(e)})
+            logger.critical(parser_error.to_log())
+            raise parser_error
 
     def parse(self, log_text: str) -> LogMessageEntry:
+        self.loading_json()
         cleaned = self._clean_output(log_text)
         return {
             "logs": self._extract_log(cleaned),
@@ -68,13 +76,26 @@ class LogParser:
 
     def _parser_messages_from_patterns(self, cleaned: str) -> List[MessageEntry]:
         messages: List[MessageEntry] = []
+
         for pattern in self.patterns:
             try:
                 regex = re.compile(pattern["pattern"], re.IGNORECASE | re.MULTILINE)
             except re.error as e:
-                print(f"Erro no regex padrão: {e} - {pattern['pattern']}")
+                parser_error = InvalidRegexPattern(
+                    {"error": str(e), "pattern": pattern["pattern"]}
+                )
+                logger.critical(parser_error.to_log())
                 continue
             for m in regex.finditer(cleaned):
+                if pattern["category"] == "Erro na Análise":
+                    try:
+                        error_enum = getattr(APIErrorCode, pattern["error_code"])
+                        api_error = MVTException(error=error_enum, payload=pattern)
+                        logger.error(api_error.to_log())
+                        raise api_error
+                    except AttributeError as e:
+                        logger.critical(str(e))
+
                 messages.append(
                     {
                         "category": pattern["category"],
@@ -83,7 +104,7 @@ class LogParser:
                     }
                 )
         if not messages:
-            raise NoPatternMatchError("Nenhum padrão encontrado!")
+            raise NoPatternMatchError({"patterns": self.patterns})
 
         return messages
 

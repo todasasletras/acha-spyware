@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TypedDict, List
+from typing import TypedDict, List, Optional
 
 from api.models.types.exception import APIErrorCode
 
@@ -14,11 +14,12 @@ class CategoryType(str, Enum):
     STALKING = "Stalking"
 
 
-class MessageLogType(TypedDict):
+class MessageLogType(TypedDict, total=False):
     pattern: str
     is_regex: bool
     category: CategoryType
     message: str
+    error_code: Optional[str | APIErrorCode]
 
 
 class LogStatus(str, Enum):

@@ -2,13 +2,11 @@ import subprocess
 from typing import List
 
 from api.interfaces.command_executor_interface import CommandExecutorInterface
-from api.models.types.schemas import APIResponse, LogMessageEntry
-from api.exceptions import (
-    CommandExecutionError,
+from api.models.types.schemas import LogMessageEntry
+from api.exceptions.command_executor import (
     CommandNotFoundError,
     CommandPermissionError,
     CommandTimeOutError,
-    CommandExecutionFailedError,
     CommandDependencyMissingError,
     CommandOutputError,
 )
@@ -32,54 +30,49 @@ class CommandExecutor(CommandExecutorInterface):
                 stderr_lower = result.stderr.lower()
 
                 if "not found" in stderr_lower:
-                    raise CommandNotFoundError(payload={"stderr": result.stdout})
+                    notfound_error = CommandNotFoundError(
+                        payload={"stderr": result.stdout}
+                    )
+                    logger.error(notfound_error.to_log())
+                    raise notfound_error
 
                 elif "permission denied" in stderr_lower:
-                    raise CommandPermissionError(payload={"stderr": result.stdout})
+                    perm_error = CommandPermissionError(
+                        payload={"stderr": result.stdout}
+                    )
+                    logger.critical(perm_error.to_log())
+                    raise perm_error
 
                 elif (
                     "command not found" in stderr_lower
                     or "no such file" in stderr_lower
                 ):
-                    raise CommandDependencyMissingError(
+                    dep_miss_error = CommandDependencyMissingError(
                         payload={"stderr": result.stdout}
                     )
+                    logger.error(dep_miss_error.to_log())
+                    raise dep_miss_error
 
             if not result.stdout.strip():
-                raise CommandOutputError(payload={"stdout": result.stdout})
+                output_error = CommandOutputError(payload={"stdout": result.stdout})
+                logger.error(output_error.to_log())
+                raise output_error
 
             return log.parse(result.stdout)
 
-        except (
-            CommandNotFoundError,
-            CommandPermissionError,
-            CommandDependencyMissingError,
-            CommandExecutionFailedError,
-            CommandOutputError,
-            CommandTimeOutError,
-            CommandExecutionError,
-        ) as e:
-            raise self._handle_exception(type(e), payload=e.payload)
         except subprocess.TimeoutExpired as timeout:
-            raise self._handle_exception(
-                CommandTimeOutError, payload={"command": command, "error": str(timeout)}
+            timeout_error = CommandTimeOutError(
+                payload={"command": command, "error": str(timeout)}
             )
+            logger.error(timeout_error.to_log)
+            raise timeout
 
         except OSError as e:
-            raise self._handle_exception(
-                CommandNotFoundError, payload={"command": command, "error": str(e)}
+            notfound_error = CommandNotFoundError(
+                payload={"command": command, "error": str(e)}
             )
-        except Exception as e:
-            print(e)
-            raise self._handle_exception(
-                CommandExecutionFailedError,
-                payload={"command": command, "error": str(e)},
-            )
-
-    def _handle_exception(self, exc_class, payload=None) -> APIResponse:
-        api_except = exc_class(payload=payload or {})
-        logger.error(api_except.to_log())
-        return api_except
+            logger.error(notfound_error.to_log())
+            raise notfound_error
 
 
 if __name__ == "__main__":

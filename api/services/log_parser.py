@@ -3,12 +3,12 @@ import re
 import json
 from typing import List
 
-from api.exceptions import (
+from api.exceptions.log_parse_except import (
     PatternFileNotFound,
     InvalidPatternFormat,
     NoPatternMatchError,
+    InvalidRegexPattern,
 )
-from api.exceptions.log_parse_except import InvalidRegexPattern
 from api.exceptions.mvt_android_except import MVTException
 from api.models.types.exception import APIErrorCode
 from api.models.types.schemas import (

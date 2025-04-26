@@ -1,19 +1,31 @@
 import os
 
 from dotenv import load_dotenv
+from api.exceptions.config_except import (
+    ConfigFileNotFoundException,
+    EncodingErrorException,
+    MissingParameterException,
+    MissingValueException,
+    PermissionDeniedException,
+)
 from api.interfaces.config_interface import ConfigInterface
+from core.logger import setup_logger
 
+logger = setup_logger(__name__)
 ENV_FILE = ".env"
 
 
 class ConfigService(ConfigInterface):
     def set_env_variable(self, var_name, value):
         if not var_name:
-            raise OSError("Chave não definido!")
-        if not value:
-            raise OSError("Valor não definido!")
+            miss_param_error = MissingParameterException("Chave não definido!")
+            logger.error(miss_param_error.to_log())
+            raise miss_param_error
 
-        error = ""
+        if not value:
+            miss_value_error = MissingValueException("Chave não definido!")
+            logger.error(miss_value_error.to_log())
+            raise miss_value_error
 
         try:
             variable = f"{var_name}={value}\n"
@@ -39,30 +51,23 @@ class ConfigService(ConfigInterface):
             os.environ[var_name] = value
             load_dotenv(ENV_FILE)
 
-            message = "A chave da API do VirusToatal foi definida com sucesso!"
+            return {
+                "message": "A chave da API do VirusToatal foi definida com sucesso!"
+            }
         except FileNotFoundError as e:
-            message = "Arquivo .env não encontrado."
-            error = str(e)
+            file_error = ConfigFileNotFoundException({"error": str(e)})
+            logger.critical(file_error.to_log())
+            raise file_error
 
         except PermissionError as e:
-            message = "Permissão negada para acessar o arquivo .env."
-            error = str(e)
-
-        except (IOError, OSError) as e:
-            message = "Erro de leitura ou escrita no arquivo .env."
-            error = (str(e),)
+            perm_error = PermissionDeniedException({"error": str(e)})
+            logger.critical(perm_error.to_log())
+            raise perm_error
 
         except UnicodeError as e:
-            message = "Erro de codificação ao manipular o arquivo .env."
-            error = str(e)
-        except Exception as e:
-            message = "Não foi possível definir a chave da API."
-            error = str(e)
-        finally:
-            response = {"message": message}
-            if error:
-                response["error"] = error
-            return response
+            encoding_error = EncodingErrorException({"error": str(e)})
+            logger.critical(encoding_error.to_log())
+            raise encoding_error
 
 
 if __name__ == "__main__":

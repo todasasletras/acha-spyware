@@ -76,104 +76,119 @@
 },
 
 {
-    "pattern": "Unable to find dumpstate file",
+    "pattern": "Unable to find dumpstate file. Did you provide a valid bug report archive?",
     "is_regex": false,
-    "category": "Erro na Análise",
+    "category": "Arquivo Inválido",
     "message": "Não foi possível encontrar o arquivo necessário para a análise. Tente novamente."
 },
 {
     "pattern": "Invalid backup format, file shoud be in .ab format",
     "is_regex": false,
-    "category": "Erro na Análise",
+    "category": "Arquivo Inválido",
     "message": "O formato do backuo está incorreto. Certifique-se de usar um arquivo '.ab' válido."
 },
 {
-    "pattern": "Device is busy",
+    "pattern": "Device is busy, maybe run `adb kill-server` and try again.",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": "Parece que o dosposotivo está ocupado. Tente desconectar e reconectar o dospositivo."
 },
 {
     "pattern": "no devices/emulators found",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "MVT_ANDROID_CHECKADB_NOT_FOUND",
     "message": "Nenhum dispositivo encontrado. Conecte seu tipositivo via USB e ative o modo desenvolvedor."
 },
 {
     "pattern": "device unautorized",
     "is_regex": false,
     "category": "Erro na Análise",
-    "message": ""
+    "error_code": "INTERNAL_SERVER_ERROR",
+    "message": "Precisa de permição no dispositivo para proceguir com a analise"
 },
 {
     "pattern": "No device found. Make sure it is connected and unlocked.",
     "is_regex": false,
     "category": "Erro na Análise",
-    "message": "Nenhum dispositivo encontrado. Conecte seu tipositivo via USB e ative o modo desenvolvedor."
+    "message": "Nenhum dispositivo encontrado. Conecte seu tipositivo via USB e ative o modo desenvolvedor.",
+    "error_code": "MVT_ANDROID_CHECKADB_NOT_FOUND"
 },
 {
     "pattern": "You need to authorize this computer on the Android device.",
     "is_regex": false,
     "category": "Erro na Análise",
-    "message": ""
+    "error_code": "INTERNAL_SERVER_ERROR",
+    "message": "Precisa de permição no dispositivo para proceguir com a analise"
 },
 {
     "pattern": "Unable to connect to the device over USB.",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": "Não foi possível conectar ao dispositivo. Permita o acesso no dispositivo!"
 },
 {
     "pattern": "did you specify the correct IP address?",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "Please check phone and accept Andoid backup prompt",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "Backup passworde already set from commad line or environment variable",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "No valid backup data found",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "No backup password provided",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "You provided the wrong password",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "All attempts to decrypt backup with password failed",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "Impossible to read SMS from the Android Backup",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "No SMS database found",
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "is_regex": false,
     "message": ""
 },
@@ -182,6 +197,7 @@
     "pattern": "Invalid backup password",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -189,6 +205,7 @@
     "pattern": "Please use Android Backup Extractor \\(ABE\\) instead",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -196,6 +213,7 @@
     "pattern": "Invalid backup path, path shoud be a folder or an Android Backup \\(.ab\\) file",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -203,6 +221,7 @@
     "pattern": "you need to specify an output folder with --output",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -210,6 +229,7 @@
     "pattern": "Unable to parse STIX2 indicator file. The file is corrupted or in the wrong format",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -231,6 +251,7 @@
     "pattern": "Failed to retrieve date of latest update to indicators index file",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -287,6 +308,7 @@
     "pattern": "Impossible to read SMS from the Android Backup, please extract the SMS and try extracting it with Android Backup Extractor",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -294,6 +316,7 @@
     "pattern": "Impossible to parse this backup file, please use Android Backup Extractor instead",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -301,6 +324,7 @@
     "pattern": "No backup password provided.",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -308,6 +332,7 @@
     "pattern": "Invalid backup format, backup.ab was not analysed",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -315,6 +340,7 @@
     "pattern": "getprop.txt file not found",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -322,6 +348,7 @@
     "pattern": "Dumpsys fyke not",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -329,6 +356,7 @@
     "pattern": "Cannot decrypt backup because interactivity was disabled and the password was not supplied",
     "is_regex": false,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 
@@ -711,12 +739,14 @@
     "pattern": "Unable to pull package file from .+: insufficient privileges, it might be a system app",
     "is_regex": true,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "Failed to pull package file from .+: .+",
     "is_regex": true,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
@@ -748,6 +778,7 @@
     "pattern": "Impossible to parse this backup file: .+",
     "is_regex": true,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
@@ -808,24 +839,28 @@
     "pattern": "Failed to retrieve indicators index located at .+ (error \\d+)",
     "is_regex": true,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "Failed to download indicators file from .+ (error \\d+)",
     "is_regex": true,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "Could not find a way to download indicator file for .+",
     "is_regex": true,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {
     "pattern": "Failed to get details about file .+ (error \\d+)",
     "is_regex": true,
     "category": "Erro na Análise",
+    "error_code": "INTERNAL_SERVER_ERROR",
     "message": ""
 },
 {

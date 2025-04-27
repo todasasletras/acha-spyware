@@ -4,7 +4,7 @@ async function enviarApiKey() {
   const apiKey = apiKeyInput ? apiKeyInput.value.trim() : "";
 
   if (!apiKey) {
-    document.querySelector("#resultado").innerHTML = "⚠️ Informe uma chave de API.";
+    document.querySelector("#resultadoApiKey").innerHTML = "⚠️ Informe uma chave de API.";
     return;
   }
 
@@ -20,10 +20,10 @@ async function enviarApiKey() {
     if (data.success) {
       document.querySelector("#resultadoApiKey").innerHTML = "✅ Chave da API salva com sucesso!";
     } else {
-      document.querySelector("#resultado").innerHTML = `❌ Erro ao salvar a chave da API: ${data.error}`;
+      document.querySelector("#resultadoApiKey").innerHTML = `❌ Erro ao salvar a chave da API: ${data.error}`;
     }
   } catch (error) {
-    document.querySelector("#resultado").innerHTML = "❌ Erro na requisição ao salvar a chave da API.";
+    document.querySelector("#resultadoApiKey").innerHTML = "❌ Erro na requisição ao salvar a chave da API.";
     console.error("Erro ao enviar a chave:", error);
   }
 }

@@ -6,7 +6,7 @@ class APIException(Exception):
     def __init__(
         self,
         *,
-        error: APIErrorCode = APIErrorCode.INTERNAL_SERVER_ERROR,
+        error: APIErrorCode = APIErrorCode.SERVER_UNHANDLED_EXCEPTION,
         payload: dict = {},
     ):
         self.message = error.value.internal_message

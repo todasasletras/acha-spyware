@@ -23,10 +23,8 @@ class ParamenterInvalid(ConfigException):
 class MissingValueException(ConfigException):
     """Exceção para quando um valor obrigatório está faltando."""
 
-    def __init__(self, field_name, payload: dict = {}):
-        super().__init__(
-            error=APIErrorCode.MISSING_VALUE, payload={"field": field_name, **payload}
-        )
+    def __init__(self, payload: dict = {}):
+        super().__init__(error=APIErrorCode.MISSING_VALUE, payload=payload)
 
 
 class ConfigFileNotFoundException(ConfigException):

@@ -9,7 +9,7 @@ class CommandExecutionError(APIException):
 
 
 class CommandNotFoundError(CommandExecutionError):
-    def __init__(self, *, payload={}):
+    def __init__(self, payload={}):
         super().__init__(
             error=APIErrorCode.COMMAND_NOT_FOUND,
             payload=payload,
@@ -17,7 +17,7 @@ class CommandNotFoundError(CommandExecutionError):
 
 
 class CommandPermissionError(CommandExecutionError):
-    def __init__(self, *, payload={}):
+    def __init__(self, payload={}):
         super().__init__(
             error=APIErrorCode.COMMAND_PERMISSION_DENIED,
             payload=payload,
@@ -25,9 +25,7 @@ class CommandPermissionError(CommandExecutionError):
 
 
 class CommandTimeOutError(CommandExecutionError):
-    def __init__(
-        self, *, message="Tempo limite excedido na execução do comando", payload={}
-    ):
+    def __init__(self, payload={}):
         super().__init__(
             error=APIErrorCode.COMMAND_TIMEOUT,
             payload=payload,
@@ -35,7 +33,7 @@ class CommandTimeOutError(CommandExecutionError):
 
 
 class CommandExecutionFailedError(CommandExecutionError):
-    def __init__(self, *, payload={}):
+    def __init__(self, payload={}):
         super().__init__(
             error=APIErrorCode.COMMAND_EXECUTION_FAILED,
             payload=payload,
@@ -43,7 +41,7 @@ class CommandExecutionFailedError(CommandExecutionError):
 
 
 class CommandDependencyMissingError(CommandExecutionError):
-    def __init__(self, *, payload={}):
+    def __init__(self, payload={}):
         super().__init__(
             error=APIErrorCode.COMMAND_DEPENDENCY_MISSING,
             payload=payload,
@@ -51,7 +49,7 @@ class CommandDependencyMissingError(CommandExecutionError):
 
 
 class CommandInputError(CommandExecutionError):
-    def __init__(self, *, payload={}):
+    def __init__(self, payload={}):
         super().__init__(
             error=APIErrorCode.INVALID_INPUT,
             payload=payload,
@@ -59,16 +57,16 @@ class CommandInputError(CommandExecutionError):
 
 
 class CommandOutputError(CommandExecutionError):
-    def __init__(self, *, payload={}):
+    def __init__(self, payload={}):
         super().__init__(
-            error=APIErrorCode.INTERNAL_SERVER_ERROR,
+            error=APIErrorCode.SERVER_UNHANDLED_EXCEPTION,
             payload=payload,
         )
 
 
 class EnvironmentError(CommandExecutionError):
-    def __init__(self, *, payload={}):
+    def __init__(self, payload={}):
         super().__init__(
-            error=APIErrorCode.INTERNAL_SERVER_ERRORS,
+            error=APIErrorCode.SERVER_UNHANDLED_EXCEPTION,
             payload=payload,
         )

@@ -9,7 +9,7 @@ from api.exceptions.log_parse_except import (
     NoPatternMatchError,
     InvalidRegexPattern,
 )
-from api.exceptions.mvt_android_except import MVTException
+from api.exceptions.mvt_android_except import MVTAndroidException
 from api.models.types.exception import APIErrorCode
 from api.models.types.schemas import (
     MessageLogType,
@@ -87,10 +87,12 @@ class LogParser:
                 logger.critical(parser_error.to_log())
                 continue
             for m in regex.finditer(cleaned):
-                if pattern["category"] == "Erro na Análise":
+                if "error_code" in pattern:
                     try:
                         error_enum = getattr(APIErrorCode, pattern["error_code"])
-                        api_error = MVTException(error=error_enum, payload=pattern)
+                        api_error = MVTAndroidException(
+                            error=error_enum, payload=pattern
+                        )
                         logger.error(api_error.to_log())
                         raise api_error
                     except AttributeError as e:

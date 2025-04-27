@@ -1,1160 +1,1171 @@
 [
-{
-    "pattern": "has not received security updates",
-    "is_regex": false,
-    "category": "Segurança do Sistema",
-    "message": "Seu dispositivo não revebe atualizações há muito tempo. Atualize para maior proteção."
-},
-{
-    "pattern": "SELinux status is \"permissive\"",
-    "is_regex": false,
-    "category": "Segurança do Sistema",
-    "message": "A proteção do sistema está reduzida. Ative o SELinux no modo 'enforcing' para mais segurança."
-},
+    {
+        "pattern": "This phone has not received security updates for more than six months (last update: .+)",
+        "is_regex": false,
+        "category": "Atualizações de Segurança",
+        "message": "Seu dispositivo não recebe atualizações de segurança há muito tempo. Atualize para manter sua proteção em dia."
+    },
+    {
+        "pattern": "SELinux status is \"permissive\"",
+        "is_regex": false,
+        "category": "Proteção do Sistema",
+        "message": "A proteção do sistema está enfraquecida. Ative o SELinux no modo 'enforcing' para maior segurança."
+    },
+    {
+        "pattern": "Found an installed package related to rooting/jailbreaking: \".+\"",
+        "is_regex": true,
+        "category": "Aplicativos Potencialmente Perigosos",
+        "message": "Foi encontrado um aplicativo relacionado a root ou jailbreak. Remova-o se você não o reconhece."
+    },
+    {
+        "pattern": "Found root binary \".+\"",
+        "is_regex": true,
+        "category": "Riscos de Root",
+        "message": "Foi detectado um indício de root no dispositivo, o que aumenta os riscos de segurança. Se você não fez root, procure ajuda técnica."
+    },
+    {
+        "pattern": "Found installed accessibility service \".+\"",
+        "is_regex": true,
+        "category": "Serviços de Acessibilidade Suspeitos",
+        "message": "Um serviço de acessibilidade foi instalado. Certifique-se de que é confiável, pois pode ser usado para controlar o aparelho."
+    },
 
-{
-    "pattern": "Found an installed package related to 'rooting/jailbreaking: \".+\"'",
-    "is_regex": true,
-    "category": "Aplicativos Suspeitos",
-    "message": "Foi encontrado um aplicativo associado a root ou jailbreak. Remova se não reconhecer."
-},
-{
-    "pattern": "Found root binary \".+\"",
-    "is_regex": true,
-    "category": "Aplicativos Suspeitos",
-    "message": "O dispositivo pode estar com root ativo, aumentando os riscos. Se não fez root intencionalmente, procure um técnico."
-},
-{
-    "pattern": "Found installed accessibility service \".+\"",
-    "is_regex": true,
-    "category": "Aplicativos Suspeitos",
-    "message": ""
-},
-{
-    "pattern": "accessibility_enabled = 1",
-    "is_regex": false,
-    "category": "Aplicativos Suspeitos",
-    "message": "Aplicativos podem ter acesso excessivo ao sistema via permissões de acessibilidade. Revise as permissões."
-},
-{
-    "pattern": "install_non_market_apps = 1",
-    "is_regex": false,
-    "category": "Aplicativos Suspeitos",
-    "message": "Seu dispositivo permite instalar apps de fora da loja oficial. Isso pode ser arriscado. Desative se não for necessário."
-},
+    {
+        "pattern": "accessibility_enabled = 1",
+        "is_regex": false,
+        "category": "Permissões de Acessibilidade",
+        "message": "Aplicativos podem ter controle avançado sobre o sistema usando permissões de acessibilidade. Verifique se essas permissões são necessárias."
+    },
+    {
+        "pattern": "install_non_market_apps = 1",
+        "is_regex": false,
+        "category": "Instalação de Aplicativos de Fontes Desconhecidas",
+        "message": "Seu dispositivo permite instalar aplicativos de fora da loja oficial. Isso aumenta o risco de malware. Desative essa opção se não for necessário."
+    },
+    {
+        "pattern": "Detected indicators of compromise",
+        "is_regex": false,
+        "category": "Sinais de Invasão",
+        "message": "Foram detectados sinais de que seu dispositivo pode ter sido invadido. Analise aplicativos suspeitos e considere restaurar o sistema."
+    },
+    {
+        "pattern": "Malware signatures detected",
+        "is_regex": false,
+        "category": "Detecção de Malware",
+        "message": "Foram encontrados indícios de malware no dispositivo. Use um antivírus confiável para fazer uma varredura completa."
+    },
+    {
+        "pattern": "Untrusted certificates found",
+        "is_regex": false,
+        "category": "Certificados Não Confiáveis",
+        "message": "Certificados desconhecidos foram encontrados. Isso pode indicar tentativa de ataque. Verifique as configurações de segurança."
+    },
 
-{
-    "pattern": "Detected indicators of compromise",
-    "is_regex": false,
-    "category": "Possível Invasão",
-    "message": "Sinais de ataque detectados! Revise aplicativo suspeitos e considere restaurar o sistema."
-},
-{
-    "pattern": "Malware signatures detected",
-    "is_regex": false,
-    "category": "Possível Invasão",
-    "message": "Indícios de malware encontrados! Execute um antivírus para verificar o dispositivo."
-},
-{
-    "pattern": "Untrusted certificates found",
-    "is_regex": false,
-    "category": "Possível Invasão",
-    "message": "Foram encontrados certificados não confiáveis, o que pode indicar um ataque. Revise suas configurações."
-},
-{
-    "pattern": "Suspicious network activity",
-    "is_regex": false,
-    "category": "Possível Invasão",
-    "message": "Atividade de rede suspeita detectada. Revise conexões e considere usar uma VPN."
-},
+    {
+        "pattern": "Suspicious network activity",
+        "is_regex": false,
+        "category": "Atividade de Rede Suspeita",
+        "message": "Foi detectada atividade suspeita na rede. Verifique as conexões e considere usar uma VPN para proteção adicional."
+    },
+    {
+        "pattern": "ADB is enabled",
+        "is_regex": false,
+        "category": "Modo Desenvolvedor Ativado",
+        "message": "O modo desenvolvedor (ADB) está ativado. Isso pode deixar seu dispositivo vulnerável. Desative se não for necessário."
+    },
+    {
+        "pattern": "Unable to find dumpstate file. Did you provide a valid bug report archive?",
+        "is_regex": false,
+        "category": "Erro de Leitura",
+        "error_code": "FILE_NOT_FOUND",
+        "message": "Não foi possível encontrar o arquivo de relatório necessário para a análise. Verifique o arquivo enviado e tente novamente."
+    },
+    {
+        "pattern": "Invalid backup format, file shoud be in .ab format",
+        "is_regex": false,
+        "category": "Formato de Backup Incorreto",
+        "message": "O arquivo de backup está em um formato inválido. Certifique-se de enviar um arquivo no formato '.ab'."
+    },
+    {
+        "pattern": "Device is busy, maybe run `adb kill-server` and try again.",
+        "is_regex": false,
+        "category": "Dispositivo Ocupado",
+        "error_code": "DEVICE_BUSY",
+        "message": "O dispositivo parece estar ocupado. Tente desconectar, reconectar e repetir o processo."
+    },
 
-{
-    "pattern": "ADB is enabled",
-    "is_regex": false,
-    "category": "Configuração Insegura",
-    "message": "O modo desenvolvedor \\(ADB\\) está ativado. Isso pode expor seu dispositivo a invasçoes. Desative se não precisar."
-},
+    {
+        "pattern": "no devices/emulators found",
+        "is_regex": false,
+        "category": "Dispositivo Não Encontrado",
+        "error_code": "DEVICE_NOT_FOUND",
+        "message": "Nenhum dispositivo encontrado. Conecte seu dispositivo via USB e ative o modo desenvolvedor."
+    },
+    {
+        "pattern": "device unautorized",
+        "is_regex": false,
+        "category": "Permissão Negada",
+        "error_code": "DEVICE_UNAUTHORIZED",
+        "message": "O dispositivo precisa autorizar a conexão. Verifique a solicitação de permissão na tela do seu aparelho."
+    },
+    {
+        "pattern": "No device found. Make sure it is connected and unlocked.",
+        "is_regex": false,
+        "category": "Dispositivo Não Encontrado",
+        "error_code": "DEVICE_NOT_FOUND",
+        "message": "Nenhum dispositivo encontrado. Conecte seu dispositivo via USB, desbloqueie a tela e ative o modo desenvolvedor."
+    },
+    {
+        "pattern": "You need to authorize this computer on the Android device.",
+        "is_regex": false,
+        "category": "Permissão Negada",
+        "error_code": "DEVICE_UNAUTHORIZED",
+        "message": "É necessário autorizar este computador no seu dispositivo Android. Aceite a solicitação na tela do aparelho."
+    },
+    {
+        "pattern": "Unable to connect to the device over USB. Try to unplug, plug the device and start again.",
+        "is_regex": false,
+        "category": "Falha de Conexão USB",
+        "error_code": "USB_CONNECTION_FAILED",
+        "message": "Não foi possível conectar ao dispositivo via USB. Verifique o cabo, a porta e autorize a conexão no dispositivo."
+    },
 
-{
-    "pattern": "Unable to find dumpstate file. Did you provide a valid bug report archive?",
-    "is_regex": false,
-    "category": "Arquivo Inválido",
-    "message": "Não foi possível encontrar o arquivo necessário para a análise. Tente novamente."
-},
-{
-    "pattern": "Invalid backup format, file shoud be in .ab format",
-    "is_regex": false,
-    "category": "Arquivo Inválido",
-    "message": "O formato do backuo está incorreto. Certifique-se de usar um arquivo '.ab' válido."
-},
-{
-    "pattern": "Device is busy, maybe run `adb kill-server` and try again.",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": "Parece que o dosposotivo está ocupado. Tente desconectar e reconectar o dospositivo."
-},
-{
-    "pattern": "no devices/emulators found",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "MVT_ANDROID_CHECKADB_NOT_FOUND",
-    "message": "Nenhum dispositivo encontrado. Conecte seu tipositivo via USB e ative o modo desenvolvedor."
-},
-{
-    "pattern": "device unautorized",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": "Precisa de permição no dispositivo para proceguir com a analise"
-},
-{
-    "pattern": "No device found. Make sure it is connected and unlocked.",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "message": "Nenhum dispositivo encontrado. Conecte seu tipositivo via USB e ative o modo desenvolvedor.",
-    "error_code": "MVT_ANDROID_CHECKADB_NOT_FOUND"
-},
-{
-    "pattern": "You need to authorize this computer on the Android device.",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": "Precisa de permição no dispositivo para proceguir com a analise"
-},
-{
-    "pattern": "Unable to connect to the device over USB.",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": "Não foi possível conectar ao dispositivo. Permita o acesso no dispositivo!"
-},
-{
-    "pattern": "did you specify the correct IP address?",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "Please check phone and accept Andoid backup prompt",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "Backup passworde already set from commad line or environment variable",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "No valid backup data found",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "No backup password provided",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "You provided the wrong password",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "All attempts to decrypt backup with password failed",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "Impossible to read SMS from the Android Backup",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "No SMS database found",
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "is_regex": false,
-    "message": ""
-},
+    {
+        "pattern": "did you specify the correct IP address?",
+        "is_regex": false,
+        "category": "Erro de Conexão",
+        "error_code": "INTERNAL_SERVER_ERROR",
+        "message": "Endereço IP incorreto. Verifique se informou o IP correto do dispositivo."
+    },
+    {
+        "pattern": "Please check phone and accept Andoid backup prompt",
+        "is_regex": false,
+        "category": "Confirmação Pendente",
+        "error_code": "INTERNAL_SERVER_ERROR",
+        "message": "Aceite a solicitação de backup no seu celular para continuar."
+    },
+    {
+        "pattern": "Backup passworde already set from commad line or environment variable",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_DECRYPTION_FAILED",
+        "message": "Uma senha de backup já foi definida. Remova ou altere a configuração para prosseguir."
+    },
+    {
+        "pattern": "No valid backup data found",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_PATH_INVALID",
+        "message": "Não foi encontrado um backup válido. Tente gerar um novo backup no dispositivo."
+    },
+    {
+        "pattern": "No backup password provided",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_PASSWORD_MISSING",
+        "message": "Nenhuma senha de backup foi informada. Informe a senha correta para continuar."
+    },
 
-{
-    "pattern": "Invalid backup password",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "You provided the wrong password",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_DECRYPTION_FAILED",
+        "message": "A senha fornecida está incorreta. Verifique e tente novamente."
+    },
+    {
+        "pattern": "All attempts to decrypt backup with password failed",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_DECRYPTION_FAILED",
+        "message": "Falha na descriptografia do backup. A senha pode estar incorreta ou o arquivo está corrompido."
+    },
+    {
+        "pattern": "Impossible to read SMS from the Android Backup",
+        "is_regex": false,
+        "category": "Erro de Leitura",
+        "error_code": "ANALYSIS_PARSE_ERROR",
+        "message": "Não foi possível ler as mensagens SMS do backup. O backup pode estar incompleto ou corrompido."
+    },
+    {
+        "pattern": "No SMS database found",
+        "is_regex": false,
+        "category": "Erro de Leitura",
+        "error_code": "FILE_NOT_FOUND",
+        "message": "Nenhuma base de dados de SMS foi encontrada no backup."
+    },
+    {
+        "pattern": "Invalid backup password",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_DECRYPTION_FAILED",
+        "message": "Senha de backup inválida. Verifique a senha usada para gerar o backup."
+    },
 
-{
-    "pattern": "Please use Android Backup Extractor \\(ABE\\) instead",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "Please use Android Backup Extractor \\(ABE\\) instead",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_PATH_INVALID",
+        "message": "Use o Android Backup Extractor (ABE) para extrair o backup corretamente."
+    },
+    {
+        "pattern": "Invalid backup path, path shoud be a folder or an Android Backup \\(.ab\\) file",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_PATH_INVALID",
+        "message": "Caminho de backup inválido. Deve ser uma pasta ou um arquivo de backup Android (.ab)."
+    },
+    {
+        "pattern": "you need to specify an output folder with --output",
+        "is_regex": false,
+        "category": "Erro de Leitura",
+        "error_code": "INTERNAL_SERVER_ERROR",
+        "message": "Você precisa especificar uma pasta de saída usando a opção --output."
+    },
+    {
+        "pattern": "Unable to parse STIX2 indicator file. The file is corrupted or in the wrong format",
+        "is_regex": false,
+        "category": "Erro de Leitura",
+        "error_code": "INTERNAL_SERVER_ERROR",
+        "message": "Não foi possível interpretar o arquivo de indicadores STIX2. O arquivo está corrompido ou em formato inválido."
+    },
+    {
+        "pattern": "Please disable Developer Options and ADB \\(Android Debug Bridge\\) on the device once finished with the acquisition. ADB is a powerful tool which can allow unauthorized access to the device.",
+        "is_regex": false,
+        "category": "Informativo",
+        "message": "Desative as Opções do Desenvolvedor e o ADB no dispositivo após concluir a aquisição para garantir a segurança."
+    },
 
-{
-    "pattern": "Invalid backup path, path shoud be a folder or an Android Backup \\(.ab\\) file",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "You have exceeded the quota for your VirusTotal API key",
+        "is_regex": false,
+        "category": "VirusTotal",
+        "error_code": "VT_QUOTA_EXCEEDED",
+        "message": "Você excedeu a cota de uso da sua chave de API do VirusTotal. Tente novamente mais tarde ou use outra chave."
+    },
+    {
+        "pattern": "Failed to retrieve date of latest update to indicators index file",
+        "is_regex": false,
+        "category": "Erro de Leitura",
+        "error_code": "ANALYSIS_INDICATOR_INDEX_RETRIEVE_FAILED",
+        "message": "Falha ao recuperar a data da última atualização do arquivo de indicadores."
+    },
+    {
+        "pattern": "Checking stored results against provided indicators",
+        "is_regex": false,
+        "category": "Informativo",
+        "message": "Verificando os resultados armazenados com os indicadores fornecidos."
+    },
+    {
+        "pattern": "Checking Android device over debug bridge",
+        "is_regex": false,
+        "category": "Informativo",
+        "message": "Verificando o dispositivo Android via Android Debug Bridge (ADB)."
+    },
+    {
+        "pattern": "Download of selected packages completed",
+        "is_regex": false,
+        "category": "Informativo",
+        "message": "Download dos pacotes selecionados concluído com sucesso."
+    },
 
-{
-    "pattern": "you need to specify an output folder with --output",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "Downloading packages from device. This might take some time",
+        "is_regex": false,
+        "category": "Informativo",
+        "message": "Baixando pacotes do dispositivo. Isso pode levar algum tempo."
+    },
+    {
+        "pattern": "No packages were selected for download",
+        "is_regex": false,
+        "category": "Erro de Leitura",
+        "message": "Nenhum pacote foi selecionado para download. Selecione ao menos um pacote para continuar."
+    },
+    {
+        "pattern": "Retrieving list of installed packages",
+        "is_regex": false,
+        "category": "Informativo",
+        "message": "Recuperando a lista de pacotes instalados no dispositivo."
+    },
+    {
+        "pattern": "No backup data found",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_PATH_INVALID",
+        "message": "Nenhum dado de backup encontrado. Verifique o caminho do arquivo de backup."
+    },
+    {
+        "pattern": "Impossible to read SMS from the Android Backup, please extract the SMS and try extracting it with Android Backup Extractor",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_PATH_INVALID",
+        "message": "Não foi possível ler as mensagens SMS do backup Android. Extraia as mensagens usando o Android Backup Extractor e tente novamente."
+    },
 
-{
-    "pattern": "Unable to parse STIX2 indicator file. The file is corrupted or in the wrong format",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "Impossible to parse this backup file, please use Android Backup Extractor instead",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_PATH_INVALID",
+        "message": "Impossível analisar este arquivo de backup. Por favor, use o Android Backup Extractor em vez disso."
+    },
+    {
+        "pattern": "No backup password provided.",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_PASSWORD_MISSING",
+        "message": "Nenhuma senha de backup fornecida. Por favor, forneça a senha para continuar."
+    },
+    {
+        "pattern": "Invalid backup format, backup.ab was not analysed",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_INVALID_FORMAT",
+        "message": "Formato de backup inválido. O arquivo backup.ab não foi analisado."
+    },
+    {
+        "pattern": "getprop.txt file not found",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_DECRYPTION_FAILED",
+        "message": "Arquivo getprop.txt não encontrado. Verifique se o backup está completo."
+    },
+    {
+        "pattern": "Dumpsys fyke not",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_DECRYPTION_FAILED",
+        "message": "Erro ao tentar acessar os dados do dumpsys. Verifique se os dados estão disponíveis no backup."
+    },
 
-{
-    "pattern": "Please disable Developer Options and ADB \\(Android Debug Bridge\\) on the device once finished with the acquisition. ADB is a powerful tool which can allow unauthorized access to the device.",
-    "is_regex": false,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "Cannot decrypt backup because interactivity was disabled and the password was not supplied",
+        "is_regex": false,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_PASSWORD_MISSING",
+        "message": "Não é possível descriptografar o backup porque a interatividade foi desabilitada e a senha não foi fornecida."
+    },
+    {
+        "pattern": "Using backup password passed from command line or environment variable.",
+        "is_regex": false,
+        "category": "Informativo",
+        "message": "Senha de backup fornecida via linha de comando ou variável de ambiente está sendo utilizada."
+    },
+    {
+        "pattern": "The `fast_mode` option was enabled: skipping full file listing ",
+        "is_regex": false,
+        "category": "Informativo",
+        "message": "A opção `fast_mode` foi ativada: listagem completa de arquivos foi ignorada."
+    },
+    {
+        "pattern": "Extracted a total of \\d+ records from database information",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Total de \\d+ registros extraídos da base de dados."
+    },
+    {
+        "pattern": "Extracted a total of \\d+ SMS & MMS messages",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Total de \\d+ mensagens SMS & MMS extraídas."
+    },
 
-{
-    "pattern": "You have exceeded the quota for your VirusTotal API key",
-    "is_regex": false,
-    "category": "VirusTotal",
-    "message": ""
-},
+    {
+        "pattern": "Extracted details on \\d+ packages",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Detalhes extraídos sobre \\d+ pacotes."
+    },
+    {
+        "pattern": "Extracted a total of \\d+ properties",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Total de \\d+ propriedades extraídas."
+    },
+    {
+        "pattern": "Extracted receivers for \\d+ intents",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Recebedores extraídos para \\d+ intents."
+    },
+    {
+        "pattern": "Extracted \\d+ package activities",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram identificadas {integer} atividades de pacotes."
+    },
+    {
+        "pattern": "Extracted a total of \\d+ battery daily stats",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram extraídas {integer} estatísticas diárias da bateria."
+    },
 
-{
-    "pattern": "Failed to retrieve date of latest update to indicators index file",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "Extracted \\d+ records from battery daily stats",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram extraídos \\d+ registros das estatísticas diárias da bateria."
+    },
+    {
+        "pattern": "Extracted at total of \\d+ installed package names",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foi extraído um total de \\d+ nomes de pacotes instalados."
+    },
+    {
+        "pattern": "Extracted a total of \\d+ records from app-ops manager",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram extraídos \\d+ registros do gerenciador de app-ops."
+    },
+    {
+        "pattern": "Extracted a total of \\d+ SMS messages",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram extraídas \\d+ mensagens SMS."
+    },
+    {
+        "pattern": "Extracted \\d+ records from battery history",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram extraídos \\d+ registros do histórico da bateria."
+    },
 
-{
-    "pattern": "Checking stored results against provided indicators",
-    "is_regex": false,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "Extracted \\d+ Android system properties",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram extraídas \\d+ propriedades do sistema Android."
+    },
+    {
+        "pattern": "Extracted a total of \\d+ WhatsApp messages containing links",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram extraídas \\d+ mensagens do WhatsApp contendo links."
+    },
+    {
+        "pattern": "Extracted records on a total of \\d+ processes",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram extraídos registros de \\d+ processos."
+    },
+    {
+        "pattern": "Extracted a total of \\d+ history items",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram extraídos \\d+ itens do histórico."
+    },
+    {
+        "pattern": "Extracted a total of \\d+ battery history records",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram extraídos \\d+ registros do histórico da bateria."
+    },
 
-{
-    "pattern": "Checking Android device over debug bridge",
-    "is_regex": false,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "Extracted a total of \\d+ database connection pool records",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram extraídos \\d+ registros do pool de conexões do banco de dados."
+    },
+    {
+        "pattern": "Identified a total of \\d+ accessibility services",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram identificados \\d+ serviços de acessibilidade."
+    },
+    {
+        "pattern": "Identified a total of \\d+ packages in App-Ops Manager",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram identificados \\d+ pacotes no App-Ops Manager."
+    },
+    {
+        "pattern": "Found package \".+\" requested \\d+ potentially dangerous permissions",
+        "is_regex": true,
+        "category": "Permissões de Acessibilidade",
+        "message": "O pacote \".+\" solicitou \\d+ permissões potencialmente perigosas."
+    },
+    {
+        "pattern": "Found an SUID file in a non-standard directory \".+\".",
+        "is_regex": true,
+        "category": "Riscos de Root",
+        "message": "Foi encontrado um arquivo SUID em um diretório não padrão \".+\"."
+    },
 
-{
-    "pattern": "Download of selected packages completed",
-    "is_regex": false,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "Found a known suspicous file at path: \".+\"",
+        "is_regex": true,
+        "category": "Aplicativos Potencialmente Perigosos",
+        "message": "Foi encontrado um arquivo suspeito conhecido no caminho: \".+\"."
+    },
+    {
+        "pattern": "Downloaded file .+ to local copy at .+",
+        "is_regex": true,
+        "category": "Aviso",
+        "message": "Arquivo .+ baixado para cópia local em .+."
+    },
+    {
+        "pattern": "Skipping invalid file info - .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Ignorando informações de arquivo inválidas - .+"
+    },
+    {
+        "pattern": "Found file in tmp folder at path .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Arquivo encontrado na pasta tmp no caminho .+."
+    },
+    {
+        "pattern": "Found .+ files in primary Android tmp and media folders",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram encontrados .+ arquivos nas pastas principais tmp e de mídia do Android."
+    },
 
-{
-    "pattern": "Downloading packages from device. This might take some time",
-    "is_regex": false,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "Found .+ total files",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram encontrados .+ arquivos no total."
+    },
+    {
+        "pattern": "Found an installed package related to 'rooting/jailbreaking: \".+\"",
+        "is_regex": true,
+        "category": "Riscos de Root",
+        "message": "Foi encontrado um pacote instalado relacionado a 'rooting/jailbreaking': \".+\"."
+    },
+    {
+        "pattern": "Found a security package disabled: \".+\"",
+        "is_regex": true,
+        "category": "Configuração Insegura",
+        "message": "Foi encontrado um pacote de segurança desativado: \".+\"."
+    },
+    {
+        "pattern": "System OTA update package \".+\" disabled on the phone",
+        "is_regex": true,
+        "category": "Proteção do Sistema",
+        "message": "O pacote de atualização OTA do sistema \".+\" foi desativado no telefone."
+    },
+    {
+        "pattern": "Third-party package \".+\" requested \\d+ potentially dangerous permissions",
+        "is_regex": true,
+        "category": "Permissões de Acessibilidade",
+        "message": "O pacote de terceiros \".+\" solicitou \\d+ permissões potencialmente perigosas."
+    },
 
-{
-    "pattern": "No packages were selected for download",
-    "is_regex": false,
-    "category": "",
-    "message": ""
-},
+    {
+        "pattern": "Found non-system package with name \".+\" installed by \".+\" on .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foi encontrado um pacote não-sistema com o nome \".+\" instalado por \".+\" em .+."
+    },
+    {
+        "pattern": "Full dumpsys output stored at .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "A saída completa do dumpsys foi armazenada em .+."
+    },
+    {
+        "pattern": "SELinux is being regularly enforced",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "O SELinux está sendo aplicado regularmente."
+    },
+    {
+        "pattern": "SELinux status is \".+\"!",
+        "is_regex": true,
+        "category": "Proteção do Sistema",
+        "message": "O status do SELinux é \".+\"!"
+    },
+    {
+        "pattern": "Current logcat logs stored at .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Os logs atuais do logcat foram armazenados em .+."
+    },
 
-{
-    "pattern": "Retrieving list of installed packages",
-    "is_regex": false,
-    "category": "",
-    "message": ""
-},
+    {
+        "pattern": "Logcat logs prior to last reboot stored at .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Os logs do logcat antes do último reinício foram armazenados em .+."
+    },
+    {
+        "pattern": "Processing SMS backup file at .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Processando arquivo de backup SMS em .+."
+    },
+    {
+        "pattern": "Processing MMS backup file at .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Processando arquivo de backup MMS em .+."
+    },
+    {
+        "pattern": "Ignoring .+ environment variable, using --backup-password argument instead",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Ignorando a variável de ambiente .+, usando o argumento --backup-password em vez disso."
+    },
+    {
+        "pattern": "Using backup password from .+ environment variable",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Usando a senha de backup da variável de ambiente .+."
+    },
 
-{
-    "pattern": "No backup data found",
-    "is_regex": false,
-    "category": "",
-    "message": ""
-},
+    {
+        "pattern": "Identified \\d+ running processes",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram identificados {integer} processos em execução."
+    },
+    {
+        "pattern": "Identified \\d+ SMS in backup data",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram identificados {integer} SMS nos dados de backup."
+    },
+    {
+        "pattern": "Identified \\d+ settings",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram identificadas {integer} configurações."
+    },
+    {
+        "pattern": "Identified \\d+ applications in AppOps Manager",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram identificados {integer} aplicativos no AppOps Manager."
+    },
+    {
+        "pattern": "Identified \\d+ DB Info entries",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram identificadas {integer} entradas de informações no banco de dados."
+    },
 
-{
-    "pattern": "Impossible to read SMS from the Android Backup, please extract the SMS and try extracting it with Android Backup Extractor",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "Found an installed package related to rooting/jailbreaking: \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Foi encontrado um pacote instalado relacionado ao rooting/jailbreaking: {package_name}."
+    },
+    {
+        "pattern": ".+: .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Checar informações apresentada aqui! (versão do mvt e informação para atualização)."
+    },
+    {
+        "pattern": "Found a receiver to intercept outgoing SMS messages: \".+\"",
+        "is_regex": true,
+        "category": "Stalking",
+        "message": "Foi encontrado um receptor para interceptar mensagens SMS enviadas: {receiver}."
+    },
+    {
+        "pattern": "Found a receiver to intercept incoming SMS messages: \".+\"",
+        "is_regex": true,
+        "category": "Stalking",
+        "message": "Foi encontrado um receptor para interceptar mensagens SMS recebidas: {receiver}."
+    },
+    {
+        "pattern": "Found a receiver to intercept incoming data SMS message: \".+\"",
+        "is_regex": true,
+        "category": "Stalking",
+        "message": "Foi encontrado um receptor para interceptar mensagens SMS de dados recebidas: {receiver}."
+    },
 
-{
-    "pattern": "Impossible to parse this backup file, please use Android Backup Extractor instead",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "Found a receiver monitoring telephony state/incoming calls: \".+\"",
+        "is_regex": true,
+        "category": "Stalking",
+        "message": "Foi encontrado um receptor monitorando o estado de telefonia/chamadas recebidas: {receiver}."
+    },
+    {
+        "pattern": "Found a receiver monitoring outgoing calls: \".+\"",
+        "is_regex": true,
+        "category": "Stalking",
+        "message": "Foi encontrado um receptor monitorando chamadas enviadas: {receiver}."
+    },
+    {
+        "pattern": "Found suspicious \".+\" setting \".+ = .+\" \\(.+\\)",
+        "is_regex": true,
+        "category": "Proteção do Sistema",
+        "message": "Foi encontrada uma configuração suspeita: {setting} = {value} ({reason})."
+    },
+    {
+        "pattern": "Package .+ with REQUEST_INSTALL_PACKAGES permission",
+        "is_regex": true,
+        "category": "Instalação de Aplicativos de Fontes Desconhecidas",
+        "message": "O pacote {package_name} possui a permissão REQUEST_INSTALL_PACKAGES."
+    },
 
-{
-    "pattern": "No backup password provided.",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "This phone has not received security updates for more than six months \\(last update: .+\\)",
+        "is_regex": true,
+        "category": "Atualizações de Segurança",
+        "message": "Este telefone não recebeu atualizações de segurança nos últimos seis meses (última atualização: {date})."
+    },
+    {
+        "pattern": "Downloading .+ ...",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Baixando {file} ..."
+    },
+    {
+        "pattern": "Unable to pull package file from .+: insufficient privileges, it might be a system app",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "error_code": "INTERNAL_SERVER_ERROR",
+        "message": "Não foi possível extrair o arquivo do pacote de {package_name}: privilégios insuficientes, pode ser um aplicativo de sistema."
+    },
+    {
+        "pattern": "Failed to pull package file from .+: .+",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "error_code": "INTERNAL_SERVER_ERROR",
+        "message": "Falha ao extrair o arquivo do pacote de {package_name}: {error_message}."
+    },
+    {
+        "pattern": "Starting extraction of installed APKs at folder .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Iniciando a extração dos APKs instalados na pasta {folder}."
+    },
 
-{
-    "pattern": "Invalid backup format, backup.ab was not analysed",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "Selected all \\d+ available packages",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Todos os {count} pacotes disponíveis foram selecionados."
+    },
+    {
+        "pattern": "Selected only \\d+ packages which are not marked as \"system\"",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Selecionados apenas {count} pacotes que não estão marcados como \"sistema\"."
+    },
+    {
+        "pattern": "[\\d+/\\d+] Package: .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Pacote {package_name} ({current}/{total})"
+    },
+    {
+        "pattern": "Impossible to parse this backup file: .+",
+        "is_regex": true,
+        "category": "Erro de Backup",
+        "error_code": "BACKUP_DECRYPTION_FAILED",
+        "message": "Impossível analisar o arquivo de backup: {file_path}."
+    },
+    {
+        "pattern": "The analysis of the Android device produced \\d+ detections!",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "A análise do dispositivo Android produziu {count} detecções!"
+    },
 
-{
-    "pattern": "getprop.txt file not found",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "Checking Android bug report at path: .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Verificando o relatório de erro Android no caminho: {path}."
+    },
+    {
+        "pattern": "Checking Android backup at path: .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Verificando o backup Android no caminho: {path}."
+    },
+    {
+        "pattern": "Checking AndroidQF acquisition at path: .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Verificando a aquisição AndroidQF no caminho: {path}."
+    },
+    {
+        "pattern": "Loaded a total of \\d+ unique indicators",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Carregados um total de {count} indicadores únicos."
+    },
+    {
+        "pattern": "Downloaded indicators \".+\" to .+",
+        "is_regex": true,
+        "category": "IOCs",
+        "message": "Indicadores \"{indicator}\" baixados para {path}."
+    },
 
-{
-    "pattern": "Dumpsys fyke not",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "The analysis of the Android bug report produced \\d+ detections!",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "A análise do relatório de erro Android produziu {count} detecções de possíveis invasões."
+    },
+    {
+        "pattern": "The analysis of the Android backup produced \\d+ detections!",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "A análise do backup Android produziu {count} detecções de possíveis invasões."
+    },
+    {
+        "pattern": "The analysis of the AndroidQF acquisition produced \\d+ detections!",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "A análise da aquisição AndroidQF produziu {count} detecções de possíveis invasões."
+    },
+    {
+        "pattern": "Failed to retrieve indicators index located at .+ (error \\d+)",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "error_code": "INTERNAL_SERVER_ERROR",
+        "message": "Falha ao recuperar o índice de indicadores localizado em {path} (erro {error_code})."
+    },
+    {
+        "pattern": "Failed to download indicators file from .+ (error \\d+)",
+        "is_regex": true,
+        "category": "Erro de Conexão",
+        "error_code": "INTERNAL_SERVER_ERROR",
+        "message": "Falha ao baixar o arquivo de indicadores de {url} (erro {error_code})."
+    },
 
-{
-    "pattern": "Cannot decrypt backup because interactivity was disabled and the password was not supplied",
-    "is_regex": false,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
+    {
+        "pattern": "Could not find a way to download indicator file for .+",
+        "is_regex": true,
+        "category": "Erro de Conexão",
+        "error_code": "INTERNAL_SERVER_ERROR",
+        "message": "Não foi possível encontrar uma maneira de baixar o arquivo de indicadores para {path}."
+    },
+    {
+        "pattern": "Failed to get details about file .+ (error \\d+)",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "error_code": "INTERNAL_SERVER_ERROR",
+        "message": "Falha ao obter detalhes sobre o arquivo {file} (erro {error_code})."
+    },
+    {
+        "pattern": "No indicators file exists at path .+",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "message": "Nenhum arquivo de indicadores existe no caminho {path}."
+    },
+    {
+        "pattern": "Unable to unshorten URL .+",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "message": "Não foi possível expandir a URL {url}."
+    },
+    {
+        "pattern": "Maybe found a known suspicious domain .+ matching indicator \".+\" from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Possível domínio suspeito encontrado: {domain}, correspondente ao indicador \"{indicator}\" de {source}."
+    },
 
-{
-    "pattern": "Using backup password passed from command line or environment variable.",
-    "is_regex": false,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "Found a known suspicious domain .+ shortened as .+ matching indicator \".+\" from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Dominio suspeito conhecido encontrado: {domain}, encurtado como {shortened_domain}, correspondente ao indicador \"{indicator}\" de {source}."
+    },
+    {
+        "pattern": "Found a known suspicious domain .+ matching indicator \".+\" from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Dominio suspeito conhecido encontrado: {domain}, correspondente ao indicador \"{indicator}\" de {source}."
+    },
+    {
+        "pattern": "Found a known suspicious process name \".+\" matching indicators from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Nome de processo suspeito conhecido encontrado: {process_name}, correspondente aos indicadores de {source}."
+    },
+    {
+        "pattern": "Found a known suspicious process name \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Nome de processo suspeito conhecido encontrado: {process_name}."
+    },
+    {
+        "pattern": "Found a known suspicious email address \".+\" matching indicators from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Endereço de email suspeito conhecido encontrado: {email}, correspondente aos indicadores de {source}."
+    },
 
-{
-    "pattern": "The `fast_mode` option was enabled: skipping full file listing ",
-    "is_regex": false,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "Found a known suspicious file name \".+\" matching indicators from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Nome de arquivo suspeito conhecido encontrado: {file_name}, correspondente aos indicadores de {source}."
+    },
+    {
+        "pattern": "Found a known suspicious file path \".+\" matching indicators form \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Caminho de arquivo suspeito conhecido encontrado: {file_path}, correspondente aos indicadores de {source}."
+    },
+    {
+        "pattern": "Found a known suspicious file with hash \".+\" matching indicators from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Arquivo suspeito conhecido encontrado com hash: {file_hash}, correspondente aos indicadores de {source}."
+    },
+    {
+        "pattern": "Found a known suspicious profile ID \".+\" matching indicators from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "ID de perfil suspeito conhecido encontrado: {profile_id}, correspondente aos indicadores de {source}."
+    },
+    {
+        "pattern": "Found a known suspicious app with ID \".+\" matching indicators from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Aplicativo suspeito conhecido encontrado com ID: {app_id}, correspondente aos indicadores de {source}."
+    },
 
-{
-    "pattern": "Extracted a total of \\d+ records from database information",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "Found a known suspicious domain .+ ",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Domínio suspeito conhecido encontrado: {domain}."
+    },
+    {
+        "pattern": "Found a known suspicious Android property \".+\" matching indicators from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Propriedade Android suspeita conhecida encontrada: {property}, correspondente aos indicadores de {source}."
+    },
+    {
+        "pattern": "Found a sub-domain with suspicious top level .+ shortened as .+ matching indicator \".+\" from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Subdomínio com nível superior suspeito encontrado: {subdomain}, abreviado como {shortened}, correspondente aos indicadores de {source}."
+    },
+    {
+        "pattern": "Found a sub-domain with a suspicious top level .+ matching indicator \".+\" from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Subdomínio com nível superior suspeito encontrado: {subdomain}, correspondente aos indicadores de {source}."
+    },
+    {
+        "pattern": "Found a truncated known suspicious process name \".+\" matching indicators from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Nome de processo truncado suspeito conhecido encontrado: {process_name}, correspondente aos indicadores de {source}."
+    },
 
-{
-    "pattern": "Extracted a total of \\d+ SMS & MMS messages",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "Found known suspicious process name mentioned in file at path \".+\" matching indicators from \".+\"",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Nome de processo suspeito conhecido encontrado no arquivo em {path}, correspondente aos indicadores de {source}."
+    },
+    {
+        "pattern": "indicators file exists at path .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Arquivo de indicadores encontrado em {path}. Verifique a duplicidade."
+    },
+    {
+        "pattern": "matching indicator \".+\" from \".+\"",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Indicador correspondente encontrado: {indicator} de {source}. Verifique a duplicidade."
+    },
+    {
+        "pattern": "level .+ shortened as .+ matching \".+\" from \".+\"",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Nível suspeito {level} abreviado como {shortened}, correspondente ao indicador {indicator} de {source}. Verifique a duplicidade."
+    },
+    {
+        "pattern": "level .+ matching indicator \".+\" from \".+\"",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Nível suspeito {level} correspondente ao indicador {indicator} de {source}. Verifique a duplicidade."
+    },
 
-{
-    "pattern": "Extracted details on \\d+ packages",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "path \".+\" matching indicators from \".+\"",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Caminho {path} correspondente aos indicadores de {source}. Verifique a duplicidade."
+    },
+    {
+        "pattern": "Path specified with env MVT_STIX2 is not a valid file: .+",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "message": "O caminho especificado com a variável de ambiente MVT_STIX2 não é um arquivo válido: {path}."
+    },
+    {
+        "pattern": "The check of the results produced \\d+ detections!",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "A verificação dos resultados produziu {detections} detecções."
+    },
+    {
+        "pattern": "Failed to hash the file .+: might be a symlink",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "message": "Falha ao calcular o hash do arquivo {file}: pode ser um symlink."
+    },
+    {
+        "pattern": "Failed to hash the file .+: permission denied",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "message": "Falha ao calcular o hash do arquivo {file}: permissão negada."
+    },
 
-{
-    "pattern": "Extracted a total of \\d+ properties",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "Unable to create output folder .+: .+",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "message": "Não foi possível criar a pasta de saída {folder}: {error}. Verifique permissões ou caminho."
+    },
+    {
+        "pattern": "NOTE: Detected indicators of compromise. Only expert review can confirm if the detected indicators are signs of an attack.\n\n.+",
+        "is_regex": true,
+        "category": "Sinais de Invasão",
+        "message": "Nota: Indicadores de comprometimento detectados. Somente uma revisão especializada pode confirmar se os indicadores são sinais de ataque."
+    },
+    {
+        "pattern": "Unexpected response from VirusTotal: \\d+",
+        "is_regex": true,
+        "category": "VirusTotal",
+        "message": "Resposta inesperada do VirusTotal: código de erro {status_code}. Verifique a API ou a conexão."
+    },
+    {
+        "pattern": "Unable to store results of module .+ to file .+: .+",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "message": "Não foi possível armazenar os resultados do módulo {module} no arquivo {file}: {error}. Verifique permissões ou caminho."
+    },
+    {
+        "pattern": "The .+ module database seems to be corrupted: .+",
+        "is_regex": true,
+        "category": "Erro de Leitura",
+        "message": "A base de dados do módulo {module} parece estar corrompida: {error}. Considere a recuperação ou reinstalação."
+    },
 
-{
-    "pattern": "Extracted receivers for \\d+ intents",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
+    {
+        "pattern": "Error in running extraction from module .+: .+",
+        "is_regex": true,
+        "category": "Erro na Execução",
+        "error_code": "MODULE_EXECUTION_ERROR",
+        "message": "Erro ao executar a extração do módulo {module}: {error}. Verifique a configuração do módulo."
+    },
+    {
+        "pattern": "Error when checking indicators from module .+: .+",
+        "is_regex": true,
+        "category": "Erro na Verificação",
+        "message": "Erro ao verificar os indicadores do módulo {module}: {error}. Verifique os parâmetros ou configuração do módulo."
+    },
+    {
+        "pattern": "Error when serializing data from module .+: .+",
+        "is_regex": true,
+        "category": "Erro na Serialização",
+        "message": "Erro ao serializar os dados do módulo {module}: {error}. Verifique o formato ou a integridade dos dados."
+    },
+    {
+        "pattern": "Parsing STIX2 indicators file at path .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Analisando o arquivo de indicadores STIX2 no caminho {path}. A análise pode levar algum tempo."
+    },
+    {
+        "pattern": "Loading results from \".+\" with module .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Carregando os resultados do arquivo {file} com o módulo {module}. Aguarde enquanto os resultados são processados."
+    },
 
-{
-    "pattern": "Extracted \\d+ package activities",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": "Foram identificadas {interger} atividades de pacotes."
-},
+    {
+        "pattern": "Reference hash of the info.json file: \".+\"",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "O hash de referência do arquivo info.json é {hash}. Isso pode ser útil para verificar a integridade do arquivo."
+    },
+    {
+        "pattern": "Following is the list of available .+ modules:",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Abaixo está a lista dos módulos disponíveis. Selecione um módulo para continuar."
+    },
+    {
+        "pattern": " - .+",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Módulo: {module}. Detalhes e configurações do módulo podem ser encontrados na documentação."
+    },
+    {
+        "pattern": "NOTE: Using MVT with public indicators of compromise (IOCs) WILL NOT automatically detect advanced attacks.\n\n.+",
+        "is_regex": true,
+        "category": "Aviso",
+        "message": "AVISO: Usar o MVT com indicadores públicos de comprometimento (IOCs) NÃO detecta automaticamente ataques avançados. Uma análise mais profunda pode ser necessária."
+    },
+    {
+        "pattern": "Could not find results for file with hash .+",
+        "is_regex": true,
+        "category": "Erro",
+        "message": "Não foi possível encontrar resultados para o arquivo com hash {hash}. Verifique se o arquivo está corretamente referenciado ou se há problemas com o armazenamento."
+    },
 
-{
-    "pattern": "Extracted a total of \\d+ battery daily stats",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": "Foram extraídas {integer} estatísticas diárias da bateria."
-},
-{
-    "pattern": "Extracted \\d+ records from battery daily stats",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Extracted at total of \\d+ installed package names",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Extracted a total of \\d+ records from app-ops manager",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Extracted a total of \\d+ SMS messages",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Extracted \\d+ records from battery history",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Extracted \\d+ Android system properties",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Extracted a total of \\d+ WhatsApp messages containing links",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Extracted records on a total of \\d+ processes",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Extracted a total of \\d+ history items",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Extracted a total of \\d+ battery history records",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Extracted a total of \\d+ database connection pool records",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Identified a total of \\d+ accessibility services",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Identified a total of \\d+ packages in App-Ops Manager",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Found package \".+\" requested \\d+ potentially dangerous permissions",
-    "is_regex": true,
-    "category": "Aplicativos Suspeitos",
-    "message": ""
-},
-{
-    "pattern": "Found an SUID file in a non-standard directory \".+\".",
-    "is_regex": true,
-    "category": "Aplicativos Suspeitos",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicous file at path: \".+\"",
-    "is_regex": true,
-    "category": "Aplicativos Suspeitos",
-    "message": ""
-},
-{
-    "pattern": "Downloaded file .+ to local copy at .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Skipping invalid file info - .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found file in tmp folder at path .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Found .+ files in primary Android tmp and media folders",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Found .+ total files",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Found an installed package related to 'rooting/jailbreaking: \".+\"",
-    "is_regex": true,
-    "category": "Aplicativos Suspeitos",
-    "message": ""
-},
-{
-    "pattern": "Found a security package disabled: \".+\"",
-    "is_regex": true,
-    "category": "Configuração Insegura",
-    "message": ""
-},
-{
-    "pattern": "System OTA update package \".+\" disabled on the phone",
-    "is_regex": true,
-    "category": "Segurança do Sistema",
-    "message": ""
-},
-{
-    "pattern": "Third-party package \".+\" requested \\d+ potentially dangerous permissions",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
+    {
+        "pattern": "Loaded \\d+ results from \".+\"",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "Foram carregados {count} resultados do arquivo \"{file}\". Verifique as informações para mais detalhes."
+    },
+    {
+        "pattern": "Running module .+...",
+        "is_regex": true,
+        "category": "Informativo",
+        "message": "O módulo {module} está em execução. Aguarde enquanto o processo é concluído."
+    },
+    {
+        "pattern": "Insufficient privileges for module .+: .+",
+        "is_regex": true,
+        "category": "Erro de Permissão",
+        "message": "Permissões insuficientes para o módulo {module}. Verifique as permissões e tente novamente."
+    },
+    {
+        "pattern": "There might be no data to extract by module .+: .+",
+        "is_regex": true,
+        "category": "Aviso",
+        "message": "Aviso: Não há dados disponíveis para extração pelo módulo {module}. Verifique se há dados válidos para análise."
+    },
+    {
+        "pattern": "The .+ module does not support checking for indicators",
+        "is_regex": true,
+        "category": "Limitação de Módulo",
+        "message": "O módulo {module} não oferece suporte para a verificação de indicadores. Considere utilizar um módulo compatível."
+    },
 
-{
-    "pattern": "Found non-system package with name \".+\" installed by \".+\" on .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Full dumpsys output stored at .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "SELinux is being regularly enforced",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "SELinux status is \".+\"!",
-    "is_regex": true,
-    "category": "Segurança do Sistema",
-    "message": ""
-},
-{
-    "pattern": "Current logcat logs stored at .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Logcat logs prior to last reboot stored at .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Processing SMS backup file at .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Processing MMS backup file at .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Ignoring .+ environment variable, using --backup-password argument instead",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Using backup password from .+ environment variable",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Identified \\d+ running processes",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Identified \\d+ SMS in backup data",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Identified \\d+ settings",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Identified \\d+ applications in AppOps Manager",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Identified \\d+ DB Info entries",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Found an installed package related to rooting/jailbreaking: \".+\"",
-    "is_regex": true,
-    "category": "Possível Invasão",
-    "message": ""
-},
-{
-    "pattern": ".+: .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": "Checar informações apresentada aqui! (versão do mvt e informação para atualização)."
-},
-{
-    "pattern": "Found a receiver to intercept outgoing SMS messages: \".+\"",
-    "is_regex": true,
-    "category": "Stalking",
-    "message": ""
-},
-{
-    "pattern": "Found a receiver to intercept incoming SMS messages: \".+\"",
-    "is_regex": true,
-    "category": "Stalking",
-    "message": ""
-},
-{
-    "pattern": "Found a receiver to intercept incoming data SMS message: \".+\"",
-    "is_regex": true,
-    "category": "Stalking",
-    "message": ""
-},
-{
-    "pattern": "Found a receiver monitoring telephony state/incoming calls: \".+\"",
-    "is_regex": true,
-    "category": "Stalking",
-    "message": ""
-},
-{
-    "pattern": "Found a receiver Found a receiver monitoring outgoing calls: \".+\"",
-    "is_regex": true,
-    "category": "Stalking",
-    "message": ""
-},
-{
-    "pattern": "Found a receiver ",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found suspicious \".+\" setting \".+ = .+\" \\(.+\\)",
-    "is_regex": true,
-    "category": "Segurança do Sistema",
-    "message": ""
-},
-{
-    "pattern": "Package .+ with REQUEST_INSTALL_PACKAGES permission",
-    "is_regex": true,
-    "category": "Aplicativos Suspeitos",
-    "message": ""
-},
-{
-    "pattern": "This phone has not received security updates for more than six months \\(last update: .+\\)",
-    "is_regex": true,
-    "category": "Segurança do Sistema",
-    "message": ""
-},
-{
-    "pattern": "Downloading .+ ...",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Unable to pull package file from .+: insufficient privileges, it might be a system app",
-    "is_regex": true,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "Failed to pull package file from .+: .+",
-    "is_regex": true,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "Starting extraction of installed APKs at folder .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Selected all \\d+ available packages",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Selected only \\d+ packages which are not marked as \"system\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "[\\d+/\\d+] Package: .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-
-{
-    "pattern": "Impossible to parse this backup file: .+",
-    "is_regex": true,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "The analysis of the Android device produced \\d+ detections!",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Checking Android bug report at path: .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Checking Android backup at path: .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Checking AndroidQF acquisition at path: .+",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Loaded a total of \\d+ unique indicators",
-    "is_regex": true,
-    "category": "Informativo",
-    "message": ""
-},
-{
-    "pattern": "Downloaded indicators \".+\" to .+",
-    "is_regex": true,
-    "category": "IOCs",
-    "message": ""
-},
-{
-    "pattern": "The analysis of the Android bug report produced \\d+ detections!",
-    "is_regex": true,
-    "category": "Possível Invasão",
-    "message": ""
-},
-{
-    "pattern": "The analysis of the Android backup produced \\d+ detections!",
-    "is_regex": true,
-    "category": "Possível Invasão",
-    "message": ""
-},
-{
-    "pattern": "The analysis of the AndroidQF acquisition produced \\d+ detections!",
-    "is_regex": true,
-    "category": "Possível Invasão",
-    "message": ""
-},
-{
-    "pattern": "Failed to retrieve indicators index located at .+ (error \\d+)",
-    "is_regex": true,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "Failed to download indicators file from .+ (error \\d+)",
-    "is_regex": true,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "Could not find a way to download indicator file for .+",
-    "is_regex": true,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "Failed to get details about file .+ (error \\d+)",
-    "is_regex": true,
-    "category": "Erro na Análise",
-    "error_code": "INTERNAL_SERVER_ERROR",
-    "message": ""
-},
-{
-    "pattern": "No indicators file exists at path .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Unable to unshorten URL .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Maybe found a known suspicious domain .+ matching indicator \".+\" from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious domain .+ shortened as .+ matching indicator \".+\" from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious domain .+ matching indicator \".+\" from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious process name \".+\" matching indicators from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious process name \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious email address \".+\" matching indicators from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious file name \".+\" matching indicators from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious file path \".+\" matching indicators form \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious file with hash \".+\" matching indicators from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious profile ID \".+\" matching indicators from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious app with ID \".+\" matching indicators from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious domain .+ ",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a known suspicious Android property \".+\" matching indicators from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a sub-domain with suspicious top level .+ shortened as .+ matching indicator \".+\" from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a sub-domain with a suspicious top level .+ matching indicator \".+\" from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found a truncated known suspicious process name \".+\" matching indicators from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Found known suspicious process name mentioned in file at path \".+\" matching indicators from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "indicators file exists at path .+",
-    "is_regex": true,
-    "category": "",
-    "message": "verificar duplicidade"
-},
-{
-    "pattern": "matching indicator \".+\" from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": "verificar duplicidade"
-},
-{
-    "pattern": "level .+ shortened as .+ matching \".+\" from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": "verificar duplicidade"
-},
-{
-    "pattern": "level .+ matching indicator \".+\" from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": "verificar duplicidade"
-},
-{
-    "pattern": "path \".+\" matching indicators from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": "verificar duplicidade"
-},
-{
-    "pattern": "Path specified with env MVT_STIX2 is not a valid file: .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "The check of the results produced \\d+ detections!",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Failed to hash the file .+: might be a symlink",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Failed to hash the file .+: permission denied",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Unable to create output folder .+: .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "NOTE: Detected indicators of compromise. Only expert review can confirm if the detected indicators are signs of an attack.\n\n.+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Unexpected response from VirusTotal: \\d+",
-    "is_regex": true,
-    "category": "VirusTotal",
-    "message": ""
-},
-{
-    "pattern": "Unable to store results of module .+ to file .+: .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "The .+ module database seems to be corrupted: .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Error in running extraction from module .+: .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Error when checking indicators from module .+: .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Error when serializing data from module .+: .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Parsing STIX2 indicators file at path .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Loading results from \".+\" with module .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Reference hash of the info.json file: \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Following is the list of available .+ modules:",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": " - .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "NOTE: Using MVT with public indicators of compromise (IOCs) WILL NOT automatically detect advanced attacks.\n\n.+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Could not find results for file with hash .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Loaded \\d+ results from \".+\"",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Running module .+...",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "Insufficient privileges for module .+: .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "There might be no data to extract by module .+: .+",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "The .+ module does not support checking for indicators",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-},
-{
-    "pattern": "The .+ module produced no detections!",
-    "is_regex": true,
-    "category": "",
-    "message": ""
-}
+    {
+        "pattern": "The .+ module produced no detections!",
+        "is_regex": true,
+        "category": "Sem Detecções",
+        "message": "O módulo {module} não produziu nenhuma detecção. Verifique os parâmetros e os dados analisados para garantir que a análise foi realizada corretamente."
+    },
+    {
+        "pattern": "Unable to connect to the device .+: did you specify the correct IP address?",
+        "is_regex": true,
+        "category": "Erro de Conexão",
+        "error_code": "NETWORK_CONNECTION_FAILED",
+        "message": "Não foi possível conectar ao dispositivo via rede. Verifique o endereço IP, a porta e autorize a conexão no dispositivo."
+    },
+    {
+        "pattern": "Found a known suspicious app certfificate with hash \".+\" matching indicators from \".+\"",
+        "is_regex": true,
+        "category": "Certificados Não Confiáveis",
+        "message": "Certificados desconhecidos foram encontrados. Isso pode indicar tentativa de ataque. Verifique as configurações de segurança."
+    }
+    
 ]

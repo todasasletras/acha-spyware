@@ -39,7 +39,7 @@ class APIErrorCode(Enum):
         internal_message="Falha ao executar mvt-android check-adb.",
     )
     DEVICE_BUSY = ErrorInfo(
-        code=2002,
+        code=2003,
         client_message="Dispositivo ocupado durante operação ADB.",
         status_code=HTTPStatus.SERVICE_UNAVAILABLE,
         internal_message="O dispositivo está ocupado. Tente rodar `adb kill-server` e conectar novamente.",
@@ -52,7 +52,7 @@ class APIErrorCode(Enum):
     )
     DEVICE_UNAUTHORIZED: ErrorInfo
     USB_CONNECTION_FAILED = ErrorInfo(
-        code=2003,
+        code=2004,
         client_message="Não foi possível conectar ao dispositivo via USB.",
         status_code=HTTPStatus.SERVICE_UNAVAILABLE,
         internal_message="Erro de conexão ADB/USB.",

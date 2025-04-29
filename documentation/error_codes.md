@@ -5,9 +5,9 @@
 |     `1000`      | `SERVER_UNHANDLED_EXCEPTION` |    `500`    | Ocorreu um erro interno no servidor.              | Unhandled exception no core da aplicação.                                       |
 |     `2000`      | `MVT_ANDROID_GENERAL_ERROR`  |    `503`    | Não foi possível executar o MVT-Android.          | Erro genérico no módulo MVT-Android.                                            |
 |     `2001`      | `DEVICE_CHECKADB_FAILED`     |    `503`    | Falha ao verificar o dispositivo via ADB.         | Falha ao executar mvt-android check-adb.                                        |
-|     `2002`      | `DEVICE_BUSY`                |    `503`    | Dispositivo ocupado durante operação ADB.         | O dispositivo está ocupado. Tente rodar `adb kill-server` e conectar novamente. |
+|     `2003`      | `DEVICE_BUSY`                |    `503`    | Dispositivo ocupado durante operação ADB.         | O dispositivo está ocupado. Tente rodar `adb kill-server` e conectar novamente. |
 |     `2002`      | `DEVICE_NOT_FOUND`           |    `404`    | Nenhum dispositivo Android foi encontrado.        | Dispositivo não conectado ou não autorizado.                                    |
-|     `2003`      | `USB_CONNECTION_FAILED`      |    `503`    | Não foi possível conectar ao dispositivo via USB. | Erro de conexão ADB/USB.                                                        |
+|     `2004`      | `USB_CONNECTION_FAILED`      |    `503`    | Não foi possível conectar ao dispositivo via USB. | Erro de conexão ADB/USB.                                                        |
 |     `2100`      | `MVT_ANDROID_APK_ERROR`      |    `500`    | Erro ao verificar o arquivo APK.                  | Erro ao rodar mvt-android download-apks.                                        |
 |     `3000`      | `BACKUP_PATH_INVALID`        |    `400`    | Caminho de backup inválido.                       | O caminho não aponta para um arquivo .ab ou diretório válido.                   |
 |     `3001`      | `BACKUP_PASSWORD_MISSING`    |    `400`    | Senha de backup não informada.                    | Parâmetro --backup-password ausente.                                            |

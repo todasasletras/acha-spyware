@@ -1,7 +1,8 @@
-from api import create_app, logger
+from core.logger import setup_logger
+from api import create_app
 
-
-logger.debug("Inicio do FVM!")
+logger = setup_logger()
+logger.info("Inicio do FVM!")
 
 logger.debug("Criar uma instancia de aplicação Flask.")
 app = create_app()

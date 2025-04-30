@@ -1,0 +1,46 @@
+[project]
+name = "ferramenta-de-verificacao-movel"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "adb-shell==0.4.4",
+    "appdirs==1.4.4",
+    "blinker==1.9.0",
+    "certifi==2024.12.14",
+    "cffi==1.17.1",
+    "charset-normalizer==3.4.1",
+    "click==8.1.8",
+    "cryptography==44.0.0",
+    "flask==3.1.0",
+    "idna==3.10",
+    "iniconfig==2.0.0",
+    "iosbackup==0.9.925",
+    "itsdangerous==2.2.0",
+    "jinja2==3.1.5",
+    "libusb1==3.2.0",
+    "markdown-it-py==3.0.0",
+    "markupsafe==3.0.2",
+    "mdurl==0.1.2",
+    "mvt==2.5.4",
+    "nskeyedunarchiver==1.5",
+    "packaging==24.2",
+    "pluggy==1.5.0",
+    "pyahocorasick==2.1.0",
+    "pyasn1==0.6.1",
+    "pycparser==2.22",
+    "pycryptodome==3.21.0",
+    "pygments==2.19.1",
+    "pytest==8.3.4",
+    "pytest-mock==3.14.0",
+    "python-dotenv==1.0.1",
+    "pyyaml==6.0.2",
+    "requests==2.32.3",
+    "rich==13.9.4",
+    "rsa==4.9",
+    "simplejson==3.19.3",
+    "tld==0.13",
+    "urllib3==2.3.0",
+    "werkzeug==3.1.3",
+]

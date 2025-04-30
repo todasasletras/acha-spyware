@@ -4,12 +4,12 @@ async function enviarApiKey() {
   const apiKey = apiKeyInput ? apiKeyInput.value.trim() : "";
 
   if (!apiKey) {
-    document.querySelector("#resultado").innerHTML = "⚠️ Informe uma chave de API.";
+    document.querySelector("#resultadoApiKey").innerHTML = "⚠️ Informe uma chave de API.";
     return;
   }
 
   try {
-    const response = await fetch("/set-virustotal-api-key", {
+    const response = await fetch("/api/config/set-vt-key", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ api_key: apiKey })
@@ -20,10 +20,10 @@ async function enviarApiKey() {
     if (data.success) {
       document.querySelector("#resultadoApiKey").innerHTML = "✅ Chave da API salva com sucesso!";
     } else {
-      document.querySelector("#resultado").innerHTML = `❌ Erro ao salvar a chave da API: ${data.error}`;
+      document.querySelector("#resultadoApiKey").innerHTML = `❌ Erro ao salvar a chave da API: ${data.error}`;
     }
   } catch (error) {
-    document.querySelector("#resultado").innerHTML = "❌ Erro na requisição ao salvar a chave da API.";
+    document.querySelector("#resultadoApiKey").innerHTML = "❌ Erro na requisição ao salvar a chave da API.";
     console.error("Erro ao enviar a chave:", error);
   }
 }
@@ -34,11 +34,11 @@ async function enviarCheckAdb() {
     serial: null,
     fast: false,
     verbose: true,
-    virustotal: true  // assume que usará virustotal se já salvou a chave antes
+    // virustotal: true  // assume que usará virustotal se já salvou a chave antes
   };
 
   try {
-    const response = await fetch("/check-adb", {
+    const response = await fetch("/api/android/check-adb", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -47,11 +47,14 @@ async function enviarCheckAdb() {
     });
 
     const data = await response.json();
+    console.log('data:', data)
 
     if (data.success) {
-      const resultados = data.output || [];
+      const resultados = data.messages || [];
+      console.log('success: ', resultados)
       const mensagens = resultados.map(item => {
-        return `<div><strong>${item.status.toUpperCase()}</strong> - ${item.message}</div>`;
+        console.log('items:', item)
+        return `<div><strong>${item.category.toUpperCase()}</strong> - ${item.message}</div>`;
       }).join("");
       document.querySelector("#resultado").innerHTML = mensagens || "✅ Dispositivo encontrado!";
     } else {

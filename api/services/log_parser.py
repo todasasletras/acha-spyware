@@ -162,11 +162,9 @@ if __name__ == "__main__":
         """
     )
     print(len(parsed))
-    print(
-        "\n".join(
-            [
-                f"{key}:\n\t{'\n\t'.join([f'{chave}:\n\t\t{valor}' for v in values for chave, valor in v.items()])}"
-                for key, values in parsed.items()
-            ]
-        ),
-    )
+    for key, values in parsed.items():
+        print(key, end="\n\t")
+        for v in values:
+            for chave, valor in v.items():
+                print(chave, end="\n\t")
+                print(valor)

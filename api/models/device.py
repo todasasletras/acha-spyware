@@ -92,14 +92,21 @@ class Device:
                 logger.debug(
                     "Adiciona um objeto na lista com as informacoes do dispositivos"
                 )
+                logger.info(
+                    "Dispositivo listado: id=%s, name=%s, product=%s, model=%s, device=%s",
+                    id,
+                    model,
+                    product,
+                    model,
+                    device,
+                )
+
                 devices.append(
                     Device(
                         id=id, name=model, product=product, model=model, device=device
                     )
                 )
-            logger.info(
-                f"Dispositivos listados:\n{'\n'.join([f'{i}. {device}' for i, device in enumerate(devices, start=1)])}"
-            )
+
         return devices
 
     def to_dict(self) -> Dict[str, str]:

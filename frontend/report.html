@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <title>Relatório FVM</title>
@@ -7,10 +8,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body {
-      background-color: #000000;
-      color: #FFFFFF;
+      background-color: #000;
+      color: #fff;
       font-family: 'Inter', sans-serif;
-      font-weight: 400;
       margin: 40px;
       line-height: 1.6;
     }
@@ -44,13 +44,12 @@
 
     .info-table th,
     .info-table td {
-      border: 1px solid #FFFFFF;
+      border: 1px solid #fff;
       padding: 8px;
     }
 
     .info-table th {
-      background-color: #222222;
-      color: #FFFFFF;
+      background-color: #222;
       text-align: left;
     }
 
@@ -60,18 +59,18 @@
     }
 
     footer {
-      border-top: 1px solid #444444;
+      border-top: 1px solid #444;
       font-size: 12px;
       text-align: center;
       margin-top: 40px;
       padding-top: 10px;
-      color: #AAAAAA;
+      color: #AAA;
     }
 
     .btn-exportar {
       display: inline-block;
       background-color: #316BBF;
-      color: #FFFFFF;
+      color: #fff;
       font-family: 'Inter', sans-serif;
       font-weight: 500;
       font-size: 16px;
@@ -91,43 +90,46 @@
     }
   </style>
 </head>
+
 <body>
 
   <div id="relatorio">
     <header>
       <h1>Relatório de Verificação - Ferramenta de Verificação Móvel (FVM)</h1>
-      <p><strong>Data:</strong> 28/03/2025</p>
+      <p><strong>Data:</strong> <span id="rel-data">--/--/----</span></p>
     </header>
 
     <section class="section">
       <h2>Informações do Dispositivo</h2>
       <table class="info-table">
-        <tr><th>Modelo</th><td>Ex: Samsung Galaxy A52</td></tr>
-        <tr><th>Sistema Operacional</th><td>Android 12</td></tr>
-        <tr><th>Data da Análise</th><td>28/03/2025 - 14:32</td></tr>
+        <tr>
+          <th>Modelo</th>
+          <td id="rel-modelo">–</td>
+        </tr>
+        <tr>
+          <th>Sistema Operacional</th>
+          <td id="rel-sistema">–</td>
+        </tr>
+        <tr>
+          <th>Data da Análise</th>
+          <td id="rel-analise-data">–</td>
+        </tr>
       </table>
     </section>
 
     <section class="section">
       <h2>Indicadores de Comprometimento</h2>
-      <ul>
-        <li><span class="alert">[!] Aplicativo suspeito detectado: com.spy.example</span></li>
-        <li><span class="alert">[!] Permissões excessivas concedidas a aplicativos desconhecidos</span></li>
-        <li>[✓] Nenhuma modificação detectada em arquivos de sistema</li>
-        <li>[✓] Nenhum comportamento de rede incomum identificado</li>
-      </ul>
+      <ul id="rel-indicators"></ul>
     </section>
 
     <section class="section">
       <h2>Observações Técnicas</h2>
-      <p>
-        Foram detectados dois pontos de atenção que indicam possível comprometimento.
-        Recomenda-se encaminhar este relatório para um técnico de confiança para análise mais detalhada e verificação presencial do dispositivo.
-      </p>
+      <p id="rel-observacoes">–</p>
     </section>
 
     <footer>
-      Relatório gerado localmente pela Ferramenta de Verificação Móvel (FVM). Nenhum dado foi enviado para servidores externos.
+      Relatório gerado localmente pela 'acha_spyware'. Nenhum dado foi enviado para servidores
+      externos.
     </footer>
   </div>
 
@@ -136,18 +138,120 @@
   </div>
 
   <script>
-    function exportarPDF() {
+    // ======== IndexedDB Helpers ========
+    const DB_NAME = "analysisDB";
+    const STORE_NAME = "analysisResults";
+    const DB_VERSION = 1;
+
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        request.onupgradeneeded = e => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: "id", autoIncrement: true });
+          }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = e => reject(e.target.error);
+      });
+    }
+
+    async function saveAnalysis(data) {
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.add(data);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = e => reject(e.target.error);
+      });
+    }
+
+    async function getAllAnalyses() {
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readonly");
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.getAll();
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = e => reject(e.target.error);
+      });
+    }
+
+    // ======== Render & Export ========
+    async function renderIndicators() {
+        let entries;
+        try {
+          entries = await getAllAnalyses();
+        } catch (err) {
+          console.error("Erro ao ler IndexedDB:", err);
+          return;
+        }
+
+        const ul = document.getElementById("rel-indicators");
+        ul.innerHTML = "";
+
+        if (!entries.length) {
+          ul.innerHTML = "<li>— Nenhum indicador salvo.</li>";
+          return;
+        }
+
+        entries[0].forEach(record => {
+          // cada record é { id, category, message, original_message }
+          if (record.category === "Informativo") return;
+
+          const li = document.createElement("li");
+          // Exibe em alerta se não for categoria informativo
+          li.innerHTML = `<span class="alert">[!] ${record.message}</span>`;
+          ul.appendChild(li);
+        });
+    }
+
+    async function exportarPDF() {
+      // Antes de exportar, salva o relatório atual no IndexedDB
+      const reportData = {
+        date: document.getElementById("rel-data").textContent,
+        device: {
+          model: document.getElementById("rel-modelo").textContent,
+          os: document.getElementById("rel-sistema").textContent,
+          analysisDate: document.getElementById("rel-analise-data").textContent
+        },
+        indicators: Array.from(document.querySelectorAll("#rel-indicators li")).map(li => {
+          const raw = li.textContent.replace(/^\[.\]\s*/, "");
+          return {
+            message: raw,
+            isAlert: li.querySelector(".alert") != null,
+            category: li.querySelector(".alert")
+              ? li.textContent.match(/^\[!\]\s*(.*)/) && "Possível Invasão"  /*exemplo*/
+              : "Segurança do Sistema"
+          };
+        }),
+        observations: document.getElementById("rel-observacoes").textContent
+      };
+
+      try {
+        await saveAnalysis(reportData);
+        console.log("Relatório salvo no IndexedDB.");
+      } catch (e) {
+        console.error("Erro ao salvar relatório:", e);
+      }
+
+      // Gerar PDF
       const element = document.getElementById('relatorio');
       const opt = {
-        margin:       0.5,
-        filename:     'relatorio-fvm.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        margin: 0.5,
+        filename: 'relatorio-fvm.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
       html2pdf().set(opt).from(element).save();
     }
-  </script>
 
+    // Ao carregar a página, renderiza o último relatório
+    document.addEventListener("DOMContentLoaded", renderLatestReport);
+  </script>
 </body>
+
 </html>

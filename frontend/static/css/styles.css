@@ -91,3 +91,36 @@ a {
     text-align: left;
     width: 215px;
 }
+
+.d-none {
+    display: none !important;
+}
+
+.spinner
+{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: conic-gradient(
+        from 0deg,
+        #0d1b2a,
+        #1b263b,
+        #415a77,
+        #778da9,
+        #e0e1dd,
+        #0d1b2a
+    );
+    animation: spin 2s linear infinite;
+    mask-image: radial-gradient(circle, transparent 40%, black 41%);
+    -webkit-mask-image: radial-gradient(circle, transparent 40%, black 41%);
+    box-shadow: 0 0 10px 10px #77415199;
+}
+
+@keyframes spin
+{
+    to
+    {
+        transform: rotate(360deg);
+    }
+}

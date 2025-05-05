@@ -259,8 +259,24 @@ class APIErrorCode(Enum):
         status_code=HTTPStatus.NOT_FOUND,
         internal_message="Tentativa de acesso a caminho inexistente.",
     )
-    ANALYSIS_INDICATOR_INDEX_RETRIEVE_FAILED: ErrorInfo
-    MODULE_EXECUTION_ERROR: ErrorInfo
+    FOLDER_CREATION_ERROR = ErrorInfo(
+        code=6003,
+        client_message="Erro ao criar diretório.",
+        status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+        internal_message="Falha ao criar diretório.",
+    )
+    MODULE_EXECUTION_ERROR = ErrorInfo(
+        code=6004,
+        client_message="Erro na execução do módulo.",
+        status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+        internal_message="Falha ao executar o módulo.",
+    )
+    ANALYSIS_INDICATOR_INDEX_RETRIEVE_FAILED = ErrorInfo(
+        code=6005,
+        client_message="Falha ao recuperar o índice de indicadores da análise.",
+        status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+        internal_message="Falha ao recuperar o índice de indicadores da análise.",
+    )
 
 
 class APIExceptionData(TypedDict, total=False):

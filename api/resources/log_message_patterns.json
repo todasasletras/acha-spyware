@@ -77,13 +77,13 @@
         "pattern": "Unable to find dumpstate file. Did you provide a valid bug report archive?",
         "is_regex": false,
         "category": "Erro de Leitura",
-        "error_code": "FILE_NOT_FOUND",
         "message": "Não foi possível encontrar o arquivo de relatório necessário para a análise. Verifique o arquivo enviado e tente novamente."
     },
     {
-        "pattern": "Invalid backup format, file shoud be in .ab format",
+        "pattern": "Invalid backup format, file should be in .ab format",
         "is_regex": false,
         "category": "Formato de Backup Incorreto",
+        "error_code": "BACKUP_FORMAT_INVALID",
         "message": "O arquivo de backup está em um formato inválido. Certifique-se de enviar um arquivo no formato '.ab'."
     },
     {
@@ -102,7 +102,7 @@
         "message": "Nenhum dispositivo encontrado. Conecte seu dispositivo via USB e ative o modo desenvolvedor."
     },
     {
-        "pattern": "device unautorized",
+        "pattern": "device unauthorized",
         "is_regex": false,
         "category": "Permissão Negada",
         "error_code": "DEVICE_UNAUTHORIZED",
@@ -119,7 +119,6 @@
         "pattern": "You need to authorize this computer on the Android device.",
         "is_regex": false,
         "category": "Permissão Negada",
-        "error_code": "DEVICE_UNAUTHORIZED",
         "message": "É necessário autorizar este computador no seu dispositivo Android. Aceite a solicitação na tela do aparelho."
     },
     {
@@ -131,35 +130,32 @@
     },
 
     {
-        "pattern": "did you specify the correct IP address?",
-        "is_regex": false,
+        "pattern": "Unable to connect to the device .+: did you specify the correct IP address?",
+        "is_regex": true,
         "category": "Erro de Conexão",
-        "error_code": "INTERNAL_SERVER_ERROR",
+        "error_code": "NETWORK_CONNECTION_FAILED",
         "message": "Endereço IP incorreto. Verifique se informou o IP correto do dispositivo."
     },
     {
-        "pattern": "Please check phone and accept Andoid backup prompt",
+        "pattern": "Please check phone and accept Android backup prompt. You may need to set a backup password.",
         "is_regex": false,
         "category": "Confirmação Pendente",
-        "error_code": "INTERNAL_SERVER_ERROR",
         "message": "Aceite a solicitação de backup no seu celular para continuar."
     },
     {
-        "pattern": "Backup passworde already set from commad line or environment variable",
+        "pattern": "Backup password already set from command line or environment variable. You should use the same password if enabling encryption!",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_DECRYPTION_FAILED",
         "message": "Uma senha de backup já foi definida. Remova ou altere a configuração para prosseguir."
     },
     {
         "pattern": "No valid backup data found",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_PATH_INVALID",
         "message": "Não foi encontrado um backup válido. Tente gerar um novo backup no dispositivo."
     },
     {
-        "pattern": "No backup password provided",
+        "pattern": "No backup password provided.",
         "is_regex": false,
         "category": "Erro de Backup",
         "error_code": "BACKUP_PASSWORD_MISSING",
@@ -167,31 +163,27 @@
     },
 
     {
-        "pattern": "You provided the wrong password",
+        "pattern": "You provided the wrong password! Please try again...",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_DECRYPTION_FAILED",
         "message": "A senha fornecida está incorreta. Verifique e tente novamente."
     },
     {
         "pattern": "All attempts to decrypt backup with password failed",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_DECRYPTION_FAILED",
         "message": "Falha na descriptografia do backup. A senha pode estar incorreta ou o arquivo está corrompido."
     },
     {
-        "pattern": "Impossible to read SMS from the Android Backup",
+        "pattern": "Impossible to read SMS from the Android Backup, please extract the SMS and try extracting it with Android Backup Extractor",
         "is_regex": false,
         "category": "Erro de Leitura",
-        "error_code": "ANALYSIS_PARSE_ERROR",
         "message": "Não foi possível ler as mensagens SMS do backup. O backup pode estar incompleto ou corrompido."
     },
     {
-        "pattern": "No SMS database found",
+        "pattern": "No SMS database found. Trying extraction of SMS data using Android backup feature.",
         "is_regex": false,
         "category": "Erro de Leitura",
-        "error_code": "FILE_NOT_FOUND",
         "message": "Nenhuma base de dados de SMS foi encontrada no backup."
     },
     {
@@ -206,34 +198,33 @@
         "pattern": "Please use Android Backup Extractor \\(ABE\\) instead",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_PATH_INVALID",
+        "error_code": "BACKUP_INVALID_FORMAT",
         "message": "Use o Android Backup Extractor (ABE) para extrair o backup corretamente."
     },
     {
-        "pattern": "Invalid backup path, path shoud be a folder or an Android Backup \\(.ab\\) file",
+        "pattern": "Invalid backup path, path should be a folder or an Android Backup \\(.ab\\) file",
         "is_regex": false,
         "category": "Erro de Backup",
         "error_code": "BACKUP_PATH_INVALID",
         "message": "Caminho de backup inválido. Deve ser uma pasta ou um arquivo de backup Android (.ab)."
     },
     {
-        "pattern": "you need to specify an output folder with --output",
+        "pattern": "you need to specify an output folder with --output!",
         "is_regex": false,
         "category": "Erro de Leitura",
-        "error_code": "INTERNAL_SERVER_ERROR",
+        "error_code": "SERVER_UNHANDLED_EXCEPTION",
         "message": "Você precisa especificar uma pasta de saída usando a opção --output."
     },
     {
         "pattern": "Unable to parse STIX2 indicator file. The file is corrupted or in the wrong format",
         "is_regex": false,
         "category": "Erro de Leitura",
-        "error_code": "INTERNAL_SERVER_ERROR",
         "message": "Não foi possível interpretar o arquivo de indicadores STIX2. O arquivo está corrompido ou em formato inválido."
     },
     {
         "pattern": "Please disable Developer Options and ADB \\(Android Debug Bridge\\) on the device once finished with the acquisition. ADB is a powerful tool which can allow unauthorized access to the device.",
         "is_regex": false,
-        "category": "Informativo",
+        "category": "Aviso",
         "message": "Desative as Opções do Desenvolvedor e o ADB no dispositivo após concluir a aquisição para garantir a segurança."
     },
 
@@ -241,14 +232,12 @@
         "pattern": "You have exceeded the quota for your VirusTotal API key",
         "is_regex": false,
         "category": "VirusTotal",
-        "error_code": "VT_QUOTA_EXCEEDED",
         "message": "Você excedeu a cota de uso da sua chave de API do VirusTotal. Tente novamente mais tarde ou use outra chave."
     },
     {
         "pattern": "Failed to retrieve date of latest update to indicators index file",
         "is_regex": false,
         "category": "Erro de Leitura",
-        "error_code": "ANALYSIS_INDICATOR_INDEX_RETRIEVE_FAILED",
         "message": "Falha ao recuperar a data da última atualização do arquivo de indicadores."
     },
     {
@@ -292,14 +281,12 @@
         "pattern": "No backup data found",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_PATH_INVALID",
         "message": "Nenhum dado de backup encontrado. Verifique o caminho do arquivo de backup."
     },
     {
         "pattern": "Impossible to read SMS from the Android Backup, please extract the SMS and try extracting it with Android Backup Extractor",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_PATH_INVALID",
         "message": "Não foi possível ler as mensagens SMS do backup Android. Extraia as mensagens usando o Android Backup Extractor e tente novamente."
     },
 
@@ -307,35 +294,24 @@
         "pattern": "Impossible to parse this backup file, please use Android Backup Extractor instead",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_PATH_INVALID",
         "message": "Impossível analisar este arquivo de backup. Por favor, use o Android Backup Extractor em vez disso."
-    },
-    {
-        "pattern": "No backup password provided.",
-        "is_regex": false,
-        "category": "Erro de Backup",
-        "error_code": "BACKUP_PASSWORD_MISSING",
-        "message": "Nenhuma senha de backup fornecida. Por favor, forneça a senha para continuar."
     },
     {
         "pattern": "Invalid backup format, backup.ab was not analysed",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_INVALID_FORMAT",
         "message": "Formato de backup inválido. O arquivo backup.ab não foi analisado."
     },
     {
         "pattern": "getprop.txt file not found",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_DECRYPTION_FAILED",
         "message": "Arquivo getprop.txt não encontrado. Verifique se o backup está completo."
     },
     {
-        "pattern": "Dumpsys fyke not",
+        "pattern": "Dumpsys file not found",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_DECRYPTION_FAILED",
         "message": "Erro ao tentar acessar os dados do dumpsys. Verifique se os dados estão disponíveis no backup."
     },
 
@@ -343,7 +319,6 @@
         "pattern": "Cannot decrypt backup because interactivity was disabled and the password was not supplied",
         "is_regex": false,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_PASSWORD_MISSING",
         "message": "Não é possível descriptografar o backup porque a interatividade foi desabilitada e a senha não foi fornecida."
     },
     {
@@ -722,14 +697,12 @@
         "pattern": "Unable to pull package file from .+: insufficient privileges, it might be a system app",
         "is_regex": true,
         "category": "Erro de Leitura",
-        "error_code": "INTERNAL_SERVER_ERROR",
         "message": "Não foi possível extrair o arquivo do pacote de {package_name}: privilégios insuficientes, pode ser um aplicativo de sistema."
     },
     {
         "pattern": "Failed to pull package file from .+: .+",
         "is_regex": true,
         "category": "Erro de Leitura",
-        "error_code": "INTERNAL_SERVER_ERROR",
         "message": "Falha ao extrair o arquivo do pacote de {package_name}: {error_message}."
     },
     {
@@ -761,7 +734,6 @@
         "pattern": "Impossible to parse this backup file: .+",
         "is_regex": true,
         "category": "Erro de Backup",
-        "error_code": "BACKUP_DECRYPTION_FAILED",
         "message": "Impossível analisar o arquivo de backup: {file_path}."
     },
     {
@@ -824,14 +796,12 @@
         "pattern": "Failed to retrieve indicators index located at .+ (error \\d+)",
         "is_regex": true,
         "category": "Erro de Leitura",
-        "error_code": "INTERNAL_SERVER_ERROR",
         "message": "Falha ao recuperar o índice de indicadores localizado em {path} (erro {error_code})."
     },
     {
         "pattern": "Failed to download indicators file from .+ (error \\d+)",
         "is_regex": true,
         "category": "Erro de Conexão",
-        "error_code": "INTERNAL_SERVER_ERROR",
         "message": "Falha ao baixar o arquivo de indicadores de {url} (erro {error_code})."
     },
 
@@ -839,14 +809,12 @@
         "pattern": "Could not find a way to download indicator file for .+",
         "is_regex": true,
         "category": "Erro de Conexão",
-        "error_code": "INTERNAL_SERVER_ERROR",
         "message": "Não foi possível encontrar uma maneira de baixar o arquivo de indicadores para {path}."
     },
     {
         "pattern": "Failed to get details about file .+ (error \\d+)",
         "is_regex": true,
         "category": "Erro de Leitura",
-        "error_code": "INTERNAL_SERVER_ERROR",
         "message": "Falha ao obter detalhes sobre o arquivo {file} (erro {error_code})."
     },
     {
@@ -1027,6 +995,7 @@
         "pattern": "Unable to create output folder .+: .+",
         "is_regex": true,
         "category": "Erro de Leitura",
+        "error_code": "FOLDER_CREATION_ERROR",
         "message": "Não foi possível criar a pasta de saída {folder}: {error}. Verifique permissões ou caminho."
     },
     {
@@ -1058,7 +1027,6 @@
         "pattern": "Error in running extraction from module .+: .+",
         "is_regex": true,
         "category": "Erro na Execução",
-        "error_code": "MODULE_EXECUTION_ERROR",
         "message": "Erro ao executar a extração do módulo {module}: {error}. Verifique a configuração do módulo."
     },
     {
@@ -1158,7 +1126,6 @@
         "pattern": "Unable to connect to the device .+: did you specify the correct IP address?",
         "is_regex": true,
         "category": "Erro de Conexão",
-        "error_code": "NETWORK_CONNECTION_FAILED",
         "message": "Não foi possível conectar ao dispositivo via rede. Verifique o endereço IP, a porta e autorize a conexão no dispositivo."
     },
     {

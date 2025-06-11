@@ -1,21 +1,25 @@
-MIT License
-
 Copyright (c) 2025 Todas as Letras
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+of this software and associated documentation files (the "Software"), to use,
+copy, modify, and adapt the Software for **personal, educational, or professional internal use**, 
+including use in public interest contexts such as research, teaching, or forensic analysis, 
+**provided that such use does not involve commercial redistribution or resale**.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+The following conditions apply:
+
+1. **Uso Comercial Restrito**: É expressamente proibido vender, sublicenciar, oferecer como serviço comercial ou incorporar o Software (ou versões modificadas dele) em produtos ou serviços pagos oferecidos a terceiros.
+
+2. **Uso Profissional Permitido**: É permitido o uso por profissionais (ex: peritos forenses, pesquisadores, educadores) em suas atividades regulares, desde que o Software **não seja vendido ou licenciado a terceiros**.
+
+3. **Distribuição com Atribuição**: Toda redistribuição, mesmo que modificada, deve incluir este aviso de copyright e os termos desta licença.
+
+4. **Proibição de Exclusividade**: Esta licença não concede qualquer direito exclusivo sobre o uso do Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

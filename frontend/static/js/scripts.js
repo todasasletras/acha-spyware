@@ -2,6 +2,23 @@ const DB_NAME = "analysisDB";
 const STORE_NAME = "analysisResults";
 const DB_VERSION = 1;
 
+function showAlert(message, type = "success") {
+  const alertContainer = document.getElementById("alertContainer");
+  const alert = document.createElement("div");
+  alert.className = `alert alert-${type} alert-dismissible fade show shadow`;
+  alert.role = "alert";
+  alert.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  `;
+  alertContainer.appendChild(alert);
+
+  setTimeout(() => {
+    const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+    bsAlert.close();
+  }, 4000);
+}
+
 async function openDB() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -22,6 +39,7 @@ async function openDB() {
 
     request.onerror = (event) => {
       console.error('Erro ao abrir o banco de dados:', event.target.error);
+      showAlert("❌ Erro ao abrir o banco de dados!", "danger");
       reject(event.target.error);
     };
   });
@@ -34,8 +52,11 @@ async function saveAnalysis(data) {
     const store = tx.objectStore(STORE_NAME);
     const request = store.add(data);
 
-    request.onsuccess = () => resolve(request.result); // ID do item salvo
-    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => {
+      showAlert("❌ Erro ao salvar a análise!", "danger");
+      reject(request.error);
+    };
   });
 }
 
@@ -47,7 +68,10 @@ async function getAllAnalyses() {
     const request = store.getAll();
 
     request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
+    request.onerror = () => {
+      showAlert("❌ Erro ao buscar análises!", "danger");
+      reject(request.error);
+    };
   });
 }
 
@@ -59,7 +83,10 @@ async function getAnalysisById(id) {
     const request = store.get(id);
 
     request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
+    request.onerror = () => {
+      showAlert("❌ Erro ao buscar análise por ID!", "danger");
+      reject(request.error);
+    };
   });
 }
 
@@ -71,7 +98,10 @@ async function deleteAnalysis(id) {
     const request = store.delete(id);
 
     request.onsuccess = () => resolve(true);
-    request.onerror = () => reject(request.error);
+    request.onerror = () => {
+      showAlert("❌ Erro ao excluir análise!", "danger");
+      reject(request.error);
+    };
   });
 }
 
@@ -83,18 +113,25 @@ async function clearAllAnalyses() {
     const request = store.clear();
 
     request.onsuccess = () => resolve(true);
-    request.onerror = () => reject(request.error);
+    request.onerror = () => {
+      showAlert("❌ Erro ao limpar todas as análises!", "danger");
+      reject(request.error);
+    };
   });
 }
-
 
 // Função para salvar a chave da API
 async function enviarApiKey() {
   const apiKeyInput = document.querySelector("#apiKeyInput");
   const apiKey = apiKeyInput ? apiKeyInput.value.trim() : "";
 
+  // Resetando estado anterior de erro
+  apiKeyInput.classList.remove("is-invalid");
+
   if (!apiKey) {
-    document.querySelector("#resultadoApiKey").innerHTML = "⚠️ Informe uma chave de API.";
+    apiKeyInput.classList.add("is-invalid");
+    apiKeyInput.focus();
+    showAlert("⚠️ Informe uma chave de API.", "warning");
     return;
   }
 
@@ -109,12 +146,15 @@ async function enviarApiKey() {
 
     if (data.success) {
       document.querySelector("#resultadoApiKey").innerHTML = "✅ Chave da API salva com sucesso!";
+      showAlert("✅ Chave da API salva com sucesso!", "success");
     } else {
-      document.querySelector("#resultadoApiKey").innerHTML = `❌ Erro ao salvar a chave da API: ${data.error}`;
+      document.querySelector("#resultadoApiKey").innerHTML = `❌ Erro: ${data.error}`;
+      showAlert(`❌ Erro ao salvar a API: ${data.error}`, "danger");
     }
   } catch (error) {
-    document.querySelector("#resultadoApiKey").innerHTML = "❌ Erro na requisição ao salvar a chave da API.";
+    document.querySelector("#resultadoApiKey").innerHTML = "❌ Erro na requisição.";
     console.error("Erro ao enviar a chave:", error);
+    showAlert("❌ Erro na requisição ao salvar a API.", "danger");
   }
 }
 
@@ -126,35 +166,33 @@ async function enviarCheckAdb() {
     serial: null,
     fast: false,
     verbose: true,
-    // virustotal: true  // assume que usará virustotal se já salvou a chave antes
   };
 
   try {
     const response = await fetch("/api/android/check-adb", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dados)
     });
 
     const data = await response.json();
-    console.log('data:', data)
 
     if (data.success) {
       const resultados = data.messages || [];
-      console.log('success: ', resultados)
       await saveAnalysis(resultados);
       const mensagens = resultados.map(item => {
         return `<div><strong>${item.category.toUpperCase()}</strong> - ${item.message}</div>`;
       }).join("");
       document.querySelector("#resultado").innerHTML = mensagens || "✅ Dispositivo encontrado!";
+      showAlert("✅ Dispositivo verificado com sucesso!", "success");
     } else {
       document.querySelector("#resultado").innerHTML = `❌ Erro: ${data.error}`;
+      showAlert(`❌ Erro: ${data.error}`, "danger");
     }
   } catch (error) {
     document.querySelector("#resultado").innerHTML = "❌ Erro na requisição.";
     console.error("Erro ao chamar /check-adb:", error);
+    showAlert("❌ Erro na requisição ao verificar o dispositivo.", "danger");
   } finally {
     spinner.classList.add("d-none");
   }

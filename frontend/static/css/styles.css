@@ -87,8 +87,7 @@ a {
 }
 
 .labelApiKey {
-    text-align: left;
-    width: 215px;
+    min-width: 135px;
 }
 
 .d-none {

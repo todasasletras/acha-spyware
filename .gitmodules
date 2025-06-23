@@ -3,4 +3,4 @@
 	url = https://github.com/mvt-project/mvt.git
 [submodule "androidqf"]
 	path = submodules/androidqf
-	url = https://github.com/botherder/androidqf.git
+	url = https://github.com/mvt-project/androidqf.git

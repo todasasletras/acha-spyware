@@ -36,6 +36,11 @@ a {
     margin-bottom: 20px;
 }
 
+#alertContainer {
+    z-index: 1050;
+    max-width: 100%;
+}
+
 .button-container {
     position: relative;
     text-align: center;
@@ -46,7 +51,6 @@ a {
 .button-submit {
     background: #316BBF !important;
     color: #fff !important;
-    margin-left: 10px;
 }
 
 .button {
@@ -88,8 +92,7 @@ a {
 }
 
 .labelApiKey {
-    text-align: left;
-    width: 215px;
+    min-width: 135px;
 }
 
 .d-none {

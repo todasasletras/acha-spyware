@@ -1,6 +1,6 @@
-[submodule "mvt"]
-	path = submodules/mvt
-	url = https://github.com/mvt-project/mvt.git
-[submodule "androidqf"]
+[submodule "submodules/androidqf"]
 	path = submodules/androidqf
 	url = https://github.com/mvt-project/androidqf.git
+[submodule "submodules/mvt"]
+	path = submodules/mvt
+	url = https://github.com/mvt-project/mvt

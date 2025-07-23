@@ -50,6 +50,7 @@ class LogParser:
 
     def parse(self, log_text: str) -> LogMessageEntry:
         self.loading_json()
+        print(log_text)
         cleaned = self._clean_output(log_text)
         return {
             "logs": self._extract_log(cleaned),

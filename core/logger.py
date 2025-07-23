@@ -3,9 +3,9 @@ from logging.handlers import RotatingFileHandler
 from configuration.settings import Config
 
 
-def setup_logger(name="FVM") -> logging.Logger:
+def setup_logger(name="AchaSpyware") -> logging.Logger:
     logger = logging.getLogger(name)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
 
     if not logger.handlers:
         if not Config.LOG_DIR.exists():

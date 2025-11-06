@@ -198,7 +198,80 @@ async function enviarCheckAdb() {
   }
 }
 
+// Função para verificar backup (AndroidQF) - rota /api/android/qf
+async function enviarCheckBackup() {
+  const spinner = document.querySelector("#btnVerificarBackup .spinner");
+  if (spinner) spinner.classList.remove("d-none");
+
+  const dados = {
+    // ex: androidqf_path: "...", output_folder: "...", etc. (se necessário)
+  };
+
+  try {
+    const response = await fetch("/api/android/qf", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => "");
+      console.error("Erro HTTP ao chamar /qf:", response.status, errorText);
+
+      const msg = "❌ Erro ao verificar o backup!";
+      const resultadoEl = document.querySelector("#resultado");
+      if (resultadoEl) {
+        resultadoEl.innerHTML = msg;
+      }
+      showAlert(msg, "danger");
+      return;
+    }
+
+    const data = await response.json();
+
+    if (data.success) {
+      const resultados = data.messages || [];
+      await saveAnalysis(resultados);
+
+      const mensagens = resultados
+        .map((item) => {
+          if (item.category && item.message) {
+            return `<div><strong>${item.category.toUpperCase()}</strong> - ${item.message}</div>`;
+          }
+          return `<div>${item.message || JSON.stringify(item)}</div>`;
+        })
+        .join("");
+
+      const resultadoEl = document.querySelector("#resultado");
+      const msg = "✅ Backup verificado com sucesso!";
+      if (resultadoEl) {
+        resultadoEl.innerHTML =
+          mensagens || msg;
+      }
+      showAlert(msg, "success");
+    } else {
+      const resultadoEl = document.querySelector("#resultado");
+      const msg = "❌ Arquivo de backup não encontrado!";
+      if (resultadoEl) {
+        resultadoEl.innerHTML = msg;
+      }
+      showAlert(msg, "danger");
+    }
+  } catch (error) {
+    console.error("Erro na request /qf:", error);
+    const resultadoEl = document.querySelector("#resultado");
+    const msg = "❌ Erro ao verificar backup!";
+    if (resultadoEl) {
+      resultadoEl.innerHTML = msg;
+    }
+    showAlert(msg, "danger");
+  } finally {
+    if (spinner) spinner.classList.add("d-none");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("btnEnviarApiKey").addEventListener("click", enviarApiKey);
+  document.getElementById("btnVerificarBackup").addEventListener("click", enviarCheckBackup);
   document.getElementById("btnVerificarAdb").addEventListener("click", enviarCheckAdb);
 });

@@ -1,0 +1,2696 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acha Spyware</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ── RESET & VARS ─────────────────────────────────────────── */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #080a0d;
+            --surface: #0f1318;
+            --surface2: #151b24;
+            --border: #1e2730;
+            --border2: #2a3440;
+            --accent: #00e87a;
+            --accent2: #0096ff;
+            --ios: #0096ff;
+            --android: #3ddc84;
+            --warn: #ffb347;
+            --danger: #ff4560;
+            --text: #cdd6e0;
+            --text-dim: #5a6878;
+            --mono: 'Share Tech Mono', monospace;
+            --sans: 'Rajdhani', sans-serif;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        /* ── SCREEN SYSTEM ────────────────────────────────────────── */
+        .screen {
+            display: none;
+            min-height: 100vh;
+            animation: fadeIn 0.35s ease;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── GLOBAL HEADER ────────────────────────────────────────── */
+        .topbar {
+            height: 52px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            background: rgba(8, 10, 13, 0.96);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-shrink: 0;
+        }
+
+        .topbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .topbar-logo img {
+            height: 30px;
+            width: auto;
+            filter: drop-shadow(0 0 6px rgba(0, 232, 122, 0.4));
+        }
+
+        .topbar-logo span {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        .topbar-logo span em {
+            color: var(--accent);
+            font-style: normal;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text-dim);
+        }
+
+        .breadcrumb span {
+            color: var(--accent);
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            background: transparent;
+            border: 1px solid var(--border2);
+            border-radius: 4px;
+            color: var(--text-dim);
+            font-family: var(--sans);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-transform: uppercase;
+        }
+
+        .btn-back:hover {
+            color: var(--text);
+            border-color: var(--accent);
+        }
+
+        /* ── AMBIENT BG ───────────────────────────────────────────── */
+        .ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ambient::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 232, 122, 0.05) 0%, transparent 70%);
+            top: -200px;
+            left: -150px;
+            animation: drift 12s ease-in-out infinite alternate;
+        }
+
+        .ambient::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 150, 255, 0.05) 0%, transparent 70%);
+            bottom: -150px;
+            right: -100px;
+            animation: drift 14s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes drift {
+            from {
+                transform: translate(0, 0)
+            }
+
+            to {
+                transform: translate(30px, 20px)
+            }
+        }
+
+        /* ── SCAN LINES OVERLAY ───────────────────────────────────── */
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.03) 2px,
+                    rgba(0, 0, 0, 0.03) 4px);
+        }
+
+        /* ── SCREEN CONTENT ───────────────────────────────────────── */
+        .screen-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .screen-body.top-align {
+            align-items: flex-start;
+            padding-top: 2rem;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+   SCREEN 1 — WELCOME
+══════════════════════════════════════════════════════════════ */
+        .welcome-wrap {
+            text-align: center;
+            max-width: 520px;
+            width: 100%;
+        }
+
+        .welcome-logo {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .welcome-logo img {
+            width: 110px;
+            filter: drop-shadow(0 0 24px rgba(0, 232, 122, 0.35)) drop-shadow(0 0 60px rgba(0, 150, 255, 0.15));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .welcome-logo h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .welcome-logo h1 em {
+            color: var(--accent);
+            font-style: normal;
+            display: block;
+        }
+
+        .welcome-subtitle {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            margin-bottom: 2.5rem;
+            letter-spacing: 0.04em;
+        }
+
+        .welcome-subtitle strong {
+            color: var(--accent2);
+        }
+
+        .mode-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .mode-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.8rem 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .mode-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .mode-card.forensic::before {
+            background: radial-gradient(ellipse at 50% 0%, rgba(0, 232, 122, 0.08), transparent 70%);
+        }
+
+        .mode-card.extraction::before {
+            background: radial-gradient(ellipse at 50% 0%, rgba(0, 150, 255, 0.08), transparent 70%);
+        }
+
+        .mode-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .mode-card.forensic:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 32px rgba(0, 232, 122, 0.12);
+        }
+
+        .mode-card.forensic:hover::before {
+            opacity: 1;
+        }
+
+        .mode-card.extraction:hover {
+            border-color: var(--accent2);
+            box-shadow: 0 8px 32px rgba(0, 150, 255, 0.12);
+        }
+
+        .mode-card.extraction:hover::before {
+            opacity: 1;
+        }
+
+        .mode-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .mode-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+            color: #fff;
+        }
+
+        .mode-card.forensic .mode-title {
+            color: var(--accent);
+        }
+
+        .mode-card.extraction .mode-title {
+            color: var(--accent2);
+        }
+
+        .mode-desc {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .mode-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            padding: 2px 7px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .mode-card.forensic .mode-tag {
+            background: rgba(0, 232, 122, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(0, 232, 122, 0.2);
+        }
+
+        .mode-card.extraction .mode-tag {
+            background: rgba(0, 150, 255, 0.12);
+            color: var(--accent2);
+            border: 1px solid rgba(0, 150, 255, 0.2);
+        }
+
+        .welcome-footer {
+            margin-top: 1.5rem;
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            color: var(--text-dim);
+        }
+
+        /* ════════════════════════════════════════════════════════════
+   SCREEN 2 — OS SELECTION (Extraction mode)
+══════════════════════════════════════════════════════════════ */
+        .os-wrap {
+            text-align: center;
+            max-width: 560px;
+            width: 100%;
+        }
+
+        .screen-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .screen-title em {
+            font-style: normal;
+        }
+
+        .screen-title .t-accent {
+            color: var(--accent2);
+        }
+
+        .screen-subtitle {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        .os-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .os-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 2.2rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .os-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .os-card.android::after {
+            background: linear-gradient(90deg, var(--android), transparent);
+        }
+
+        .os-card.ios::after {
+            background: linear-gradient(90deg, var(--ios), transparent);
+        }
+
+        .os-card:hover::after {
+            opacity: 1;
+        }
+
+        .os-card.android:hover {
+            border-color: var(--android);
+            box-shadow: 0 8px 40px rgba(61, 220, 132, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .os-card.ios:hover {
+            border-color: var(--ios);
+            box-shadow: 0 8px 40px rgba(0, 150, 255, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .os-logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .os-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .os-card.android .os-name {
+            color: var(--android);
+        }
+
+        .os-card.ios .os-name {
+            color: var(--ios);
+        }
+
+        .os-tool {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            color: var(--text-dim);
+        }
+
+        .os-tool strong {
+            color: var(--text);
+        }
+
+        /* ════════════════════════════════════════════════════════════
+   SCREEN 3 — EXTRACTION (Android / iOS)
+══════════════════════════════════════════════════════════════ */
+        .extraction-wrap {
+            max-width: 680px;
+            width: 100%;
+        }
+
+        .extr-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .extr-os-badge {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .badge-android {
+            background: rgba(61, 220, 132, 0.15);
+            color: var(--android);
+            border: 1px solid rgba(61, 220, 132, 0.3);
+        }
+
+        .badge-ios {
+            background: rgba(0, 150, 255, 0.15);
+            color: var(--ios);
+            border: 1px solid rgba(0, 150, 255, 0.3);
+        }
+
+        .extr-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Step card */
+        .step-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .step-card.active-step {
+            border-color: var(--accent);
+        }
+
+        .step-card.done-step {
+            border-color: rgba(0, 232, 122, 0.3);
+        }
+
+        .step-card.error-step {
+            border-color: var(--danger);
+        }
+
+        .step-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .step-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            flex-shrink: 0;
+            background: var(--border);
+            color: var(--text-dim);
+            transition: all 0.2s;
+        }
+
+        .step-card.active-step .step-num {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .step-card.done-step .step-num {
+            background: rgba(0, 232, 122, 0.2);
+            color: var(--accent);
+        }
+
+        .step-card.error-step .step-num {
+            background: rgba(255, 69, 96, 0.2);
+            color: var(--danger);
+        }
+
+        .step-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            flex: 1;
+        }
+
+        .step-status-badge {
+            font-family: var(--mono);
+            font-size: 0.62rem;
+            padding: 2px 7px;
+            border-radius: 3px;
+        }
+
+        .ssb-idle {
+            background: var(--border);
+            color: var(--text-dim);
+        }
+
+        .ssb-running {
+            background: rgba(255, 179, 71, 0.15);
+            color: var(--warn);
+        }
+
+        .ssb-ok {
+            background: rgba(0, 232, 122, 0.12);
+            color: var(--accent);
+        }
+
+        .ssb-err {
+            background: rgba(255, 69, 96, 0.12);
+            color: var(--danger);
+        }
+
+        .step-body {
+            padding: 14px;
+        }
+
+        /* Device status */
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .dot-gray {
+            background: var(--text-dim);
+        }
+
+        .dot-green {
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        .dot-yellow {
+            background: var(--warn);
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        .dot-red {
+            background: var(--danger);
+        }
+
+        .dot-blue {
+            background: var(--accent2);
+            box-shadow: 0 0 8px var(--accent2);
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.3
+            }
+        }
+
+        .device-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 7px;
+            margin-top: 8px;
+        }
+
+        .di {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 6px 10px;
+        }
+
+        .di-label {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin-bottom: 2px;
+        }
+
+        .di-val {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--text);
+        }
+
+        .di-val.a {
+            color: var(--accent);
+        }
+
+        /* QF options */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .opt-group label {
+            display: block;
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin-bottom: 5px;
+        }
+
+        select.qf-sel,
+        input.qf-input {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 7px 10px;
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        select.qf-sel {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235a6878' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 9px center;
+            padding-right: 26px;
+            cursor: pointer;
+        }
+
+        select.qf-sel option {
+            background: #0f1318;
+        }
+
+        select.qf-sel:focus,
+        input.qf-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 232, 122, 0.08);
+        }
+
+        /* Progress */
+        .prog-wrap {
+            background: var(--bg);
+            border-radius: 4px;
+            height: 5px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .prog-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.4s ease;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+        }
+
+        .prog-bar.ios-bar {
+            background: linear-gradient(90deg, var(--ios), #66ccff);
+        }
+
+        /* Console */
+        .console {
+            background: #05080a;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            line-height: 1.7;
+            height: 120px;
+            overflow-y: auto;
+            color: var(--text-dim);
+            margin-top: 8px;
+        }
+
+        .console::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .console::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        .ll {
+            display: flex;
+            gap: 7px;
+        }
+
+        .lt {
+            color: #2d3a47;
+            flex-shrink: 0;
+        }
+
+        .lok {
+            color: var(--accent);
+        }
+
+        .lwrn {
+            color: var(--warn);
+        }
+
+        .lerr {
+            color: var(--danger);
+        }
+
+        .linf {
+            color: var(--accent2);
+        }
+
+        /* Spinner */
+        .spin {
+            width: 13px;
+            height: 13px;
+            border: 2px solid rgba(0, 232, 122, 0.15);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+            flex-shrink: 0;
+        }
+
+        .spin.show {
+            display: block;
+        }
+
+        .spin.ios-spin {
+            border-top-color: var(--ios);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 16px;
+            border-radius: 6px;
+            font-family: var(--sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-green {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .btn-green:hover {
+            background: #00cf6e;
+            transform: translateY(-1px);
+        }
+
+        .btn-blue {
+            background: var(--ios);
+            color: #fff;
+        }
+
+        .btn-blue:hover {
+            background: #007de6;
+            transform: translateY(-1px);
+        }
+
+        .btn-android {
+            background: var(--android);
+            color: #000;
+        }
+
+        .btn-android:hover {
+            background: #2cc46e;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border2);
+            color: var(--text-dim);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        .btn-danger {
+            background: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 69, 96, 0.08);
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.72rem;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Next step button */
+        .next-btn-wrap {
+            margin-top: 1.2rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+   SCREEN 4 — RECIPIENT INFO
+══════════════════════════════════════════════════════════════ */
+        .recipient-wrap {
+            max-width: 560px;
+            width: 100%;
+        }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-card h3 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-card h3::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 8px 11px;
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 232, 122, 0.08);
+        }
+
+        .form-group textarea {
+            min-height: 70px;
+        }
+
+        /* Send confirmation */
+        .confirm-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .confirm-box h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .confirm-box p {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .confirm-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+   SCREEN 5 — SENDING
+══════════════════════════════════════════════════════════════ */
+        .sending-wrap {
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .sending-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+            animation: pulse-icon 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-icon {
+
+            0%,
+            100% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.08)
+            }
+        }
+
+        .sending-wrap h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .sending-wrap p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .big-prog-wrap {
+            background: var(--surface);
+            border-radius: 8px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .big-prog-bar {
+            height: 100%;
+            border-radius: 8px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transition: width 0.4s;
+            width: 0%;
+        }
+
+        .sending-pct {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+   SCREEN 6 — DONE / GOODBYE
+══════════════════════════════════════════════════════════════ */
+        .done-wrap {
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .done-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+            animation: pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes pop-in {
+            from {
+                transform: scale(0)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        .done-wrap h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .done-wrap p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .done-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+   FORENSIC PANEL (existing panel, now as screen)
+══════════════════════════════════════════════════════════════ */
+        .forensic-layout {
+            max-width: 1020px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 1.2rem;
+            width: 100%;
+        }
+
+        .f-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .f-main {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Card */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--border2);
+        }
+
+        .card-head {
+            padding: 8px 12px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-head h2 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text);
+        }
+
+        .card-body {
+            padding: 12px;
+        }
+
+        .step-badge-sm {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            color: var(--accent);
+            border: 1px solid rgba(0, 232, 122, 0.3);
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-left: auto;
+        }
+
+        /* Form elements in forensic panel */
+        .fp label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: var(--text-dim);
+            margin-bottom: 5px;
+        }
+
+        .fp input[type="text"],
+        .fp input[type="password"] {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 7px 10px;
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .fp input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 232, 122, 0.08);
+        }
+
+        .fp .hint {
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            margin-top: 4px;
+            font-family: var(--mono);
+        }
+
+        .fp .hint a {
+            color: var(--accent2);
+            text-decoration: none;
+        }
+
+        /* Forensic tabs */
+        .ftabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface2);
+        }
+
+        .ftab {
+            padding: 8px 14px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--text-dim);
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .ftab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .ftab:hover:not(.active) {
+            color: var(--text);
+        }
+
+        .ftab-content {
+            display: none;
+            padding: 12px;
+        }
+
+        .ftab-content.active {
+            display: block;
+        }
+
+        /* Results */
+        .stats-g {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .stat-b {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .stat-n {
+            font-family: var(--mono);
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+
+        .stat-l {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+        }
+
+        .res-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px 10px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+            transition: border-color 0.15s;
+        }
+
+        .res-item.critical {
+            border-left: 3px solid var(--danger);
+        }
+
+        .res-item.warning {
+            border-left: 3px solid var(--warn);
+        }
+
+        .res-item.clean {
+            border-left: 3px solid var(--accent);
+        }
+
+        .res-sev {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            padding: 1px 6px;
+            border-radius: 3px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .sc {
+            background: rgba(255, 69, 96, 0.12);
+            color: var(--danger);
+        }
+
+        .sw {
+            background: rgba(255, 179, 71, 0.12);
+            color: var(--warn);
+        }
+
+        .sk {
+            background: rgba(0, 232, 122, 0.1);
+            color: var(--accent);
+        }
+
+        /* ── UTILS ────────────────────────────────────────────────── */
+        .mt8 {
+            margin-top: 8px;
+        }
+
+        .mt12 {
+            margin-top: 12px;
+        }
+
+        .mb8 {
+            margin-bottom: 8px;
+        }
+
+        .flex-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .flex-row .btn {
+            flex: 1;
+        }
+
+        .text-dim {
+            color: var(--text-dim);
+            font-size: 0.78rem;
+        }
+
+        @media(max-width:700px) {
+            .forensic-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .mode-grid,
+            .os-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .options-grid,
+            .device-grid,
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- AMBIENT & SCANLINES -->
+    <div class="ambient"></div>
+    <div class="scanlines"></div>
+
+    <!-- ════════════════════════════════════════════════════════
+     SCREEN 1: WELCOME
+═══════════════════════════════════════════════════════════ -->
+    <div id="s-welcome" class="screen active">
+        <div class="topbar">
+            <div class="topbar-logo">
+                <img src="acha-spyware.png" alt="Acha Spyware" onerror="this.style.display='none'">
+                <span><em>Acha</em> Spyware</span>
+            </div>
+            <div class="breadcrumb">v1.0 · Forense Mobile</div>
+        </div>
+        <div class="screen-body">
+            <div class="welcome-wrap">
+                <div class="welcome-logo">
+                    <img src="acha-spyware.png" alt="Logo" onerror="this.outerHTML='<div style=\'font-size:5rem\'>🔍</div>'">
+                    <h1><em>Acha</em> Spyware</h1>
+                </div>
+                <p class="welcome-subtitle">Plataforma de análise forense para detecção de <strong>spyware</strong> em
+                    dispositivos móveis</p>
+                <div class="mode-grid">
+                    <div class="mode-card forensic" onclick="goTo('s-forensic')">
+                        <span class="mode-tag">Avançado</span>
+                        <span class="mode-icon">🔬</span>
+                        <div class="mode-title">Modo Forense</div>
+                        <div class="mode-desc">Painel completo para analistas e técnicos. Acesso a todas as ferramentas
+                            e configurações.</div>
+                    </div>
+                    <div class="mode-card extraction" onclick="goTo('s-os-select')">
+                        <span class="mode-tag">Simplificado</span>
+                        <span class="mode-icon">📱</span>
+                        <div class="mode-title">Modo Extração</div>
+                        <div class="mode-desc">Fluxo guiado para extração de dados. Ideal para usuários sem experiência
+                            técnica.</div>
+                    </div>
+                </div>
+                <div class="welcome-footer">Sistema local · Nenhum dado enviado sem autorização</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════
+     SCREEN 2: OS SELECTION
+═══════════════════════════════════════════════════════════ -->
+    <div id="s-os-select" class="screen">
+        <div class="topbar">
+            <div class="topbar-logo" onclick="goTo('s-welcome')">
+                <img src="acha-spyware.png" alt="Acha Spyware" onerror="this.style.display='none'">
+                <span><em>Acha</em> Spyware</span>
+            </div>
+            <div class="topbar-right">
+                <div class="breadcrumb">Modo Extração → <span>Sistema</span></div>
+                <button class="btn-back" onclick="goTo('s-welcome')">← Voltar</button>
+            </div>
+        </div>
+        <div class="screen-body">
+            <div class="os-wrap">
+                <h2 class="screen-title">Qual o sistema do <span class="t-accent">celular?</span></h2>
+                <p class="screen-subtitle">Selecione o sistema operacional do dispositivo a ser analisado</p>
+                <div class="os-grid">
+                    <div class="os-card android" onclick="selectOS('android')">
+                        <span class="os-logo">🤖</span>
+                        <div class="os-name">Android</div>
+                        <div class="os-tool">Extração via <strong>androidQF</strong> + ADB</div>
+                    </div>
+                    <div class="os-card ios" onclick="selectOS('ios')">
+                        <span class="os-logo"></span>
+                        <div class="os-name">iOS</div>
+                        <div class="os-tool">Extração via <strong>MVT</strong> + iTunes Backup</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════
+     SCREEN 3A: ANDROID EXTRACTION
+═══════════════════════════════════════════════════════════ -->
+    <div id="s-android" class="screen">
+        <div class="topbar">
+            <div class="topbar-logo" onclick="goTo('s-welcome')">
+                <img src="acha-spyware.png" alt="Acha Spyware" onerror="this.style.display='none'">
+                <span><em>Acha</em> Spyware</span>
+            </div>
+            <div class="topbar-right">
+                <div class="breadcrumb">Extração → <span>Android</span></div>
+                <button class="btn-back" onclick="goTo('s-os-select')">← Voltar</button>
+            </div>
+        </div>
+        <div class="screen-body top-align">
+            <div class="extraction-wrap">
+                <div class="extr-header">
+                    <span class="extr-os-badge badge-android">🤖 Android</span>
+                    <h2
+                        style="font-size:1.1rem; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.07em;">
+                        Extração com androidQF</h2>
+                </div>
+
+                <div class="extr-steps">
+
+                    <!-- STEP 1: Conectar -->
+                    <div class="step-card" id="and-step1">
+                        <div class="step-head">
+                            <div class="step-num">1</div>
+                            <div class="step-title">Verificar Dispositivo</div>
+                            <span class="step-status-badge ssb-idle" id="and-s1-badge">Aguardando</span>
+                        </div>
+                        <div class="step-body">
+                            <div class="status-row">
+                                <div class="dot dot-gray" id="and-dev-dot"></div>
+                                <span id="and-dev-txt">Conecte o dispositivo via USB com Depuração USB ativada</span>
+                                <div class="spin" id="and-dev-spin"></div>
+                            </div>
+                            <div id="and-dev-info" style="display:none">
+                                <div class="device-grid">
+                                    <div class="di">
+                                        <div class="di-label">Modelo</div>
+                                        <div class="di-val" id="and-model">—</div>
+                                    </div>
+                                    <div class="di">
+                                        <div class="di-label">Android</div>
+                                        <div class="di-val" id="and-ver">—</div>
+                                    </div>
+                                    <div class="di">
+                                        <div class="di-label">Serial</div>
+                                        <div class="di-val" id="and-serial">—</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-row mt8">
+                                <button class="btn btn-android" onclick="andCheckDevice()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                        <polyline points="22,4 12,14.01 9,11.01" />
+                                    </svg>
+                                    Verificar Dispositivo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: Configurar e Extrair -->
+                    <div class="step-card" id="and-step2">
+                        <div class="step-head">
+                            <div class="step-num">2</div>
+                            <div class="step-title">Extrair Backup (androidQF)</div>
+                            <span class="step-status-badge ssb-idle" id="and-s2-badge">Aguardando</span>
+                        </div>
+                        <div class="step-body">
+                            <div class="options-grid">
+                                <div class="opt-group">
+                                    <label>Backup</label>
+                                    <select class="qf-sel" id="qfBackup">
+                                        <option value="Everything">Everything</option>
+                                        <option value="Only SMS">Only SMS</option>
+                                        <option value="No Backup">No Backup</option>
+                                    </select>
+                                </div>
+                                <div class="opt-group">
+                                    <label>Download APKs</label>
+                                    <select class="qf-sel" id="qfDownload">
+                                        <option value="Only no-system packages">No-system only</option>
+                                        <option value="All">All</option>
+                                        <option value="Do not download any">None</option>
+                                    </select>
+                                </div>
+                                <div class="opt-group">
+                                    <label>Remover após</label>
+                                    <select class="qf-sel" id="qfRemove">
+                                        <option value="Yes">Sim</option>
+                                        <option value="No">Não</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="status-row" id="and-extr-status">
+                                <div class="dot dot-gray" id="and-extr-dot"></div>
+                                <span id="and-extr-txt">Aguardando verificação do dispositivo</span>
+                                <div class="spin" id="and-extr-spin"></div>
+                            </div>
+                            <div class="prog-wrap">
+                                <div class="prog-bar" id="and-extr-prog"></div>
+                            </div>
+                            <div class="console" id="and-console">
+                                <div class="ll"><span class="lt">--:--</span><span class="linf">[SISTEMA] Aguardando
+                                        início da extração...</span></div>
+                            </div>
+                            <div class="btn-row mt8">
+                                <button class="btn btn-android" id="and-btn-extr" onclick="andStartExtract()" disabled>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                        <polyline points="7,10 12,15 17,10" />
+                                        <line x1="12" y1="15" x2="12" y2="3" />
+                                    </svg>
+                                    Iniciar Extração
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end steps -->
+
+                <!-- Next: Recipient -->
+                <div class="next-btn-wrap">
+                    <button class="btn btn-green" id="and-btn-next" onclick="goTo('s-recipient')" disabled>
+                        Preencher Informações do Destinatário →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════
+     SCREEN 3B: iOS EXTRACTION
+═══════════════════════════════════════════════════════════ -->
+    <div id="s-ios" class="screen">
+        <div class="topbar">
+            <div class="topbar-logo" onclick="goTo('s-welcome')">
+                <img src="acha-spyware.png" alt="Acha Spyware" onerror="this.style.display='none'">
+                <span><em>Acha</em> Spyware</span>
+            </div>
+            <div class="topbar-right">
+                <div class="breadcrumb">Extração → <span>iOS</span></div>
+                <button class="btn-back" onclick="goTo('s-os-select')">← Voltar</button>
+            </div>
+        </div>
+        <div class="screen-body top-align">
+            <div class="extraction-wrap">
+                <div class="extr-header">
+                    <span class="extr-os-badge badge-ios"> iOS</span>
+                    <h2
+                        style="font-size:1.1rem; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.07em;">
+                        Extração com MVT</h2>
+                </div>
+
+                <div class="extr-steps">
+
+                    <!-- STEP 1: Backup path -->
+                    <div class="step-card active-step" id="ios-step1">
+                        <div class="step-head">
+                            <div class="step-num">1</div>
+                            <div class="step-title">Localizar Backup do iTunes</div>
+                            <span class="step-status-badge ssb-idle" id="ios-s1-badge">Aguardando</span>
+                        </div>
+                        <div class="step-body">
+                            <p class="text-dim mb8">Informe o caminho da pasta do backup do iPhone gerado pelo
+                                iTunes/Finder.</p>
+                            <div class="opt-group" style="margin-bottom:10px">
+                                <label>Caminho do Backup</label>
+                                <input class="qf-input" id="ios-backup-path" type="text"
+                                    placeholder="Ex: /home/user/Library/MobileSync/Backup/00000000-XXXX...">
+                            </div>
+                            <div class="btn-row">
+                                <button class="btn btn-blue" onclick="iosSetBackupPath()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <path
+                                            d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" />
+                                    </svg>
+                                    Confirmar Caminho
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: Run MVT -->
+                    <div class="step-card" id="ios-step2">
+                        <div class="step-head">
+                            <div class="step-num">2</div>
+                            <div class="step-title">Extrair com MVT</div>
+                            <span class="step-status-badge ssb-idle" id="ios-s2-badge">Aguardando</span>
+                        </div>
+                        <div class="step-body">
+                            <div class="status-row" id="ios-extr-status">
+                                <div class="dot dot-gray" id="ios-extr-dot"></div>
+                                <span id="ios-extr-txt">Confirme o caminho do backup para continuar</span>
+                                <div class="spin ios-spin" id="ios-extr-spin"></div>
+                            </div>
+                            <div class="prog-wrap">
+                                <div class="prog-bar ios-bar" id="ios-extr-prog"></div>
+                            </div>
+                            <div class="console" id="ios-console">
+                                <div class="ll"><span class="lt">--:--</span><span class="linf">[SISTEMA] Aguardando
+                                        início da extração iOS...</span></div>
+                            </div>
+                            <div class="btn-row mt8">
+                                <button class="btn btn-blue" id="ios-btn-extr" onclick="iosStartExtract()" disabled>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                        <polyline points="7,10 12,15 17,10" />
+                                        <line x1="12" y1="15" x2="12" y2="3" />
+                                    </svg>
+                                    Iniciar Extração
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="next-btn-wrap">
+                    <button class="btn btn-blue" id="ios-btn-next" onclick="goTo('s-recipient')" disabled>
+                        Preencher Informações do Destinatário →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════
+     SCREEN 4: RECIPIENT INFO
+═══════════════════════════════════════════════════════════ -->
+    <div id="s-recipient" class="screen">
+        <div class="topbar">
+            <div class="topbar-logo" onclick="goTo('s-welcome')">
+                <img src="acha-spyware.png" alt="Acha Spyware" onerror="this.style.display='none'">
+                <span><em>Acha</em> Spyware</span>
+            </div>
+            <div class="topbar-right">
+                <div class="breadcrumb">Extração → <span>Destinatário</span></div>
+                <button class="btn-back" id="recipient-back-btn" onclick="recipientBack()">← Voltar</button>
+            </div>
+        </div>
+        <div class="screen-body top-align" style="justify-content:center;">
+            <div class="recipient-wrap">
+                <h2 class="screen-title" style="margin-bottom:0.4rem;">Para quem enviar o <span
+                        class="t-accent">backup?</span></h2>
+                <p class="screen-subtitle">Preencha as informações do caso e do destinatário da análise</p>
+
+                <div class="form-card">
+                    <h3>Dados do Caso</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nome da Vítima / Titular</label>
+                            <input type="text" id="rec-name" placeholder="Nome completo">
+                        </div>
+                        <div class="form-group">
+                            <label>Número do Caso / Protocolo</label>
+                            <input type="text" id="rec-case" placeholder="Ex: CASO-2025-001">
+                        </div>
+                        <div class="form-group full">
+                            <label>Observações</label>
+                            <textarea id="rec-notes"
+                                placeholder="Sintomas observados, contexto, suspeitas..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <h3>Destinatário da Análise</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nome do Analista / Perito</label>
+                            <input type="text" id="rec-analyst" placeholder="Nome do responsável">
+                        </div>
+                        <div class="form-group">
+                            <label>E-mail</label>
+                            <input type="text" id="rec-email" placeholder="analista@orgao.gov.br">
+                        </div>
+                        <div class="form-group">
+                            <label>Organização</label>
+                            <input type="text" id="rec-org" placeholder="Ex: DFNDR, UFCSPA...">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone (opcional)</label>
+                            <input type="text" id="rec-phone" placeholder="(51) 99999-9999">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="confirm-box">
+                    <h3>📦 Enviar Backup para Análise?</h3>
+                    <p>Os dados extraídos do dispositivo serão empacotados e enviados ao destinatário informado acima.
+                        Esta ação não pode ser desfeita.</p>
+                    <div class="confirm-btns">
+                        <button class="btn btn-green" onclick="confirmSend()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="22" y1="2" x2="11" y2="13" />
+                                <polygon points="22,2 15,22 11,13 2,9" />
+                            </svg>
+                            Sim, Enviar
+                        </button>
+                        <button class="btn btn-danger" onclick="goTo('s-goodbye')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                            Não, Encerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════
+     SCREEN 5: SENDING
+═══════════════════════════════════════════════════════════ -->
+    <div id="s-sending" class="screen">
+        <div class="topbar">
+            <div class="topbar-logo">
+                <img src="acha-spyware.png" alt="Acha Spyware" onerror="this.style.display='none'">
+                <span><em>Acha</em> Spyware</span>
+            </div>
+            <div class="breadcrumb">Enviando...</div>
+        </div>
+        <div class="screen-body">
+            <div class="sending-wrap">
+                <span class="sending-icon">📡</span>
+                <h2>Enviando Backup</h2>
+                <p>Empacotando e transmitindo os dados para o destinatário.<br>Não desconecte o dispositivo.</p>
+                <div class="big-prog-wrap">
+                    <div class="big-prog-bar" id="send-prog"></div>
+                </div>
+                <div class="sending-pct" id="send-pct">0%</div>
+                <div class="status-row" style="justify-content:center; text-align:center;">
+                    <div class="dot dot-yellow"></div>
+                    <span id="send-status-txt">Preparando arquivos...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════
+     SCREEN 6: GOODBYE
+═══════════════════════════════════════════════════════════ -->
+    <div id="s-goodbye" class="screen">
+        <div class="topbar">
+            <div class="topbar-logo" onclick="goTo('s-welcome')">
+                <img src="acha-spyware.png" alt="Acha Spyware" onerror="this.style.display='none'">
+                <span><em>Acha</em> Spyware</span>
+            </div>
+        </div>
+        <div class="screen-body">
+            <div class="done-wrap">
+                <span class="done-icon">✅</span>
+                <h2>Extração Concluída</h2>
+                <p id="done-msg">O backup foi enviado com sucesso ao destinatário.<br>Você pode encerrar o programa ou
+                    iniciar uma nova extração.</p>
+                <div class="done-actions">
+                    <button class="btn btn-green" onclick="newExtraction()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <polyline points="23 4 23 10 17 10" />
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                        </svg>
+                        Nova Extração
+                    </button>
+                    <button class="btn btn-outline" onclick="closeApp()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                        Encerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════
+     SCREEN 7: FORENSIC PANEL (full panel)
+═══════════════════════════════════════════════════════════ -->
+    <div id="s-forensic" class="screen">
+        <div class="topbar">
+            <div class="topbar-logo" onclick="goTo('s-welcome')">
+                <img src="acha-spyware.png" alt="Acha Spyware" onerror="this.style.display='none'">
+                <span><em>Acha</em> Spyware</span>
+            </div>
+            <div class="topbar-right">
+                <div class="breadcrumb"><span>Painel Forense</span></div>
+                <button class="btn-back" onclick="goTo('s-welcome')">← Início</button>
+            </div>
+        </div>
+        <div class="screen-body top-align" style="padding:0; align-items:flex-start;">
+            <div class="forensic-layout">
+
+                <!-- SIDEBAR -->
+                <aside class="f-sidebar">
+
+                    <!-- API Key -->
+                    <div class="card fp">
+                        <div class="card-head">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+                            </svg>
+                            <h2>API VirusTotal</h2>
+                        </div>
+                        <div class="card-body">
+                            <label>Chave de API</label>
+                            <input type="password" id="vt-key" placeholder="••••••••••••••••••••••••">
+                            <p class="hint">Obtenha em <a href="https://www.virustotal.com"
+                                    target="_blank">virustotal.com</a></p>
+                            <button class="btn btn-outline mt8" style="width:100%; font-size:0.78rem;"
+                                onclick="saveVTKey()">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+                                    <polyline points="17,21 17,13 7,13 7,21" />
+                                    <polyline points="7,3 7,8 15,8" />
+                                </svg>
+                                Salvar Chave
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Device -->
+                    <div class="card fp">
+                        <div class="card-head">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="5" y="2" width="14" height="20" rx="2" />
+                                <line x1="12" y1="18" x2="12.01" y2="18" />
+                            </svg>
+                            <h2>Dispositivo</h2>
+                            <span class="step-badge-sm">01</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="status-row">
+                                <div class="dot dot-gray" id="f-dev-dot"></div>
+                                <span id="f-dev-txt">Aguardando verificação</span>
+                                <div class="spin" id="f-dev-spin"></div>
+                            </div>
+                            <div id="f-dev-info" style="display:none; margin-top:8px;">
+                                <div class="device-grid">
+                                    <div class="di">
+                                        <div class="di-label">Modelo</div>
+                                        <div class="di-val" id="f-model">—</div>
+                                    </div>
+                                    <div class="di">
+                                        <div class="di-label">Android</div>
+                                        <div class="di-val" id="f-android">—</div>
+                                    </div>
+                                    <div class="di">
+                                        <div class="di-label">ADB</div>
+                                        <div class="di-val a">Ativo</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-green mt8" style="width:100%; font-size:0.8rem;"
+                                onclick="fCheckDevice()">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22,4 12,14.01 9,11.01" />
+                                </svg>
+                                Verificar Dispositivo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- IOC -->
+                    <div class="card fp">
+                        <div class="card-head">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg>
+                            <h2>Indicadores IOC</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="status-row mb8">
+                                <div class="dot dot-gray" id="f-ioc-dot"></div>
+                                <span id="f-ioc-txt" style="font-family:var(--mono); font-size:0.72rem;">IOCs não
+                                    carregados</span>
+                            </div>
+                            <button class="btn btn-outline"
+                                style="width:100%; font-size:0.78rem; border-color:var(--warn); color:var(--warn);"
+                                onclick="fUpdateIOC()">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <polyline points="23 4 23 10 17 10" />
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                                </svg>
+                                Atualizar IOCs
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tools -->
+                    <div class="card fp">
+                        <div class="card-head">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                <polyline points="7,10 12,15 17,10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            <h2>Ferramentas</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="flex-row">
+                                <button class="btn btn-outline btn-sm"
+                                    onclick="window.open('https://developer.android.com/studio/releases/platform-tools','_blank')">ADB</button>
+                                <button class="btn btn-outline btn-sm"
+                                    onclick="window.open('https://github.com/botherder/androidqf','_blank')">androidQF</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </aside><!-- end sidebar -->
+
+                <!-- MAIN -->
+                <main class="f-main">
+
+                    <!-- Extraction card -->
+                    <div class="card">
+                        <div class="card-head">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <ellipse cx="12" cy="5" rx="9" ry="3" />
+                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                            </svg>
+                            <h2>Extração de Dados</h2>
+                            <span class="step-badge-sm">02</span>
+                        </div>
+                        <div class="ftabs">
+                            <div class="ftab active" onclick="fSwitchTab('backup', this)">Backup (androidQF)</div>
+                            <div class="ftab" onclick="fSwitchTab('apk', this)">Download APK</div>
+                        </div>
+                        <div id="ftab-backup" class="ftab-content active fp">
+                            <p class="text-dim mb8">Extrai dados do dispositivo via <strong
+                                    style="color:var(--text)">androidQF</strong>.</p>
+                            <div class="options-grid" style="margin-bottom:10px;">
+                                <div class="opt-group"><label>Backup</label><select class="qf-sel" id="f-qfBackup">
+                                        <option value="Everything">Everything</option>
+                                        <option value="Only SMS">Only SMS</option>
+                                        <option value="No Backup">No Backup</option>
+                                    </select></div>
+                                <div class="opt-group"><label>Download APKs</label><select class="qf-sel"
+                                        id="f-qfDownload">
+                                        <option value="Only no-system packages">No-system only</option>
+                                        <option value="All">All</option>
+                                        <option value="Do not download any">None</option>
+                                    </select></div>
+                                <div class="opt-group"><label>Remover após</label><select class="qf-sel"
+                                        id="f-qfRemove">
+                                        <option value="Yes">Sim</option>
+                                        <option value="No">Não</option>
+                                    </select></div>
+                            </div>
+                            <div class="status-row">
+                                <div class="dot dot-gray" id="f-bkp-dot"></div><span id="f-bkp-txt">Aguardando
+                                    dispositivo</span>
+                                <div class="spin" id="f-bkp-spin"></div>
+                            </div>
+                            <div class="prog-wrap">
+                                <div class="prog-bar" id="f-bkp-prog"></div>
+                            </div>
+                            <div class="console" id="f-console">
+                                <div class="ll"><span class="lt">--:--</span><span class="linf">[FORENSE] Painel
+                                        iniciado.</span></div>
+                            </div>
+                            <div class="btn-row mt8">
+                                <button class="btn btn-green" id="f-btn-bkp" onclick="fStartBackup()" disabled
+                                    style="font-size:0.8rem;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <ellipse cx="12" cy="5" rx="9" ry="3" />
+                                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                                    </svg>
+                                    Iniciar Extração
+                                </button>
+                                <button class="btn btn-outline btn-sm" onclick="fOpenFolder()">Pasta</button>
+                            </div>
+                        </div>
+                        <div id="ftab-apk" class="ftab-content fp">
+                            <p class="text-dim mb8">Extrai todos os APKs instalados do dispositivo.</p>
+                            <div class="status-row">
+                                <div class="dot dot-gray" id="f-apk-dot"></div><span id="f-apk-txt">Aguardando
+                                    dispositivo</span>
+                                <div class="spin" id="f-apk-spin"></div>
+                            </div>
+                            <div class="prog-wrap">
+                                <div class="prog-bar" id="f-apk-prog"></div>
+                            </div>
+                            <button class="btn btn-green mt8" id="f-btn-apk" onclick="fExtractAPK()" disabled
+                                style="width:100%; font-size:0.8rem;">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                    <polyline points="7,10 12,15 17,10" />
+                                    <line x1="12" y1="15" x2="12" y2="3" />
+                                </svg>
+                                Extrair APKs
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Analysis card -->
+                    <div class="card">
+                        <div class="card-head">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            </svg>
+                            <h2>Análise MVT</h2>
+                            <span class="step-badge-sm">03</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="btn-row mb8">
+                                <button class="btn btn-green" id="f-btn-analyze" onclick="fRunAnalysis(false)" disabled
+                                    style="font-size:0.8rem;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    </svg>
+                                    Analisar Backup
+                                </button>
+                                <button class="btn btn-outline" id="f-btn-analyze-vt" onclick="fRunAnalysis(true)"
+                                    disabled
+                                    style="font-size:0.8rem; border-color:var(--accent2); color:var(--accent2);">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    </svg>
+                                    + VirusTotal
+                                </button>
+                            </div>
+                            <div class="status-row">
+                                <div class="dot dot-gray" id="f-an-dot"></div><span id="f-an-txt">Aguardando extração
+                                    dos dados</span>
+                                <div class="spin" id="f-an-spin"></div>
+                            </div>
+                            <div class="prog-wrap">
+                                <div class="prog-bar" id="f-an-prog"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results card (hidden until analysis done) -->
+                    <div class="card" id="f-results-card" style="display:none">
+                        <div class="card-head">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                <polyline points="14,2 14,8 20,8" />
+                            </svg>
+                            <h2>Resultados</h2>
+                            <button class="btn btn-outline btn-sm" onclick="fExportReport()"
+                                style="margin-left:auto; width:auto;">Exportar</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="stats-g" id="f-stats"></div>
+                            <div id="f-results-list"></div>
+                        </div>
+                    </div>
+
+                    <!-- Console card -->
+                    <div class="card">
+                        <div class="card-head">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="16 18 22 12 16 6" />
+                                <polyline points="8 6 2 12 8 18" />
+                            </svg>
+                            <h2>Console</h2>
+                            <button class="btn btn-outline btn-sm" onclick="fClearLog()"
+                                style="margin-left:auto; width:auto; font-size:0.65rem; padding:2px 7px;">Limpar</button>
+                        </div>
+                        <div style="padding:0">
+                            <div class="console" id="f-big-console"
+                                style="height:160px; border-radius:0; border:none; border-top:1px solid var(--border);">
+                                <div class="ll"><span class="lt">--:--</span><span class="linf">[FORENSE] Sistema
+                                        pronto.</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </main>
+            </div>
+        </div>
+    </div><!-- end forensic screen -->
+
+
+    <!-- ════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════ -->
+    <script>
+        const API = 'http://localhost:8000';
+        let currentOS = null;          // 'android' | 'ios'
+        let andDeviceOk = false;
+        let andBackupDone = false;
+        let iosBackupPathOk = false;
+        let iosBackupDone = false;
+        let fDeviceOk = false;
+        let fBackupDone = false;
+
+        // ── NAVIGATION ───────────────────────────────────────────
+        function goTo(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+        function selectOS(os) {
+            currentOS = os;
+            goTo(os === 'android' ? 's-android' : 's-ios');
+        }
+        function recipientBack() {
+            goTo(currentOS === 'android' ? 's-android' : 's-ios');
+        }
+        function newExtraction() {
+            andDeviceOk = false; andBackupDone = false;
+            iosBackupPathOk = false; iosBackupDone = false;
+            goTo('s-welcome');
+        }
+        function closeApp() {
+            document.body.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#080a0d;color:#5a6878;font-family:'Rajdhani',sans-serif;flex-direction:column;gap:1rem;text-align:center;">
+      <span style="font-size:3rem;">👋</span>
+      <div style="font-size:1.2rem;font-weight:700;color:#cdd6e0;letter-spacing:0.1em;text-transform:uppercase;">Sessão Encerrada</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.75rem;">Pode fechar esta janela.</div>
+    </div>`;
+        }
+
+        // ── UTILS ─────────────────────────────────────────────────
+        function ts() {
+            const d = new Date();
+            return [d.getHours(), d.getMinutes(), d.getSeconds()].map(x => String(x).padStart(2, '0')).join(':');
+        }
+        function logTo(consoleId, msg, type = 'info') {
+            const el = document.getElementById(consoleId);
+            if (!el) return;
+            const cls = { ok: 'lok', warn: 'lwrn', err: 'lerr', info: 'linf' }[type] || 'linf';
+            const line = document.createElement('div');
+            line.className = 'll';
+            line.innerHTML = `<span class="lt">${ts()}</span><span class="${cls}">${msg}</span>`;
+            el.appendChild(line);
+            el.scrollTop = el.scrollHeight;
+        }
+        function setDot(id, state) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.className = 'dot ' + ({ ok: 'dot-green', run: 'dot-yellow', err: 'dot-red', ios: 'dot-blue', off: 'dot-gray' }[state] || 'dot-gray');
+        }
+        function setSpin(id, show) {
+            const el = document.getElementById(id);
+            if (el) { if (show) el.classList.add('show'); else el.classList.remove('show'); }
+        }
+        function setTxt(id, txt) { const el = document.getElementById(id); if (el) el.textContent = txt; }
+        function setProg(id, pct) { const el = document.getElementById(id); if (el) el.style.width = pct + '%'; }
+        function setBadge(id, state) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const map = { idle: ['ssb-idle', 'Aguardando'], run: ['ssb-running', 'Executando'], ok: ['ssb-ok', 'Concluído'], err: ['ssb-err', 'Erro'] };
+            el.className = 'step-status-badge ' + (map[state] || map.idle)[0];
+            el.textContent = (map[state] || map.idle)[1];
+        }
+        function setStepState(id, state) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.className = 'step-card';
+            if (state === 'active') el.classList.add('active-step');
+            else if (state === 'done') el.classList.add('done-step');
+            else if (state === 'error') el.classList.add('error-step');
+        }
+        function setStepNum(cardId, state) {
+            const el = document.querySelector(`#${cardId} .step-num`);
+            if (!el) return;
+            if (state === 'done') el.textContent = '✓';
+            else if (state === 'error') el.textContent = '✗';
+        }
+        async function apiFetch(path, method = 'GET', body = null) {
+            const opts = { method, headers: { 'Content-Type': 'application/json' } };
+            if (body) opts.body = JSON.stringify(body);
+            const r = await fetch(API + path, opts);
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+        }
+
+        // ── ANDROID EXTRACTION ────────────────────────────────────
+        async function andCheckDevice() {
+            setDot('and-dev-dot', 'run'); setSpin('and-dev-spin', true);
+            setTxt('and-dev-txt', 'Verificando via ADB...');
+            setBadge('and-s1-badge', 'run'); setStepState('and-step1', 'active');
+            try {
+                const d = await apiFetch('/api/device/check');
+                setSpin('and-dev-spin', false);
+                if (d.connected) {
+                    setDot('and-dev-dot', 'ok');
+                    setTxt('and-dev-txt', d.model + ' — Android ' + d.android_version);
+                    document.getElementById('and-dev-info').style.display = 'block';
+                    setTxt('and-model', d.model); setTxt('and-ver', d.android_version); setTxt('and-serial', d.serial);
+                    setBadge('and-s1-badge', 'ok'); setStepState('and-step1', 'done'); setStepNum('and-step1', 'done');
+                    setStepState('and-step2', 'active');
+                    document.getElementById('and-btn-extr').disabled = false;
+                    andDeviceOk = true;
+                } else {
+                    setDot('and-dev-dot', 'err'); setTxt('and-dev-txt', 'Nenhum dispositivo detectado');
+                    setBadge('and-s1-badge', 'err'); setStepState('and-step1', 'error');
+                }
+            } catch (e) {
+                setSpin('and-dev-spin', false); setDot('and-dev-dot', 'err');
+                setTxt('and-dev-txt', 'Erro: ' + e.message); setBadge('and-s1-badge', 'err'); setStepState('and-step1', 'error');
+            }
+        }
+
+        async function andStartExtract() {
+            if (!andDeviceOk) return;
+            document.getElementById('and-btn-extr').disabled = true;
+            setDot('and-extr-dot', 'run'); setSpin('and-extr-spin', true);
+            setTxt('and-extr-txt', 'Iniciando androidQF...');
+            setBadge('and-s2-badge', 'run'); setStepState('and-step2', 'active');
+            setProg('and-extr-prog', 5);
+            logTo('and-console', `[androidQF] Backup=${document.getElementById('qfBackup').value}`);
+            let lastMsg = '';
+            try {
+                await apiFetch('/api/backup/start', 'POST', {
+                    backup_options: document.getElementById('qfBackup').value,
+                    download_options: document.getElementById('qfDownload').value,
+                    remove_options: document.getElementById('qfRemove').value,
+                });
+                const poll = setInterval(async () => {
+                    try {
+                        const s = await apiFetch('/api/backup/status');
+                        setProg('and-extr-prog', s.progress || 5);
+                        if (s.message && s.message !== lastMsg) { lastMsg = s.message; logTo('and-console', '[androidQF] ' + s.message); setTxt('and-extr-txt', s.message); }
+                        if (s.done || s.error) {
+                            clearInterval(poll); setSpin('and-extr-spin', false);
+                            document.getElementById('and-btn-extr').disabled = false;
+                            if (s.error) {
+                                setDot('and-extr-dot', 'err'); setTxt('and-extr-txt', 'Erro na extração');
+                                logTo('and-console', '[ERRO] ' + s.error, 'err');
+                                setBadge('and-s2-badge', 'err'); setStepState('and-step2', 'error'); setStepNum('and-step2', 'error');
+                            } else {
+                                setDot('and-extr-dot', 'ok'); setTxt('and-extr-txt', 'Extração concluída');
+                                setProg('and-extr-prog', 100);
+                                logTo('and-console', '[OK] Concluído: ' + s.output_path, 'ok');
+                                setBadge('and-s2-badge', 'ok'); setStepState('and-step2', 'done'); setStepNum('and-step2', 'done');
+                                andBackupDone = true;
+                                document.getElementById('and-btn-next').disabled = false;
+                            }
+                        }
+                    } catch (e) { }
+                }, 1500);
+            } catch (e) {
+                setSpin('and-extr-spin', false); setDot('and-extr-dot', 'err');
+                logTo('and-console', '[ERRO] ' + e.message, 'err');
+                document.getElementById('and-btn-extr').disabled = false;
+                setBadge('and-s2-badge', 'err'); setStepState('and-step2', 'error');
+            }
+        }
+
+        // ── iOS EXTRACTION ────────────────────────────────────────
+        function iosSetBackupPath() {
+            const path = document.getElementById('ios-backup-path').value.trim();
+            if (!path) { logTo('ios-console', '[ERRO] Informe o caminho do backup', 'err'); return; }
+            setStepState('ios-step1', 'done'); setStepNum('ios-step1', 'done'); setBadge('ios-s1-badge', 'ok');
+            setStepState('ios-step2', 'active');
+            setDot('ios-extr-dot', 'ios'); setTxt('ios-extr-txt', 'Caminho confirmado — pronto para extrair');
+            document.getElementById('ios-btn-extr').disabled = false;
+            iosBackupPathOk = true;
+            logTo('ios-console', '[iOS] Caminho: ' + path, 'ok');
+        }
+
+        async function iosStartExtract() {
+            if (!iosBackupPathOk) return;
+            const path = document.getElementById('ios-backup-path').value.trim();
+            document.getElementById('ios-btn-extr').disabled = true;
+            setDot('ios-extr-dot', 'run'); setSpin('ios-extr-spin', true);
+            setTxt('ios-extr-txt', 'Executando MVT...'); setBadge('ios-s2-badge', 'run');
+            setProg('ios-extr-prog', 10);
+            logTo('ios-console', '[MVT] Iniciando check-backup no caminho: ' + path);
+            let lastMsg = '', pct = 10;
+            try {
+                await apiFetch('/api/ios/backup/start', 'POST', { backup_path: path });
+                const poll = setInterval(async () => {
+                    try {
+                        const s = await apiFetch('/api/ios/backup/status');
+                        setProg('ios-extr-prog', s.progress || pct);
+                        if (s.message && s.message !== lastMsg) { lastMsg = s.message; logTo('ios-console', '[MVT] ' + s.message); setTxt('ios-extr-txt', s.message); }
+                        if (s.done || s.error) {
+                            clearInterval(poll); setSpin('ios-extr-spin', false);
+                            document.getElementById('ios-btn-extr').disabled = false;
+                            if (s.error) {
+                                setDot('ios-extr-dot', 'err'); logTo('ios-console', '[ERRO] ' + s.error, 'err');
+                                setBadge('ios-s2-badge', 'err'); setStepState('ios-step2', 'error'); setStepNum('ios-step2', 'error');
+                            } else {
+                                setDot('ios-extr-dot', 'ok'); setProg('ios-extr-prog', 100);
+                                logTo('ios-console', '[OK] Extração iOS concluída.', 'ok');
+                                setBadge('ios-s2-badge', 'ok'); setStepState('ios-step2', 'done'); setStepNum('ios-step2', 'done');
+                                iosBackupDone = true;
+                                document.getElementById('ios-btn-next').disabled = false;
+                            }
+                        }
+                    } catch (e) { }
+                }, 1500);
+            } catch (e) {
+                setSpin('ios-extr-spin', false); setDot('ios-extr-dot', 'err');
+                logTo('ios-console', '[ERRO] ' + e.message, 'err');
+                document.getElementById('ios-btn-extr').disabled = false;
+                setBadge('ios-s2-badge', 'err'); setStepState('ios-step2', 'error');
+            }
+        }
+
+        // ── RECIPIENT / SEND ──────────────────────────────────────
+        function confirmSend() {
+            const name = document.getElementById('rec-name').value.trim();
+            const analyst = document.getElementById('rec-analyst').value.trim();
+            if (!name || !analyst) { alert('Preencha ao menos o nome da vítima e do analista.'); return; }
+            goTo('s-sending');
+            simulateSend();
+        }
+        function simulateSend() {
+            // Simula envio com progresso — substituir por chamada real ao backend
+            let pct = 0;
+            const msgs = ['Comprimindo arquivos...', 'Criptografando pacote...', 'Enviando ao destinatário...', 'Verificando integridade...', 'Concluindo...'];
+            let mi = 0;
+            setTxt('send-status-txt', msgs[0]);
+            const interval = setInterval(() => {
+                pct = Math.min(pct + Math.random() * 18, 100);
+                setProg('send-prog', Math.floor(pct));
+                setTxt('send-pct', Math.floor(pct) + '%');
+                if (pct >= 100 * (mi + 1) / msgs.length && mi < msgs.length - 1) { mi++; setTxt('send-status-txt', msgs[mi]); }
+                if (pct >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => goTo('s-goodbye'), 600);
+                }
+            }, 400);
+        }
+
+        // ── FORENSIC PANEL ────────────────────────────────────────
+        function fSwitchTab(name, el) {
+            document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.ftab-content').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('ftab-' + name).classList.add('active');
+        }
+        function fLog(msg, type = 'info') {
+            logTo('f-big-console', msg, type);
+            logTo('f-console', msg, type);
+        }
+        function fClearLog() {
+            ['f-big-console', 'f-console'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = '';
+                logTo(id, '[FORENSE] Console limpo.', 'info');
+            });
+        }
+        async function saveVTKey() {
+            const key = document.getElementById('vt-key').value.trim();
+            if (!key) { fLog('[ERRO] Insira uma chave válida', 'err'); return; }
+            try { await apiFetch('/api/config/virustotal', 'POST', { api_key: key }); fLog('[OK] Chave VT salva', 'ok'); }
+            catch (e) { fLog('[ERRO] ' + e.message, 'err'); }
+        }
+        async function fCheckDevice() {
+            setDot('f-dev-dot', 'run'); setSpin('f-dev-spin', true); setTxt('f-dev-txt', 'Verificando via ADB...');
+            fLog('[ADB] Procurando dispositivos...');
+            try {
+                const d = await apiFetch('/api/device/check');
+                setSpin('f-dev-spin', false);
+                if (d.connected) {
+                    setDot('f-dev-dot', 'ok'); setTxt('f-dev-txt', d.model + ' — Android ' + d.android_version);
+                    document.getElementById('f-dev-info').style.display = 'block';
+                    setTxt('f-model', d.model); setTxt('f-android', d.android_version);
+                    fLog('[ADB] Dispositivo: ' + d.model + ' (Android ' + d.android_version + ')', 'ok');
+                    fDeviceOk = true;
+                    document.getElementById('f-btn-bkp').disabled = false;
+                    document.getElementById('f-btn-apk').disabled = false;
+                } else {
+                    setDot('f-dev-dot', 'err'); setTxt('f-dev-txt', 'Nenhum dispositivo');
+                    fLog('[ADB] Nenhum dispositivo detectado', 'err');
+                }
+            } catch (e) { setSpin('f-dev-spin', false); setDot('f-dev-dot', 'err'); fLog('[ERRO] ' + e.message, 'err'); }
+        }
+        async function fUpdateIOC() {
+            document.getElementById('f-ioc-dot').className = 'dot dot-yellow';
+            setTxt('f-ioc-txt', 'Atualizando...');
+            fLog('[MVT] Atualizando IOCs...');
+            try {
+                const d = await apiFetch('/api/ioc/update', 'POST');
+                document.getElementById('f-ioc-dot').className = 'dot dot-green';
+                setTxt('f-ioc-txt', d.count + ' IOCs carregados');
+                fLog('[MVT] ' + d.count + ' IOCs atualizados', 'ok');
+            } catch (e) { document.getElementById('f-ioc-dot').className = 'dot dot-red'; fLog('[ERRO] ' + e.message, 'err'); }
+        }
+        async function fStartBackup() {
+            if (!fDeviceOk) return;
+            document.getElementById('f-btn-bkp').disabled = true;
+            setDot('f-bkp-dot', 'run'); setSpin('f-bkp-spin', true); setTxt('f-bkp-txt', 'Iniciando...');
+            setProg('f-bkp-prog', 5); let lastMsg = '';
+            fLog('[androidQF] Iniciando extração...');
+            try {
+                await apiFetch('/api/backup/start', 'POST', {
+                    backup_options: document.getElementById('f-qfBackup').value,
+                    download_options: document.getElementById('f-qfDownload').value,
+                    remove_options: document.getElementById('f-qfRemove').value,
+                });
+                const poll = setInterval(async () => {
+                    try {
+                        const s = await apiFetch('/api/backup/status');
+                        setProg('f-bkp-prog', s.progress || 5);
+                        if (s.message && s.message !== lastMsg) { lastMsg = s.message; fLog('[androidQF] ' + s.message); setTxt('f-bkp-txt', s.message); }
+                        if (s.done || s.error) {
+                            clearInterval(poll); setSpin('f-bkp-spin', false);
+                            document.getElementById('f-btn-bkp').disabled = false;
+                            if (s.error) { setDot('f-bkp-dot', 'err'); fLog('[ERRO] ' + s.error, 'err'); }
+                            else {
+                                setDot('f-bkp-dot', 'ok'); setProg('f-bkp-prog', 100);
+                                fLog('[OK] Extração: ' + s.output_path, 'ok');
+                                fBackupDone = true;
+                                document.getElementById('f-btn-analyze').disabled = false;
+                                document.getElementById('f-btn-analyze-vt').disabled = false;
+                                setTxt('f-an-txt', 'Dados prontos para análise');
+                            }
+                        }
+                    } catch (e) { }
+                }, 1500);
+            } catch (e) { setSpin('f-bkp-spin', false); setDot('f-bkp-dot', 'err'); fLog('[ERRO] ' + e.message, 'err'); document.getElementById('f-btn-bkp').disabled = false; }
+        }
+        async function fExtractAPK() {
+            document.getElementById('f-btn-apk').disabled = true;
+            setDot('f-apk-dot', 'run'); setSpin('f-apk-spin', true); setTxt('f-apk-txt', 'Extraindo APKs...');
+            fLog('[APK] Listando pacotes instalados...');
+            try {
+                const d = await apiFetch('/api/apk/extract', 'POST');
+                setDot('f-apk-dot', 'ok'); setSpin('f-apk-spin', false);
+                setProg('f-apk-prog', 100); setTxt('f-apk-txt', d.count + ' APKs extraídos');
+                fLog('[APK] ' + d.count + ' APKs em: ' + d.output_path, 'ok');
+            } catch (e) { setDot('f-apk-dot', 'err'); setSpin('f-apk-spin', false); fLog('[ERRO] ' + e.message, 'err'); }
+            document.getElementById('f-btn-apk').disabled = false;
+        }
+        async function fRunAnalysis(useVT) {
+            document.getElementById('f-btn-analyze').disabled = true;
+            document.getElementById('f-btn-analyze-vt').disabled = true;
+            setDot('f-an-dot', 'run'); setSpin('f-an-spin', true); setTxt('f-an-txt', 'Analisando com MVT...');
+            setProg('f-an-prog', 5); let lastMsg = '';
+            fLog('[MVT] Iniciando análise' + (useVT ? ' + VirusTotal' : '') + '...');
+            try {
+                await apiFetch('/api/analysis/run', 'POST', { use_virustotal: useVT });
+                const poll = setInterval(async () => {
+                    try {
+                        const s = await apiFetch('/api/analysis/status');
+                        setProg('f-an-prog', s.progress || 5);
+                        if (s.message && s.message !== lastMsg) { lastMsg = s.message; fLog('[MVT] ' + s.message); setTxt('f-an-txt', s.message); }
+                        if (s.done || s.error) {
+                            clearInterval(poll); setSpin('f-an-spin', false);
+                            document.getElementById('f-btn-analyze').disabled = false;
+                            document.getElementById('f-btn-analyze-vt').disabled = false;
+                            if (s.error) { setDot('f-an-dot', 'err'); fLog('[ERRO] ' + s.error, 'err'); }
+                            else {
+                                setDot('f-an-dot', 'ok');
+                                fLog('[OK] Análise: ' + s.detections + ' detecções', 'ok');
+                                fShowResults(s.results);
+                            }
+                        }
+                    } catch (e) { }
+                }, 1500);
+            } catch (e) { setSpin('f-an-spin', false); setDot('f-an-dot', 'err'); fLog('[ERRO] ' + e.message, 'err'); }
+        }
+        function fShowResults(results) {
+            if (!results) return;
+            const card = document.getElementById('f-results-card');
+            card.style.display = 'block';
+            const crit = results.filter(r => r.severity === 'critical');
+            const warn = results.filter(r => r.severity === 'warning');
+            const ok = results.filter(r => r.severity === 'clean');
+            document.getElementById('f-stats').innerHTML = `
+    <div class="stat-b"><div class="stat-n" style="color:var(--danger)">${crit.length}</div><div class="stat-l">Críticos</div></div>
+    <div class="stat-b"><div class="stat-n" style="color:var(--warn)">${warn.length}</div><div class="stat-l">Alertas</div></div>
+    <div class="stat-b"><div class="stat-n" style="color:var(--accent)">${ok.length}</div><div class="stat-l">Limpos</div></div>`;
+            let html = '';
+            [...crit, ...warn, ...ok].forEach(r => {
+                const cls = r.severity === 'critical' ? 'critical' : r.severity === 'warning' ? 'warning' : 'clean';
+                const sc = r.severity === 'critical' ? 'sc' : r.severity === 'warning' ? 'sw' : 'sk';
+                const lbl = r.severity === 'critical' ? 'CRÍTICO' : r.severity === 'warning' ? 'ALERTA' : 'LIMPO';
+                html += `<div class="res-item ${cls}"><span class="res-sev ${sc}">${lbl}</span><div><div style="font-weight:600;color:var(--text);margin-bottom:2px">${r.name}</div><div style="font-family:var(--mono);font-size:0.72rem;color:var(--text-dim)">${r.detail}</div></div></div>`;
+            });
+            document.getElementById('f-results-list').innerHTML = html;
+            card.scrollIntoView({ behavior: 'smooth' });
+        }
+        async function fExportReport() {
+            try { const d = await apiFetch('/api/analysis/report', 'POST'); fLog('[OK] Relatório: ' + d.path, 'ok'); }
+            catch (e) { fLog('[ERRO] ' + e.message, 'err'); }
+        }
+        async function fOpenFolder() {
+            try { await apiFetch('/api/system/open-output-folder', 'POST'); }
+            catch (e) { fLog('[INFO] Pasta de saída: ./output', 'info'); }
+        }
+    </script>
+</body>
+
+</html>

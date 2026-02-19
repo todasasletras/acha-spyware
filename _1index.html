@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acha Spyware — Análise Android</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0c0f;
+            --surface: #111418;
+            --surface2: #161b22;
+            --border: #21262d;
+            --accent: #00ff88;
+            --accent2: #00b4ff;
+            --warn: #ff9f43;
+            --danger: #ff4757;
+            --text: #c9d1d9;
+            --text-dim: #6e7681;
+            --mono: 'Share Tech Mono', monospace;
+            --sans: 'Rajdhani', sans-serif;
+        }
+    
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 16px;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse at 10% 0%, rgba(0, 255, 136, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 90% 100%, rgba(0, 180, 255, 0.04) 0%, transparent 60%);
+        }
+    
+        /* HEADER */
+        header {
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            position: sticky;
+            top: 0;
+            background: rgba(10, 12, 15, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+    
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #000;
+            font-weight: 700;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+    
+        @keyframes pulse-glow {
+    
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4);
+            }
+    
+            50% {
+                box-shadow: 0 0 0 8px rgba(0, 255, 136, 0);
+            }
+        }
+    
+        .logo h1 {
+            font-family: var(--sans);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #fff;
+        }
+    
+        .logo span {
+            color: var(--accent);
+        }
+    
+        .header-badge {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+    
+        /* LAYOUT */
+        .app {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 1.5rem;
+        }
+    
+        /* SIDEBAR */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+    
+        /* MAIN */
+        .main {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+    
+        /* CARD */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+    
+        .card:hover {
+            border-color: #30363d;
+        }
+    
+        .card-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface2);
+        }
+    
+        .card-header h2 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text);
+        }
+    
+        .card-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.7;
+        }
+    
+        .card-body {
+            padding: 1rem;
+        }
+    
+        .step-badge {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            color: var(--accent);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 1px 6px;
+            border-radius: 3px;
+            margin-left: auto;
+        }
+    
+        /* FORM ELEMENTS */
+        label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+        }
+    
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 8px 12px;
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+    
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+        }
+
+        select.qf-select {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 8px 12px;
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        select.qf-select { 
+            cursor: pointer; 
+            appearance: none; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236e7681' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); 
+            background-repeat: no-repeat; 
+            background-position: right 10px center; 
+            padding-right: 28px; }
+        select.qf-select option { 
+            background: #111418;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0,255,136,0.1);
+        }
+    
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 14px;
+            border-radius: 5px;
+            font-family: var(--sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s;
+            width: 100%;
+            justify-content: center;
+            text-transform: uppercase;
+        }
+    
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+        }
+    
+        .btn-primary:hover {
+            background: #00e07a;
+            transform: translateY(-1px);
+        }
+    
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent2);
+            border: 1px solid var(--accent2);
+        }
+    
+        .btn-secondary:hover {
+            background: rgba(0, 180, 255, 0.08);
+        }
+    
+        .btn-warn {
+            background: transparent;
+            color: var(--warn);
+            border: 1px solid var(--warn);
+        }
+    
+        .btn-warn:hover {
+            background: rgba(255, 159, 67, 0.08);
+        }
+    
+        .btn-danger {
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+    
+        .btn-danger:hover {
+            background: rgba(255, 71, 87, 0.08);
+        }
+    
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+    
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            width: auto;
+        }
+    
+        /* STATUS INDICATOR */
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 5px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            font-family: var(--mono);
+            font-size: 0.78rem;
+        }
+    
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+    
+        .dot-green {
+            background: var(--accent);
+            box-shadow: 0 0 6px var(--accent);
+        }
+    
+        .dot-yellow {
+            background: var(--warn);
+            box-shadow: 0 0 6px var(--warn);
+            animation: blink 1.2s ease-in-out infinite;
+        }
+    
+        .dot-red {
+            background: var(--danger);
+        }
+    
+        .dot-gray {
+            background: var(--text-dim);
+        }
+    
+        @keyframes blink {
+    
+            0%,
+            100% {
+                opacity: 1
+            }
+    
+            50% {
+                opacity: 0.3
+            }
+        }
+    
+        /* DEVICE INFO */
+        .device-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 8px;
+        }
+    
+        .info-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 7px 10px;
+        }
+    
+        .info-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 2px;
+        }
+    
+        .info-value {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            color: var(--text);
+        }
+    
+        .info-value.accent {
+            color: var(--accent);
+        }
+    
+        /* LOG CONSOLE */
+        .console {
+            background: #060809;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px;
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            line-height: 1.7;
+            height: 200px;
+            overflow-y: auto;
+            color: var(--text-dim);
+        }
+    
+        .console::-webkit-scrollbar {
+            width: 4px;
+        }
+    
+        .console::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    
+        .console::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+    
+        .log-line {
+            display: flex;
+            gap: 8px;
+        }
+    
+        .log-time {
+            color: #3d4451;
+            flex-shrink: 0;
+        }
+    
+        .log-ok {
+            color: var(--accent);
+        }
+    
+        .log-warn {
+            color: var(--warn);
+        }
+    
+        .log-err {
+            color: var(--danger);
+        }
+    
+        .log-info {
+            color: var(--accent2);
+        }
+    
+        /* PROGRESS */
+        .progress-wrap {
+            background: var(--bg);
+            border-radius: 4px;
+            height: 6px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+    
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            border-radius: 4px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+    
+        .progress-bar.animate {
+            animation: progress-shine 1.5s ease-in-out infinite;
+        }
+    
+        @keyframes progress-shine {
+            0% {
+                background-position: -200% 0;
+            }
+    
+            100% {
+                background-position: 200% 0;
+            }
+        }
+    
+        /* ANALYSIS RESULTS */
+        .result-section {
+            margin-top: 8px;
+        }
+    
+        .result-title {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+        }
+    
+        .result-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 10px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            margin-bottom: 5px;
+            font-size: 0.82rem;
+            transition: border-color 0.15s;
+        }
+    
+        .result-item:hover {
+            border-color: #30363d;
+        }
+    
+        .result-item.critical {
+            border-left: 3px solid var(--danger);
+        }
+    
+        .result-item.warning {
+            border-left: 3px solid var(--warn);
+        }
+    
+        .result-item.clean {
+            border-left: 3px solid var(--accent);
+        }
+    
+        .result-severity {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            padding: 1px 6px;
+            border-radius: 3px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+    
+        .sev-critical {
+            background: rgba(255, 71, 87, 0.15);
+            color: var(--danger);
+        }
+    
+        .sev-warning {
+            background: rgba(255, 159, 67, 0.15);
+            color: var(--warn);
+        }
+    
+        .sev-clean {
+            background: rgba(0, 255, 136, 0.12);
+            color: var(--accent);
+        }
+    
+        .result-text {
+            flex: 1;
+        }
+    
+        .result-name {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+    
+        .result-detail {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            font-family: var(--mono);
+        }
+    
+        /* SECTION DIVIDER */
+        .section-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0.25rem;
+        }
+    
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+    
+        /* TABS */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface2);
+        }
+    
+        .tab {
+            padding: 8px 16px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--text-dim);
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+    
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+    
+        .tab:hover:not(.active) {
+            color: var(--text);
+        }
+    
+        .tab-content {
+            display: none;
+            padding: 1rem;
+        }
+    
+        .tab-content.active {
+            display: block;
+        }
+    
+        /* BADGE COUNT */
+        .badge {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-left: 5px;
+        }
+    
+        .badge-danger {
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--danger);
+        }
+    
+        .badge-warn {
+            background: rgba(255, 159, 67, 0.2);
+            color: var(--warn);
+        }
+    
+        /* HELPERS */
+        .mt-8 {
+            margin-top: 8px;
+        }
+    
+        .mt-12 {
+            margin-top: 12px;
+        }
+    
+        .flex-row {
+            display: flex;
+            gap: 8px;
+        }
+    
+        .flex-row .btn {
+            flex: 1;
+        }
+    
+        .text-dim {
+            color: var(--text-dim);
+            font-size: 0.78rem;
+        }
+    
+        .text-mono {
+            font-family: var(--mono);
+        }
+    
+        .hint {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            margin-top: 5px;
+            font-family: var(--mono);
+        }
+    
+        .hint a {
+            color: var(--accent2);
+            text-decoration: none;
+        }
+    
+        /* SUMMARY STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+    
+        .stat-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+        }
+    
+        .stat-number {
+            font-family: var(--mono);
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+    
+        .stat-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+        }
+    
+        /* SPINNER */
+        .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+            flex-shrink: 0;
+        }
+    
+        .spinner.show {
+            display: block;
+        }
+    
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    
+        @media (max-width: 768px) {
+            .app {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <div class="logo-icon">⬡</div>
+            <h1><span>Acha</span> Spyware</h1>
+        </div>
+        <div class="header-badge">Android Forensics · v1.0</div>
+    </header>
+
+    <div class="app">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <!-- API KEY -->
+            <div class="card">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+                    </svg>
+                    <h2>API VirusTotal</h2>
+                </div>
+                <div class="card-body">
+                    <label>Chave de API</label>
+                    <input type="password" id="vtApiKey" placeholder="••••••••••••••••••••••••••••••••" />
+                    <p class="hint">Obtenha em <a href="https://www.virustotal.com" target="_blank">virustotal.com</a>
+                    </p>
+                    <button class="btn btn-secondary mt-8" onclick="saveApiKey()">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+                            <polyline points="17,21 17,13 7,13 7,21" />
+                            <polyline points="7,3 7,8 15,8" />
+                        </svg>
+                        Salvar Chave
+                    </button>
+                </div>
+            </div>
+
+            <!-- DEVICE CONNECTION -->
+            <div class="card">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                        <line x1="12" y1="18" x2="12.01" y2="18" />
+                    </svg>
+                    <h2>Dispositivo</h2>
+                    <span class="step-badge">PASSO 1</span>
+                </div>
+                <div class="card-body">
+                    <div class="status-row" id="deviceStatus">
+                        <div class="dot dot-gray" id="deviceDot"></div>
+                        <span id="deviceStatusText">Aguardando verificação</span>
+                        <div class="spinner" id="deviceSpinner"></div>
+                    </div>
+                    <div id="deviceInfo" class="device-info" style="display:none">
+                        <div class="info-item">
+                            <div class="info-label">Modelo</div>
+                            <div class="info-value" id="devModel">—</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Android</div>
+                            <div class="info-value" id="devAndroid">—</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Serial</div>
+                            <div class="info-value" id="devSerial">—</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">ADB</div>
+                            <div class="info-value accent" id="devAdb">—</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-8" onclick="checkDevice()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22,4 12,14.01 9,11.01" />
+                        </svg>
+                        Verificar Dispositivo Conectado
+                    </button>
+                    <p class="hint mt-8">⚠ Requer Android Debug Bridge (ADB) instalado</p>
+                </div>
+            </div>
+
+            <!-- IOC UPDATE -->
+            <div class="card">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10" />
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                    </svg>
+                    <h2>Indicadores de Comprometimento</h2>
+                </div>
+                <div class="card-body">
+                    <div class="status-row" style="margin-bottom:8px">
+                        <div class="dot dot-gray" id="iocDot"></div>
+                        <span id="iocStatusText" class="text-mono" style="font-size:0.75rem">IOCs não carregados</span>
+                    </div>
+                    <button class="btn btn-warn" onclick="updateIOCs()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <polyline points="23 4 23 10 17 10" />
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                        </svg>
+                        Atualizar IOCs (MVT)
+                    </button>
+                </div>
+            </div>
+
+            <!-- DOWNLOAD ADB -->
+            <div class="card">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                        <polyline points="7,10 12,15 17,10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    <h2>Ferramentas</h2>
+                </div>
+                <div class="card-body">
+                    <div class="flex-row">
+                        <button class="btn btn-secondary" onclick="downloadADB()">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                <polyline points="7,10 12,15 17,10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            ADB
+                        </button>
+                        <button class="btn btn-secondary" onclick="downloadAndroidQF()">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                <polyline points="7,10 12,15 17,10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            AndroidQF
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main">
+
+            <!-- EXTRACTION -->
+            <div class="card">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <ellipse cx="12" cy="5" rx="9" ry="3" />
+                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                    </svg>
+                    <h2>Extração de Dados</h2>
+                    <span class="step-badge">PASSO 2</span>
+                </div>
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab('backup')">Backup (androidQF)</div>
+                    <div class="tab" onclick="switchTab('apk')">Download APK</div>
+                </div>
+                <div id="tab-backup" class="tab-content active">
+                    <p class="text-dim" style="margin-bottom:12px">Extrai dados do dispositivo usando <strong
+                            style="color:var(--text)">androidQF</strong>. O dispositivo precisa estar conectado e
+                        verificado (Passo 1).</p>
+
+                    <!-- Opções androidQF -->
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:12px">
+                        <div>
+                            <label>Backup</label>
+                            <select id="qfBackup" class="qf-select">
+                                <option value="Everything">Everything</option>
+                                <option value="Only SMS">Only SMS</option>
+                                <option value="No Backup">No Backup</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Download APKs</label>
+                            <select id="qfDownload" class="qf-select">
+                                <option value="Only no-system packages">No-system only</option>
+                                <option value="All">All</option>
+                                <option value="Do not download any">None</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Remover após coleta</label>
+                            <select id="qfRemove" class="qf-select">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="status-row" id="backupStatus">
+                        <div class="dot dot-gray" id="backupDot"></div>
+                        <span id="backupStatusText">Aguardando — conecte o dispositivo primeiro</span>
+                        <div class="spinner" id="backupSpinner"></div>
+                    </div>
+                    <div class="progress-wrap mt-8">
+                        <div class="progress-bar" id="backupProgress"></div>
+                    </div>
+                    <div class="flex-row mt-8">
+                        <button class="btn btn-primary" id="btnBackup" onclick="startBackup()" disabled>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <ellipse cx="12" cy="5" rx="9" ry="3" />
+                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                            </svg>
+                            Iniciar Extração
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="openOutputFolder()">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" />
+                            </svg>
+                            Pasta
+                        </button>
+                    </div>
+                </div>
+                <div id="tab-apk" class="tab-content">
+                    <p class="text-dim" style="margin-bottom:12px">Extrai todos os APKs instalados do dispositivo para
+                        análise offline.</p>
+                    <div class="status-row" id="apkStatus">
+                        <div class="dot dot-gray"></div>
+                        <span>Aguardando — conecte o dispositivo primeiro</span>
+                        <div class="spinner" id="apkSpinner"></div>
+                    </div>
+                    <div class="progress-wrap mt-8">
+                        <div class="progress-bar" id="apkProgress"></div>
+                    </div>
+                    <button class="btn btn-primary mt-8" id="btnApk" onclick="downloadAPKs()" disabled>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                            <polyline points="7,10 12,15 17,10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Extrair APKs do Dispositivo
+                    </button>
+                </div>
+            </div>
+
+            <!-- ANALYSIS -->
+            <div class="card">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <h2>Análise MVT</h2>
+                    <span class="step-badge">PASSO 3</span>
+                </div>
+                <div class="card-body">
+                    <p class="text-dim" style="margin-bottom:12px">Analisa os dados extraídos com o <strong
+                            style="color:var(--text)">Mobile Verification Toolkit (MVT)</strong> em busca de spyware,
+                        stalkerware e indicadores de comprometimento.</p>
+
+                    <div class="flex-row" style="margin-bottom:12px">
+                        <button class="btn btn-primary" id="btnAnalyze" onclick="runAnalysis()" disabled>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            </svg>
+                            Analisar Backup
+                        </button>
+                        <button class="btn btn-secondary" id="btnAnalyzeVT" onclick="runAnalysisVT()" disabled>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                            + VirusTotal
+                        </button>
+                    </div>
+
+                    <div class="status-row" id="analysisStatus" style="margin-bottom:8px">
+                        <div class="dot dot-gray" id="analysisDot"></div>
+                        <span id="analysisStatusText">Aguardando extração dos dados</span>
+                        <div class="spinner" id="analysisSpinner"></div>
+                    </div>
+                    <div class="progress-wrap">
+                        <div class="progress-bar" id="analysisProgress"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESULTS -->
+            <div class="card" id="resultsCard" style="display:none">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                        <polyline points="14,2 14,8 20,8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                        <polyline points="10,9 9,9 8,9" />
+                    </svg>
+                    <h2>Resultados da Análise</h2>
+                    <button class="btn btn-secondary btn-sm" onclick="exportReport()"
+                        style="margin-left:auto; width:auto">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                            <polyline points="7,10 12,15 17,10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Exportar Relatório
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="stats-grid" id="statsGrid"></div>
+                    <div id="resultsList"></div>
+                </div>
+            </div>
+
+            <!-- LOG -->
+            <div class="card">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6" />
+                        <polyline points="8 6 2 12 8 18" />
+                    </svg>
+                    <h2>Console</h2>
+                    <button class="btn btn-secondary btn-sm" onclick="clearLog()"
+                        style="margin-left:auto; width:auto; font-size:0.68rem; padding:3px 8px">Limpar</button>
+                </div>
+                <div class="card-body" style="padding:0">
+                    <div class="console" id="console">
+                        <div class="log-line"><span class="log-time">00:00:00</span><span class="log-info">[SISTEMA]
+                                Acha Spyware iniciado — aguardando ações do usuário.</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        const API = 'http://localhost:8000';
+        let deviceConnected = false;
+        let backupDone = false;
+
+        // ── UTILS ──────────────────────────────────────────────────────────
+        function now() {
+            const d = new Date();
+            return [d.getHours(), d.getMinutes(), d.getSeconds()].map(x => String(x).padStart(2, '0')).join(':');
+        }
+        function log(msg, type = 'info') {
+            const cls = { ok: 'log-ok', warn: 'log-warn', err: 'log-err', info: 'log-info' }[type] || 'log-info';
+            const console_ = document.getElementById('console');
+            const line = document.createElement('div');
+            line.className = 'log-line';
+            line.innerHTML = `<span class="log-time">${now()}</span><span class="${cls}">${msg}</span>`;
+            console_.appendChild(line);
+            console_.scrollTop = console_.scrollHeight;
+        }
+        function setStatus(id, dotId, spinnerId, textId, state, text) {
+            const dot = document.getElementById(dotId);
+            const spinner = document.getElementById(spinnerId);
+            const textEl = document.getElementById(textId);
+            dot.className = 'dot';
+            if (state === 'running') { dot.className = 'dot dot-yellow'; if (spinner) spinner.classList.add('show'); }
+            else if (state === 'ok') { dot.className = 'dot dot-green'; if (spinner) spinner.classList.remove('show'); }
+            else if (state === 'err') { dot.className = 'dot dot-red'; if (spinner) spinner.classList.remove('show'); }
+            else { dot.className = 'dot dot-gray'; if (spinner) spinner.classList.remove('show'); }
+            if (textEl) textEl.textContent = text;
+        }
+        function setProgress(id, pct, animate = false) {
+            const bar = document.getElementById(id);
+            bar.style.width = pct + '%';
+            if (animate) bar.classList.add('animate'); else bar.classList.remove('animate');
+        }
+        async function apiFetch(path, method = 'GET', body = null) {
+            const opts = { method, headers: { 'Content-Type': 'application/json' } };
+            if (body) opts.body = JSON.stringify(body);
+            const r = await fetch(API + path, opts);
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+        }
+
+        // ── TABS ──────────────────────────────────────────────────────────
+        function switchTab(name) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('tab-' + name).classList.add('active');
+        }
+
+        // ── API KEY ───────────────────────────────────────────────────────
+        async function saveApiKey() {
+            const key = document.getElementById('vtApiKey').value.trim();
+            if (!key) { log('[ERRO] Insira uma chave de API válida', 'err'); return; }
+            try {
+                await apiFetch('/api/config/virustotal', 'POST', { api_key: key });
+                log('[OK] Chave do VirusTotal salva com sucesso', 'ok');
+            } catch (e) { log('[ERRO] Falha ao salvar chave: ' + e.message, 'err'); }
+        }
+
+        // ── DEVICE ───────────────────────────────────────────────────────
+        async function checkDevice() {
+            setStatus(null, 'deviceDot', 'deviceSpinner', 'deviceStatusText', 'running', 'Verificando dispositivo via ADB...');
+            log('[ADB] Procurando dispositivos conectados...');
+            try {
+                const data = await apiFetch('/api/device/check');
+                if (data.connected) {
+                    deviceConnected = true;
+                    setStatus(null, 'deviceDot', 'deviceSpinner', 'deviceStatusText', 'ok', data.model || 'Dispositivo conectado');
+                    log(`[ADB] Dispositivo encontrado: ${data.model} (Android ${data.android_version})`, 'ok');
+                    document.getElementById('deviceInfo').style.display = 'grid';
+                    document.getElementById('devModel').textContent = data.model || '—';
+                    document.getElementById('devAndroid').textContent = data.android_version || '—';
+                    document.getElementById('devSerial').textContent = data.serial || '—';
+                    document.getElementById('devAdb').textContent = 'Ativo';
+                    document.getElementById('btnBackup').disabled = false;
+                    document.getElementById('btnApk').disabled = false;
+                } else {
+                    setStatus(null, 'deviceDot', 'deviceSpinner', 'deviceStatusText', 'err', 'Nenhum dispositivo detectado');
+                    log('[ADB] Nenhum dispositivo encontrado. Verifique USB e depuração USB ativada.', 'err');
+                }
+            } catch (e) {
+                setStatus(null, 'deviceDot', 'deviceSpinner', 'deviceStatusText', 'err', 'Erro: ' + e.message);
+                log('[ERRO] ' + e.message, 'err');
+            }
+        }
+
+        // ── IOC UPDATE ───────────────────────────────────────────────────
+        async function updateIOCs() {
+            document.getElementById('iocDot').className = 'dot dot-yellow';
+            document.getElementById('iocStatusText').textContent = 'Baixando IOCs...';
+            log('[MVT] Atualizando indicadores de comprometimento...');
+            try {
+                const data = await apiFetch('/api/ioc/update', 'POST');
+                document.getElementById('iocDot').className = 'dot dot-green';
+                document.getElementById('iocStatusText').textContent = `${data.count || 0} IOCs carregados`;
+                log(`[MVT] IOCs atualizados: ${data.count} indicadores carregados`, 'ok');
+            } catch (e) {
+                document.getElementById('iocDot').className = 'dot dot-red';
+                document.getElementById('iocStatusText').textContent = 'Falha na atualização';
+                log('[ERRO] Falha ao atualizar IOCs: ' + e.message, 'err');
+            }
+        }
+
+        // ── BACKUP ───────────────────────────────────────────────────────
+        async function startBackup() {
+            if (!deviceConnected) { log('[ERRO] Conecte o dispositivo primeiro', 'err'); return; }
+
+            // Ler opções escolhidas pelo usuário
+            const backupOpt = document.getElementById('qfBackup').value;
+            const downloadOpt = document.getElementById('qfDownload').value;
+            const removeOpt = document.getElementById('qfRemove').value;
+
+            setStatus(
+                null, 'backupDot', 'backupSpinner',
+                'backupStatusText', 'running',
+                'Iniciando androidQF...',
+                'Extraindo dados do dispositivo',
+                'Baixando APKs instalados',
+                'Removendo dados do dispositivo (se selecionado)'
+            );
+            setProgress('backupProgress', 8, true);
+            log(`[androidQF] Backup=${backupOpt} | Download=${downloadOpt} | Remove=${removeOpt}`);
+            document.getElementById('btnBackup').disabled = true;
+
+            // Controle anti-spam do log: só loga se a mensagem mudar
+            let lastMsg = '';
+
+            try {
+                // Disparar extração com as opções escolhidas
+                await apiFetch('/api/backup/start', 'POST', {
+                    backup_options: backupOpt,
+                    download_options: downloadOpt,
+                    remove_options: removeOpt,
+                });
+
+                // Polling de status
+                const poll = setInterval(async () => {
+                    try {
+                        const status = await apiFetch('/api/backup/status');
+                        setProgress('backupProgress', status.progress || 5);
+
+                        // Só loga quando a mensagem muda
+                        if (status.message && status.message !== lastMsg) {
+                            lastMsg = status.message;
+                            log('[androidQF] ' + status.message);
+                        }
+
+                        if (status.done || status.error) {
+                            clearInterval(poll);
+                            if (status.error) {
+                                setStatus(null, 'backupDot', 'backupSpinner', 'backupStatusText', 'err', 'Erro na extração');
+                                log('[ERRO] ' + status.error, 'err');
+                            } else {
+                                setStatus(null, 'backupDot', 'backupSpinner', 'backupStatusText', 'ok', 'Extração concluída → ' + status.output_path);
+                                setProgress('backupProgress', 100);
+                                log('[OK] Extração finalizada em: ' + status.output_path, 'ok');
+                                backupDone = true;
+                                document.getElementById('btnAnalyze').disabled = false;
+                                document.getElementById('btnAnalyzeVT').disabled = false;
+                                setStatus(null, 'analysisDot', 'analysisSpinner', 'analysisStatusText', 'idle', 'Dados prontos para análise');
+                            }
+                            document.getElementById('btnBackup').disabled = false;
+                        }
+                    } catch (e) { /* silencioso — backend pode estar ocupado */ }
+                }, 1500);
+
+            } catch (e) {
+                setStatus(null, 'backupDot', 'backupSpinner', 'backupStatusText', 'err', 'Falha ao iniciar');
+                log('[ERRO] ' + e.message, 'err');
+                document.getElementById('btnBackup').disabled = false;
+            }
+        }
+
+        // ── APK DOWNLOAD ─────────────────────────────────────────────────
+        async function downloadAPKs() {
+            if (!deviceConnected) { log('[ERRO] Conecte o dispositivo primeiro', 'err'); return; }
+            const apkStatus = document.getElementById('apkStatus');
+            apkStatus.querySelector('div').className = 'dot dot-yellow';
+            apkStatus.querySelector('span').textContent = 'Extraindo APKs...';
+            document.getElementById('apkSpinner').classList.add('show');
+            log('[APK] Listando e extraindo pacotes instalados...');
+            try {
+                const data = await apiFetch('/api/apk/extract', 'POST');
+                apkStatus.querySelector('div').className = 'dot dot-green';
+                apkStatus.querySelector('span').textContent = `${data.count || 0} APKs extraídos`;
+                document.getElementById('apkSpinner').classList.remove('show');
+                setProgress('apkProgress', 100);
+                log(`[APK] ${data.count} APKs extraídos para: ${data.output_path}`, 'ok');
+            } catch (e) {
+                apkStatus.querySelector('div').className = 'dot dot-red';
+                apkStatus.querySelector('span').textContent = 'Erro na extração';
+                document.getElementById('apkSpinner').classList.remove('show');
+                log('[ERRO] ' + e.message, 'err');
+            }
+        }
+
+        // ── ANALYSIS ─────────────────────────────────────────────────────
+        async function runAnalysis(useVT = false) {
+            setStatus(null, 'analysisDot', 'analysisSpinner', 'analysisStatusText', 'running', 'Analisando com MVT...');
+            setProgress('analysisProgress', 5, true);
+            log(`[MVT] Iniciando análise${useVT ? ' com VirusTotal' : ''}...`);
+
+            try {
+                const poll = setInterval(async () => {
+                    try {
+                        const status = await apiFetch('/api/analysis/status');
+                        setProgress('analysisProgress', status.progress || 5);
+                        if (status.message) log('[MVT] ' + status.message);
+                        if (status.done || status.error) {
+                            clearInterval(poll);
+                            if (status.error) {
+                                setStatus(null, 'analysisDot', 'analysisSpinner', 'analysisStatusText', 'err', 'Análise falhou');
+                                log('[ERRO] ' + status.error, 'err');
+                            } else {
+                                setStatus(null, 'analysisDot', 'analysisSpinner', 'analysisStatusText', 'ok', `Análise concluída — ${status.detections} detecções`);
+                                setProgress('analysisProgress', 100);
+                                log(`[OK] Análise concluída: ${status.detections} detecções encontradas`, 'ok');
+                                showResults(status.results);
+                            }
+                        }
+                    } catch (e) { }
+                }, 1500);
+
+                await apiFetch('/api/analysis/run', 'POST', { use_virustotal: useVT });
+            } catch (e) {
+                setStatus(null, 'analysisDot', 'analysisSpinner', 'analysisStatusText', 'err', 'Falha ao iniciar análise');
+                log('[ERRO] ' + e.message, 'err');
+            }
+        }
+        function runAnalysisVT() { runAnalysis(true); }
+
+        // ── RESULTS ──────────────────────────────────────────────────────
+        function showResults(results) {
+            if (!results) return;
+            const card = document.getElementById('resultsCard');
+            card.style.display = 'block';
+
+            const critical = results.filter(r => r.severity === 'critical');
+            const warnings = results.filter(r => r.severity === 'warning');
+            const clean = results.filter(r => r.severity === 'clean');
+
+            document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-box">
+      <div class="stat-number" style="color:var(--danger)">${critical.length}</div>
+      <div class="stat-label">Críticos</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number" style="color:var(--warn)">${warnings.length}</div>
+      <div class="stat-label">Alertas</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number" style="color:var(--accent)">${clean.length}</div>
+      <div class="stat-label">Limpos</div>
+    </div>
+  `;
+
+            let html = '';
+            if (critical.length) {
+                html += `<div class="result-title">🔴 Ameaças Críticas</div>`;
+                critical.forEach(r => html += renderResult(r));
+            }
+            if (warnings.length) {
+                html += `<div class="result-title" style="margin-top:12px">🟡 Alertas</div>`;
+                warnings.forEach(r => html += renderResult(r));
+            }
+            if (clean.length && !critical.length && !warnings.length) {
+                html += `<div class="result-title">✅ Nenhuma ameaça detectada</div>`;
+                clean.forEach(r => html += renderResult(r));
+            }
+            document.getElementById('resultsList').innerHTML = html;
+            card.scrollIntoView({ behavior: 'smooth' });
+        }
+        function renderResult(r) {
+            const sev = r.severity;
+            const cls = sev === 'critical' ? 'critical' : sev === 'warning' ? 'warning' : 'clean';
+            const sevCls = sev === 'critical' ? 'sev-critical' : sev === 'warning' ? 'sev-warning' : 'sev-clean';
+            const sevTxt = sev === 'critical' ? 'CRÍTICO' : sev === 'warning' ? 'ALERTA' : 'LIMPO';
+            return `<div class="result-item ${cls}">
+    <span class="result-severity ${sevCls}">${sevTxt}</span>
+    <div class="result-text">
+      <div class="result-name">${r.name}</div>
+      <div class="result-detail">${r.detail}</div>
+    </div>
+  </div>`;
+        }
+
+        // ── MISC ─────────────────────────────────────────────────────────
+        async function downloadADB() {
+            log('[INFO] Abrindo guia de instalação do ADB...', 'info');
+            window.open('https://developer.android.com/studio/releases/platform-tools', '_blank');
+        }
+        async function downloadAndroidQF() {
+            log('[INFO] Abrindo repositório do androidQF...', 'info');
+            window.open('https://github.com/botherder/androidqf', '_blank');
+        }
+        async function openOutputFolder() {
+            try { await apiFetch('/api/system/open-output-folder', 'POST'); }
+            catch (e) { log('[INFO] Pasta de saída: ./output', 'info'); }
+        }
+        async function exportReport() {
+            log('[INFO] Gerando relatório PDF...');
+            try {
+                const data = await apiFetch('/api/analysis/report', 'POST');
+                log('[OK] Relatório salvo em: ' + data.path, 'ok');
+            } catch (e) { log('[ERRO] Falha ao exportar: ' + e.message, 'err'); }
+        }
+        function clearLog() {
+            document.getElementById('console').innerHTML = '';
+            log('[SISTEMA] Console limpo', 'info');
+        }
+    </script>
+</body>
+
+</html>

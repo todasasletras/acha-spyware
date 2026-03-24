@@ -43,7 +43,7 @@ Antes de utilizar o MVT, é recomendado configurar a **chave da API do VirusTota
 
 #### **Definir a chave da API do VirusTotal**
 
-**Endpoint:** `/set-virustotal-api-key`  
+**Endpoint:** `/api/config/set-vt-key`  
 **Método:** `POST`
 
 ##### **Parâmetro necessário:**
@@ -80,7 +80,7 @@ Após configurar a chave da API do VirusTotal, os usuários podem utilizar os de
 
 #### **Verificar dispositivos conectados via ADB**
 
-**Endpoint:** `/check-adb`  
+**Endpoint:** `/api/android/check-adb`  
 **Método:** `POST`
 
 ##### **Parâmetros:**
@@ -129,7 +129,7 @@ Após configurar a chave da API do VirusTotal, os usuários podem utilizar os de
 
 #### **Verificar e fazer backup do dispositivo**
 
-**Endpoint**: `/check-backup`
+**Endpoint**: `/api/android/check-backup`
 **Método**: `POST`
 
 ##### **Parâmetros:**
@@ -174,7 +174,7 @@ Após configurar a chave da API do VirusTotal, os usuários podem utilizar os de
 
 #### **Extrair APKs do dispositivo**
 
-**Endpoint**: `download-apks`
+**Endpoint**: `/api/android/download-apks`
 **Método**: `POST`
 
 ##### **Parâmetros:**
@@ -220,7 +220,7 @@ Após configurar a chave da API do VirusTotal, os usuários podem utilizar os de
 
 #### **Baixar os IOCs (Indicators of Compromise)**
 
-**Endpoint**: `/download-iocs`
+**Endpoint**: `/api/android/download-iocs`
 **Method**: `GET`
 
 ##### **Resposta esperada:**

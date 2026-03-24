@@ -4,12 +4,13 @@ import subprocess
 from typing import List, Dict, Union
 
 from dotenv import load_dotenv
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 
 from core.logger import setup_logger
 from api.models.types.schemas import APIResponse, LogMessageEntry
 from api.services.command_executor import CommandExecutor
 from api.services.mvt_service import MVTAndroid
+from api.services.androidqf_service import AndroidQF
 
 logger = setup_logger(__name__)
 ENV_FILE = ".env"
@@ -17,6 +18,23 @@ logger.debug("Carregar variáveis de ambiente")
 load_dotenv()
 
 android_bp = Blueprint("android", __name__, url_prefix="/android")
+
+
+@android_bp.route("/qf", methods=["POST"])
+def androidqf():
+    data = request.json
+    qf = AndroidQF(CommandExecutor())
+    result: LogMessageEntry = qf.extract(**data)
+    response: APIResponse = {
+        "success": True,
+        "logs": result.get("logs", []),
+        "messages": result.get("messages", []),
+    }
+
+    logger.debug(f"AndroidQF result: {response}")
+    extract_path = response["messages"][1]["original_message"]
+    session["extract_path"] = extract_path
+    return jsonify(response), 200
 
 
 @android_bp.route("/check-adb", methods=["POST"])
@@ -31,6 +49,30 @@ def check_adb():
     }
     return jsonify(response), 200
 
+@android_bp.route("/check-androidqf", methods=["POST"])
+def check_androidqf():
+    data = request.json
+    mvt_android = MVTAndroid(CommandExecutor())
+
+    if "androidqf_path" not in data:
+        if "extract_path" not in session:
+            response: APIResponse = {
+                "success": False,
+                "error": "AndroidQF path not provided.",
+                "logs": [],
+                "messages": [],
+            }
+            return jsonify(response), 200
+
+        data["androidqf_path"] = session["extract_path"]
+
+    result: LogMessageEntry = mvt_android.check_androidqf(**data)
+    response: APIResponse = {
+        "success": True,
+        "logs": result["logs"],
+        "messages": result["messages"],
+    }
+    return jsonify(response), 200
 
 class MVTController:
     """

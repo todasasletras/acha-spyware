@@ -20,6 +20,7 @@ class MVTAndroid(MVTAndroidInterface):
 
     def __init__(self, executor: CommandExecutor):
         self.executor = executor
+        self.download_iocs()
 
     def check_adb(
         self,

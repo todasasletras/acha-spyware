@@ -2,7 +2,7 @@ from core.logger import setup_logger
 from api import create_app
 
 logger = setup_logger()
-logger.info("Inicio do FVM!")
+logger.info("Inicio do Acha Spyware!")
 
 logger.debug("Criar uma instancia de aplicação Flask.")
 app = create_app()
